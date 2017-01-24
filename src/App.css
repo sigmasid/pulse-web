@@ -1,0 +1,174 @@
+body {
+  padding-top: 60px;
+}
+
+a {
+  color: black;
+}
+
+a:hover {
+  text-decoration: none;
+  color: black;
+}
+
+.btn-primary {
+    color: #fff;
+    background-color: #3DC7E8;
+    border-color: #3DC7E8;
+  }
+
+.container-fluid{
+   padding: 0;
+}
+
+//** NAV BAR **/
+.Channel-sub-nav .nav-item a:hover {
+  background: lightGrey;
+}
+
+.navbar {
+  background-color: white;
+  border-bottom: 1px solid #e7e7e7;
+  min-height: 60px;
+}
+
+.navbar-brand {
+  font-size: 1rem;
+  color: black;
+}
+
+.nav-pills .nav-link.active {
+    background-color: #3DC7E8;
+}
+
+.nav-item {
+  cursor: pointer;
+  padding-right: 15px;
+}
+
+//** MODALS **//
+.modal-dialog {
+  padding-top: 40px;
+}
+
+.modal-sm {
+  max-width: 370px;
+  padding-top: 40px;
+}
+
+.modal-footer {
+  justify-content: space-between;
+}
+
+.modal-footer .row {
+  width: 100%;
+}
+
+.modal-sm video {
+  height: 600px;
+}
+
+.User-profile-header {
+  padding: 2rem 2rem;
+}
+
+.Channel-sub-nav, .User-sub-nav {
+  padding-left: 15px;
+  margin-bottom: 1rem;
+}
+
+.Channel-content .col {
+  padding-bottom: 15px;
+}
+
+.Channel-content .card-header {
+  border-bottom: none;
+  background: none;
+}
+
+.Channel-content .card-block, .Profile-expertise .card-block {
+  min-height: 150px;
+  display: flex;
+  align-items: center;
+}
+
+.Channel-content .tag-link {
+  max-height: 300px;
+  overflow: hidden;
+}
+
+/** SIDEBAR **/
+.sidebar a {
+  color: white;
+}
+
+.sidebar .card-header {
+  background: #0275d8;
+  color: #ffffff;
+}
+
+.sidebar .list-group-item {
+  background-color: #292827;
+  color: white;
+}
+
+.sidebar .list-group-item.active {
+  color: black;
+  background: #ffffff;
+  border-color: #ffffff;
+}
+
+.tag-link {
+  color: black;
+}
+
+.User-summary img {
+  object-fit: cover;
+  width:50px;
+  height:50px;
+}
+
+.Question-header, .User-profile-header {
+  background: white;
+  border-bottom: 1px solid #e7e7e7;
+}
+
+.User-profile-header img {
+  object-fit: cover;
+  width:175px;
+  height:175px;
+}
+
+.Get-app {
+  bottom: 0;
+  left: 0;
+  position: fixed;
+  width: 100%;
+  z-index: 100;
+  background: white;
+}
+
+.Get-app .Divider-container {
+  height: 4px;
+  overflow: hidden;
+  display: block;
+}
+
+.Get-app .Divider-line {
+  background: radial-gradient(ellipse at 70% 70%,#ee583f 8%,#d92d77 42%,#bd3381 58%);
+  height: 100%;
+  pointer-events: none;
+  width: 100%;
+}
+
+.Get-app .Get-app-text {
+  min-height: 60px;
+}
+
+.Get-app-text h6 {
+  margin-bottom: 0rem;
+}
+
+.Get-app .close {
+  float: none;
+}
