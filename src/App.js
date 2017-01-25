@@ -10,6 +10,7 @@ import BottomNav from './BottomNav.js';
 import About from './About.js';
 import GetApp from './GetApp.js';
 
+import IndexComponent from './IndexComponent.js';
 import ChannelsComponent from './ChannelsComponent.js';
 import AnswersComponent from './AnswersComponent.js';
 import ChannelDetail from './ChannelDetail.js';
@@ -39,7 +40,7 @@ var App = React.createClass({
     return (
     <Container fluid>
       <TopNav />
-      <ChannelsComponent />
+      <IndexComponent />
       <BottomNav />
       <GetApp />
     </Container>
@@ -50,7 +51,7 @@ var App = React.createClass({
 ReactDOM.render((
   <Router history={browserHistory}>
     <Route path="/" component={App}>
-        <Route path="/channels/:channelID" component={ChannelDetail}></Route>
+        <Route path="/c/:channelID" component={ChannelsComponent}></Route>
     </Route>
     <Route path="/q/:questionID" component={AnswersComponent} /> 
     <Route path="/u/:uID" component={UserComponent} />  

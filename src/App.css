@@ -21,6 +21,10 @@ a:hover {
    padding: 0;
 }
 
+.tab-content: {
+  min-height: 600px;
+}
+
 //** NAV BAR **/
 .Channel-sub-nav .nav-item a:hover {
   background: lightGrey;
@@ -77,7 +81,7 @@ a:hover {
   margin-bottom: 1rem;
 }
 
-.Channel-content .col {
+.Channel-content .col, .Index-content .col {
   padding-bottom: 15px;
 }
 
@@ -92,9 +96,17 @@ a:hover {
   align-items: center;
 }
 
+.Channel-card .card-title {
+  min-height: 100px;
+}
+
 .Channel-content .tag-link {
   max-height: 300px;
   overflow: hidden;
+}
+
+.Hash {
+  color: #3DC7E8;
 }
 
 /** SIDEBAR **/
@@ -128,9 +140,13 @@ a:hover {
   height:50px;
 }
 
-.Question-header, .User-profile-header {
+.Question-header, .User-profile-header, .Index-header  {
   background: white;
   border-bottom: 1px solid #e7e7e7;
+}
+
+.Index-header .lead {
+  margin-bottom: 2rem;
 }
 
 .User-profile-header img {
