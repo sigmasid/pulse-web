@@ -6,8 +6,6 @@ import { Alert, Row, Col, Badge, Jumbotron, Container, Card, CardBlock, CardFoot
 import AnswerThumbComponent from './AnswerThumbComponent.js';
 import AnswerVideoComponent from './AnswerVideoComponent.js';
 import UserSummary from './UserSummaryComponent.js';
-import TopNav from './TopNav.js'; 
-import GetApp from './GetApp.js';
 
 var QuestionHeader = React.createClass({
 	getLength(length) {
@@ -48,22 +46,23 @@ var AnswerDetailComponent = React.createClass({
   },
 
   render: function() {
-  	var answerItem = null;
+  	var userSummaryItem = null;
 
     if (this.state.user !== '') {
-      answerItem = <UserSummary user={this.state.user} />; 
+      userSummaryItem = <UserSummary user={this.state.user} />; 
     }
 
   	var postDate = new Date(this.state.answer.createdAt);
     return(
-    	<div>
-    	<CardBlock onClick={this.props.onClick.bind(null, this.props.answerID, this.state.user)}>
-    		{answerItem}
-    	</CardBlock>
-		<CardFooter>
-			<small className="text-muted">Posted on { postDate.toLocaleDateString("en-US") }</small>
-		</CardFooter>
-		</div>
+		<Card className="Answer-thumb">
+   			<AnswerThumbComponent answerID={this.props.answerID} user={this.state.user} onClick={this.props.onClick} />
+    		<CardBlock onClick={this.props.onClick.bind(null, this.props.answerID, this.state.user)}>
+    			{userSummaryItem}
+    		</CardBlock>
+			<CardFooter>
+				<small className="text-muted">Posted on { postDate.toLocaleDateString("en-US") }</small>
+			</CardFooter>
+		</Card>
     );
   }
 });
@@ -80,7 +79,6 @@ var AnswersComponent = React.createClass({
 	},
 
 	showDetail: function(selected, selectedUser) {
-		console.log('state user is '+ selectedUser);
 		this.setState({
 			showDetail: true,
 			selectedUser: selectedUser,
@@ -113,16 +111,12 @@ var AnswersComponent = React.createClass({
 	    var createItem = function(answer, index) {
 	      return(
 	      	<Col sm="4" md="3" key={answer}>
-		        <Card>
-		       		<AnswerThumbComponent answerID={answer} onClick={this.showDetail} />
-		        	<AnswerDetailComponent answerID={answer} onClick={this.showDetail} />
-		        </Card>
+	        	<AnswerDetailComponent answerID={answer} onClick={this.showDetail} />
 	        </Col>
 	    )}.bind(this);
 
 	    return (
 	    	<Container fluid>
-	    		<TopNav />
 	    		<Container fluid>
     				<QuestionHeader question={this.state.currentQuestion} />
 	    		</Container>
@@ -137,7 +131,6 @@ var AnswersComponent = React.createClass({
 		    		}</Row>
 		    		<div>{videoDetail}</div>
 		    	</Container>
-		    	<GetApp message="See full answers, ask your questions & talk directly with experts!" />
 	    	</Container>
 	    );	
 	}

@@ -6,8 +6,6 @@ import { Row, Col, Card, CardBlock, CardLink, CardTitle, CardFooter } from 'reac
 
 var UserThumbComponent = React.createClass({
   render: function() {
-    console.log('user is ' + JSON.stringify(this.props.user));
-
     var profileImage = <img className="rounded" width="100%" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=NoImage&w=318&h=180" alt="profile thumbnail" />;
     if (this.props.profilePic !== '') {
       profileImage = <img className="rounded" width="100%" src={this.props.profilePic} alt="click to see details"/>; 
@@ -82,9 +80,9 @@ var UserList = React.createClass({
       return(<UserDetailComponent userID={userID} key={userID} />);
     };
 
-    if (this.props.shouldShowDetail) {
+    if (typeof this.props.experts !== 'undefined') {
       return (
-        <Row>{typeof this.props.experts !== 'undefined' ? Object.keys(this.props.experts).map(createItem) : ''}</Row>
+        <Row>{ Object.keys(this.props.experts).map(createItem)}</Row>
       );
     } else {
       return(

@@ -7,8 +7,8 @@ var UserSummary = React.createClass({
 	    	<Row className="User-summary">
     			<img src={this.props.user.thumbPic} alt={this.props.user.name} className="offset-1 rounded-circle img-thumbnail" />
 	    		<Col xs="8">
-	    			<small className="text-capitalize font-weight-bold">{this.props.user.name}<br/></small>
-	    			<small className="text-capitalize text-muted">{this.props.user.shortBio}</small>
+	    			<small className="User-summary text-capitalize font-weight-bold">{this.props.user.name}<br/></small>
+	    			<small className="User-summary text-capitalize text-muted">{this.props.user.shortBio}</small>
 	    		</Col>
 	        </Row>
 	    );	

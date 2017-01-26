@@ -66,8 +66,12 @@ var QuestionList = React.createClass({
         </Col>);
     }.bind(this);
 
-    if (this.props.shouldShowDetail) {
-      return (<Row>{ Object.keys(this.props.questions).map(createItem) }</Row>);
+    if (typeof this.props.questions !== 'undefined') {
+      return (
+        <Row>
+          { Object.keys(this.props.questions).map(createItem) }
+        </Row>
+      );
     }
 
     return(

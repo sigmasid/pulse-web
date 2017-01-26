@@ -1,6 +1,5 @@
 import React from 'react';
 import * as firebase from "firebase";
-import TopNav from './TopNav.js'; 
 
 import { Link } from 'react-router';
 import { Alert, TabPane, TabContent, Nav, NavItem, NavLink } from 'reactstrap';
@@ -55,11 +54,11 @@ var UserExpertiseTag = React.createClass({
 	    	<Card>
 	    		<CardBlock>
 	    		    <CardTitle>
-	    		    	<Link to={`/channels/${this.props.tagID}`}>{"# "+this.state.tagTitle}</Link>
+	    		    	<Link to={`/c/${this.props.tagID}`}>{"# "+this.state.tagTitle}</Link>
 	    		    </CardTitle>
 	    		</CardBlock>
 	    		<CardFooter>
-	    			<Link to={`/channels/${this.props.tagID}`}>See Details</Link>
+	    			<Link to={`/c/${this.props.tagID}`}>See Details</Link>
 	    		</CardFooter>
 	    	</Card>
 	    );	
@@ -124,7 +123,6 @@ var UserAnswers = React.createClass({
 
 	showDetail: function(selected) {
 		var questionID = this.props.userAnswers[selected];
-		console.log('user selected ' + questionID)
 	    firebase.database().ref('/questions/' + questionID).once('value').then(function(snapshot) {
 			this.setState({
 				showDetail: true,
@@ -200,13 +198,13 @@ var UserProfileComponent = React.createClass({
 	    	this.setState({
 	    		detailedUser: snapshot.val()
 	    	})
+	    	this.toggle('1');
 	    }.bind(this)); 	
 	},
 
 	render: function() {
 	    return(
 	    	<Container fluid>
-          		<TopNav />		
 	          	<UserProfileHeader user={this.state.user} />
       	        <Nav pills className="container User-sub-nav">
 		          <NavItem>

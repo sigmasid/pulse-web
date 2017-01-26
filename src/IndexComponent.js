@@ -43,7 +43,10 @@ var ChannelItem = React.createClass({
       	</CardBlock>
         <small className="text-muted card-block">{ this.props.channel.description }</small>
       	<CardFooter>
-          <CardLink tag={Link} className="tag-link" to={`/c/${this.props.channel['.key']}`}>Browse Channel</CardLink>
+          <CardLink tag={Link} className="tag-link" to={`/c/${this.props.channel['.key']}`} 
+                    onClick={this.props.setSelected.bind(null,this.props.channel)}>
+            Browse Channel
+          </CardLink>
           <span className="small float-right"> 
             { this.props.channel.hasOwnProperty("questions") ? this.getLength(Object.keys(this.props.channel.questions).length) : this.getLength(0)}
           </span>
@@ -64,6 +67,10 @@ var IndexComponent = React.createClass({
   },
 
   componentWillMount: function() {
+    if (typeof this.props.setSelected !== 'undefined') {
+      this.props.setSelected('undefined');
+    } 
+
     var firebaseRef = firebase.database().ref('tags');
     this.bindAsArray(firebaseRef.limitToFirst(20), 'channels');
   },
@@ -72,7 +79,7 @@ var IndexComponent = React.createClass({
     var createItem = function(channel, index) {
       return(
         <Col md="4" sm="6" xs="12" key={channel['.key']} className="col padding-bottom-2">
-          <ChannelItem channel={channel} />
+          <ChannelItem channel={channel} setSelected={this.props.setSelected}/>
         </Col>);
     }.bind(this);
 
@@ -86,6 +93,7 @@ var IndexComponent = React.createClass({
             { this.state.channels.map(createItem) }
           </Row>
         </Container>
+        {this.props.children}
       </Container>
       );
     }

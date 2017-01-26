@@ -39,6 +39,7 @@ a:hover {
 .navbar-brand {
   font-size: 1rem;
   color: black;
+  letter-spacing: 3px;
 }
 
 .nav-pills .nav-link.active {
@@ -48,6 +49,11 @@ a:hover {
 .nav-item {
   cursor: pointer;
   padding-right: 15px;
+}
+
+.breadcrumb {
+  background-color: white;
+  margin-bottom: 0rem;
 }
 
 //** MODALS **//
@@ -105,6 +111,10 @@ a:hover {
   overflow: hidden;
 }
 
+.Answer-thumb img, .User-summary {
+  cursor: pointer;
+}
+
 .Hash {
   color: #3DC7E8;
 }
@@ -160,7 +170,7 @@ a:hover {
   left: 0;
   position: fixed;
   width: 100%;
-  z-index: 100;
+  z-index: 1040;
   background: white;
 }
 
