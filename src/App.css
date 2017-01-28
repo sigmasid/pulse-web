@@ -17,11 +17,11 @@ a:hover {
     border-color: #3DC7E8;
   }
 
-.container-fluid{
+.container-fluid {
    padding: 0;
 }
 
-.tab-content: {
+.tab-content, .Index-content{
   min-height: 600px;
 }
 
@@ -54,6 +54,16 @@ a:hover {
 .breadcrumb {
   background-color: white;
   margin-bottom: 0rem;
+}
+
+.breadcrumb-item-first {
+  margin-left: 60px;
+}
+
+.breadcrumb-item + .breadcrumb-item::before {
+    color: #3DC7E8;
+    content: ">";
+    font-style: normal;
 }
 
 //** MODALS **//
@@ -96,6 +106,10 @@ a:hover {
   background: none;
 }
 
+.Profile-answers, .Profile-expertise {
+  min-height: 400px;
+}
+
 .Channel-content .card-block, .Profile-expertise .card-block {
   min-height: 150px;
   display: flex;
@@ -110,6 +124,7 @@ a:hover {
   max-height: 300px;
   overflow: hidden;
 }
+
 
 .Answer-thumb img, .User-summary {
   cursor: pointer;

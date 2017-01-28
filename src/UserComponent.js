@@ -8,6 +8,7 @@ import classnames from 'classnames';
 
 import AnswerThumbComponent from './AnswerThumbComponent.js';
 import AnswerVideoComponent from './AnswerVideoComponent.js';
+import Helmet from 'react-helmet';
 
 var UserProfileHeader = React.createClass({
 	render: function() {
@@ -156,16 +157,34 @@ var UserAnswers = React.createClass({
         	</Col>
 	    )}.bind(this);
 
-	    return (
+	    if (typeof this.props.userAnswers !== 'undefined') {
+		    return (
+		    	<Container className="Profile-answers">
+		    		<Row>{Object.keys(this.props.userAnswers).map(createItem)}</Row>
+		    		<div>{videoDetail}</div>
+		    	</Container>
+		    );
+	    } else {
+		    return (
 	    	<Container className="Profile-answers">
-	    		<Row>{Object.keys(this.props.userAnswers).map(createItem)}</Row>
-	    		<div>{videoDetail}</div>
-	    	</Container>
-	    );	
+		    	<Row>
+		    		<Col xs="12">
+		    		    <Alert color="warning text-center">
+    						<strong>Still to come!</strong> This user has not answered any questions yet!
+  						</Alert>
+  					</Col>
+		    	</Row>
+		    </Container>
+		    );
+	    }	
 	}
 });
 
 var UserProfileComponent = React.createClass({
+	contextTypes: {
+    	setSelected: React.PropTypes.func.isRequired
+  	},
+
 	getInitialState: function() {
 	    return {
 	      user: '',
@@ -184,15 +203,18 @@ var UserProfileComponent = React.createClass({
 	componentWillMount: function() {
 		var userID = this.props.params.uID;
 
-		if (typeof this.props.userID !== 'undefined') {
-			userID = this.props.uID;
-		}
-
-	    firebase.database().ref('userPublicSummary').child(userID).once('value').then(function(snapshot) {
-	    	this.setState({
-	    		user: snapshot.val()
+		if (typeof this.props.selected.name !== 'undefined') {
+			this.setState({
+	    		user: this.props.selected
 	    	})
-	    }.bind(this));    
+		} else {
+		    firebase.database().ref('userPublicSummary').child(userID).once('value').then(function(snapshot) {
+		    	this.setState({
+		    		user: snapshot.val()
+		    	})
+		    	this.context.setSelected(snapshot.val(), true);
+		    }.bind(this)); 
+	    }   
 
 	   	firebase.database().ref('userDetailedPublicSummary').child(userID).once('value').then(function(snapshot) {
 	    	this.setState({
@@ -203,15 +225,29 @@ var UserProfileComponent = React.createClass({
 	},
 
 	render: function() {
+		var capitalizeFirstLetter = function(title) {
+      		return typeof title !== 'undefined' || '' ? title.charAt(0).toUpperCase() + title.slice(1) : '';
+    	};
+
+    	var addMeta = <Helmet 
+	    			title={ capitalizeFirstLetter(typeof this.state.user.name !== 'undefined' ? this.state.user.name : '') } 
+	    			meta={[
+    					{"name": "description", "content": typeof this.state.user.shortBio !== 'undefined' ? this.state.user.shortBio : ''},
+    					{property: "og:type", content: "profile"},
+    					{property: "og:profile:first_name", content: typeof this.state.user.name !== 'undefined' ? this.state.user.name.split(' ')[0] : ''},
+    					{property: "og:profile:last_name", content: typeof this.state.user.name !== 'undefined' ? this.state.user.name.split(' ')[1] : ''},
+	    				]}
+	    			/>;
+
 	    return(
 	    	<Container fluid>
+	    		{addMeta}
 	          	<UserProfileHeader user={this.state.user} />
       	        <Nav pills className="container User-sub-nav">
 		          <NavItem>
 		            <NavLink
 		              className={classnames({ active: this.state.activeTab === '1' })}
-		              onClick={() => { this.toggle('1'); }}
-		            >
+		              onClick={() => { this.toggle('1'); }}>
 		              Answers
 		            </NavLink>
 		          </NavItem>
@@ -227,8 +263,7 @@ var UserProfileComponent = React.createClass({
                 <TabContent activeTab={this.state.activeTab}>
 		          <TabPane tabId="1">
          	        { this.state.detailedUser !== '' ? 
-         	        	<UserAnswers userSummary={this.state.user} userAnswers={this.state.detailedUser.answers} userID={this.props.params.uID} /> : 
-         	        	'' 
+         	        	<UserAnswers userSummary={this.state.user} userAnswers={this.state.detailedUser.answers} userID={this.props.params.uID} /> : '' 
          	        }
 		          </TabPane>
 		          <TabPane tabId="2">

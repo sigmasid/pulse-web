@@ -3,13 +3,12 @@ import * as firebase from "firebase";
 import ReactFireMixin from 'reactfire';
 import 'bootstrap/dist/css/bootstrap.css';
 
-import { Link } from 'react-router';
-import { Container, TabPane, TabContent, Nav, NavItem, NavLink } from 'reactstrap';
-import { ListGroup, ListGroupItem, ListGroupItemHeading, Button, Jumbotron } from 'reactstrap';
+import { Button, Jumbotron, Container, TabPane, TabContent, Nav, NavItem, NavLink } from 'reactstrap';
 
 import QuestionList from './QuestionListComponent.js';
 import UserList from './UserListComponent.js';
 import classnames from 'classnames';
+import Helmet from 'react-helmet';
 
 var ChannelHeader = React.createClass({
   render: function() {
@@ -33,29 +32,13 @@ var ChannelHeader = React.createClass({
     }
 });
 
-/// STARTING CHANNEL LIST ///
-var ChannelsList = React.createClass({
-  render: function() {
-
-    var createItem = function(channel, index) {
-      return (
-          <ListGroupItem tag={Link} to={`/channels/${channel['.key']}`} key={ index } activeClassName="active" onClick={this.props.onClick.bind(null,channel)}>
-            <ListGroupItemHeading className="text-capitalize"><small>{ '# ' + channel.title}</small></ListGroupItemHeading>
-          </ListGroupItem>
-      )
-    }.bind(this);
-
-    return (
-      <ListGroup>
-        { this.props.channels.map(createItem) }
-      </ListGroup>
-    );
-  }
-});
-
 ///CHANNELS LIST///
 var ChannelsComponent = React.createClass({
   mixins: [ReactFireMixin],
+
+  contextTypes: {
+      setSelected: React.PropTypes.func.isRequired
+  },
 
   toggle: function(tab) {
     if (this.state.activeTab !== tab) {
@@ -87,27 +70,40 @@ var ChannelsComponent = React.createClass({
   },
 
   componentWillMount: function() {
-    if (typeof this.props.selected.title !== 'undefined') {
+    if (typeof this.props.selected.questions !== 'undefined') {
       this.setState({
         selectedChannel: this.props.selected,
         selectedChannelName: this.props.selected.title
       })
       this.toggle('1');
     } else {
-      console.log('fetching channel - not in props');
       firebase.database().ref('/tags/' + this.props.params.channelID).once('value').then(function(snapshot) {
         this.setState({
           selectedChannel: snapshot.val(),
           selectedChannelName: snapshot.val().title
         })
+        this.context.setSelected(snapshot.val(), true);
       this.toggle('1');
       }.bind(this));
     }
   },
 
   render: function() {
+    var capitalizeFirstLetter = function(channel) {
+      return typeof channel.title !== 'undefined' ? channel.title.charAt(0).toUpperCase() + channel.title.slice(1) : '';
+    };
+
+    var addMeta = <Helmet 
+      title={ capitalizeFirstLetter(this.state.selectedChannel) } 
+      meta={[
+        {"name": "description", "content": typeof this.state.selectedChannel.description !== 'undefined' ? this.state.selectedChannel.description : ''},
+        {property: "og:type", content: "website"}
+        ]}
+      />;
+
     return (
       <Container fluid>
+        {addMeta}
         <ChannelHeader selectedChannel={this.state.selectedChannel} />
         <Container>
           <Nav pills className="container Channel-sub-nav">

@@ -5,6 +5,10 @@ import { Link } from 'react-router';
 import { Badge, Row,Col, Card, CardHeader, CardBlock, CardLink, CardTitle, CardFooter} from 'reactstrap';
 
 var QuestionDetailItem = React.createClass({
+  contextTypes: {
+    setSelected: React.PropTypes.func.isRequired
+  },
+
   getLength(length) {
     return (<div><Badge color="info">{length}</Badge>
             <span>{ length > 1 ? " Answers" : " Answer" }</span></div>);
@@ -15,11 +19,17 @@ var QuestionDetailItem = React.createClass({
       <div>
       <CardBlock>
         <CardTitle>
-          <Link to={`/q/${this.props.questionID}`}>{ this.props.question.title }</Link>
+          <Link to={`/q/${this.props.questionID}`}
+                onClick={this.context.setSelected.bind(null, this.props.question)}>
+                { this.props.question.title }
+          </Link>
         </CardTitle>
       </CardBlock>
       <CardFooter>
-          <CardLink tag={Link} className="tag-link" to={`/q/${this.props.questionID}`}>See Answers</CardLink>
+          <CardLink tag={Link} className="tag-link" to={`/q/${this.props.questionID}`}
+                    onClick={this.context.setSelected.bind(null, this.props.question)}>
+                    See Answers
+          </CardLink>
           <Badge color="info" className="float-right">
             { this.props.question.hasOwnProperty("answers") ? Object.keys(this.props.question.answers).length : 0 }
           </Badge>

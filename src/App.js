@@ -14,6 +14,7 @@ import IndexComponent from './IndexComponent.js';
 import ChannelsComponent from './ChannelsComponent.js';
 import AnswersComponent from './AnswersComponent.js';
 import UserComponent from './UserComponent.js';
+import Helmet from 'react-helmet';
 
 import './App.css';
 
@@ -36,26 +37,51 @@ firebase.auth().onAuthStateChanged(function(user) {
 }); **/
 
 var App = React.createClass({
-  setSelected: function(selected) {
-    this.setState({
-      selected: selected
-    });
+  childContextTypes: {
+    setSelected: React.PropTypes.func.isRequired
+  },
+
+  getChildContext: function() {
+    return {setSelected: this.setSelected};
+  },
+
+  setSelected: function(propVal, updateNav) {
+    if (updateNav === true) {
+      this.setState({
+        selected: propVal,
+        selectedNav: propVal
+      });
+    } else {
+      this.setState({
+        selected: propVal,
+      }); 
+    }
   },
 
   getInitialState: function() {
     return {
       selected: '',
+      selectedNav: ''
     };
   },
 
   render: function() {
     var renderedChildren = React.Children.map(this.props.children, function (child) {
-      return React.cloneElement(child, { selected: this.state.selected, setSelected: this.setSelected })
+      return React.cloneElement(child, { selected: this.state.selected })
     }.bind(this));
+
+
+    var message = '';
+    if (typeof this.state.selectedNav.title !== 'undefined') {
+      message = this.state.selectedNav.title
+    } else if (typeof this.state.selectedNav.name !== 'undefined') {
+      message = this.state.selectedNav.name
+    }
 
     return (
     <Container fluid>
-      <TopNav message={typeof this.state.selected.title !== '' ? this.state.selected.title : ''} />
+      <Helmet defaultTitle="Welcome to Pulse" titleTemplate="Pulse | %s"/>
+      <TopNav message={ message } />
         { renderedChildren }
       <BottomNav />
       <GetApp />

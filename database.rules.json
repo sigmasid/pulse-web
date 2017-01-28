@@ -48,10 +48,10 @@
           ".write": "auth != null"
         },
         "conversations" : {
-          ".write": "auth != null",
+          ".write": "auth != null"
         },
       	"askedQuestions" : {
-          ".write": "auth != null && $uid === auth.uid",
+          ".write": "auth != null && $uid === auth.uid"
         }
       }
     },
@@ -125,6 +125,6 @@
     "settingsSections": {
       ".read": true,
       ".write": false
-    },
+    }
   }
 }

@@ -24,7 +24,11 @@ var AnswerThumbComponent = React.createClass({
 
     if (this.state.answerURL !== '') {
       answerImage = <img className="rounded" width="100%" src={this.state.answerURL} 
-                         onClick={this.props.onClick.bind(null, this.props.answerID, typeof this.props.user !== 'undefined' ? this.props.user : console.log('no user'))} 
+                         onClick={this.props.onClick.bind(null, 
+                                                          this.props.answerID, 
+                                                          typeof this.props.user !== 'undefined' ? this.props.user : '', 
+                                                          this.state.answerURL
+                                                          )} 
                          alt="click to load answer"/>; 
     }
 

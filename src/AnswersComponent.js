@@ -6,6 +6,7 @@ import { Alert, Row, Col, Badge, Jumbotron, Container, Card, CardBlock, CardFoot
 import AnswerThumbComponent from './AnswerThumbComponent.js';
 import AnswerVideoComponent from './AnswerVideoComponent.js';
 import UserSummary from './UserSummaryComponent.js';
+import Helmet from 'react-helmet';
 
 var QuestionHeader = React.createClass({
 	getLength(length) {
@@ -25,14 +26,14 @@ var QuestionHeader = React.createClass({
 });
 
 var AnswerDetailComponent = React.createClass({
-  getInitialState: function() {
-    return {
-      answer: '',
-      user: ''
-    };
-  },
+  	getInitialState: function() {
+    	return {
+      	answer: '',
+      	user: ''
+    	};
+  	},
 
-  componentDidMount: function() {
+  	componentDidMount: function() {
     firebase.database().ref('/answers/' + this.props.answerID).once('value').then(function(snapshot) {
     	if (snapshot.val().hasOwnProperty('uID')) {
 	   		firebase.database().ref('/userPublicSummary/' + snapshot.val().uID).once('value').then(function(userSnap) {
@@ -43,9 +44,9 @@ var AnswerDetailComponent = React.createClass({
     		}.bind(this));
 	   	}
     }.bind(this));
-  },
+  	},
 
-  render: function() {
+  	render: function() {
   	var userSummaryItem = null;
 
     if (this.state.user !== '') {
@@ -70,19 +71,25 @@ var AnswerDetailComponent = React.createClass({
 var AnswersComponent = React.createClass({
 	mixins: [ReactFireMixin],
 
+	contextTypes: {
+    	setSelected: React.PropTypes.func.isRequired
+  	},
+
 	hideDetail: function() {
 		this.setState({
 			selectedAnswer: '',
 			selectedUser: '',
-			showDetail: false
+			showDetail: false,
+			selectedThumbURL: ''
 		})
 	},
 
-	showDetail: function(selected, selectedUser) {
+	showDetail: function(selected, selectedUser, selectedThumbURL) {
 		this.setState({
 			showDetail: true,
 			selectedUser: selectedUser,
-			selectedAnswerID: selected
+			selectedAnswerID: selected,
+			selectedThumbURL: selectedThumbURL
 		})
 	},
 
@@ -95,28 +102,61 @@ var AnswersComponent = React.createClass({
 	    };
   	},
 	componentDidMount: function() {
-		firebase.database().ref('questions').child(this.props.params.questionID).once('value').then(function(snapshot) {
-			this.setState({
-				currentQuestion: snapshot.val(),
-				answersID: snapshot.val().answers
-			})
-		}.bind(this));
+		if (typeof this.props.selected.tags !== 'undefined') {
+	      this.setState({
+	        currentQuestion: this.props.selected,
+	        answersID: this.props.selected.answers
+	      })
+	    } else {
+			firebase.database().ref('questions').child(this.props.params.questionID).once('value').then(function(snapshot) {
+				this.setState({
+					currentQuestion: snapshot.val(),
+					answersID: snapshot.val().answers
+				})
+				this.context.setSelected(snapshot.val(), true);
+			}.bind(this));
+		}
 	},
 
 	render: function() {
+		var capitalizeFirstLetter = function(title) {
+      		return typeof title !== 'undefined' ? title.charAt(0).toUpperCase() + title.slice(1) : '';
+    	};
+
 		var videoDetail = (this.state.showDetail) ?
-			<AnswerVideoComponent user={this.state.selectedUser} question={this.state.currentQuestion} questionID={this.props.params.questionID} answerID={this.state.selectedAnswerID} onClose={this.hideDetail} /> :
-			null;
+			<AnswerVideoComponent user={this.state.selectedUser} 
+									question={this.state.currentQuestion} 
+									questionID={this.props.params.questionID} 
+									answerID={this.state.selectedAnswerID} 
+									onClose={this.hideDetail} 
+									thumbURL={this.state.selectedThumbURL} /> : null;
 
 	    var createItem = function(answer, index) {
 	      return(
-	      	<Col sm="4" md="3" key={answer}>
+	      	<Col lg="3" sm="6" md="4" xs="12" key={answer}>
 	        	<AnswerDetailComponent answerID={answer} onClick={this.showDetail} />
 	        </Col>
 	    )}.bind(this);
 
+	    var getQuestionTitle = function(question) {
+	    	return (typeof question !== 'undefined' ? question.title : '')
+	    };
+
+	    var metaDescription1 = typeof this.state.answersID !== 'undefined' ? "See " + Object.keys(this.state.answersID).length : "No " 
+	    var metaDescription2 = " answers to \"" + getQuestionTitle(this.state.currentQuestion) + "\" on Pulse";
+
+	  	var addMeta = <Helmet 
+			title={ capitalizeFirstLetter(getQuestionTitle(this.state.currentQuestion)) } 
+			meta={[
+				{"name": "description", "content": metaDescription1 + metaDescription2},
+				{property: "og:title", content: getQuestionTitle(this.state.currentQuestion)},
+				{property: "og:type", content: "website"},
+				]}
+			/>;
+
 	    return (
 	    	<Container fluid>
+	    	    {addMeta}
 	    		<Container fluid>
     				<QuestionHeader question={this.state.currentQuestion} />
 	    		</Container>
