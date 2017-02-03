@@ -23,14 +23,14 @@ var GetApp = React.createClass({
             </div>
         	<Container>
         		<Row className="Get-app-text align-items-center">
-        			<Col xs="8" sm="6">
+        			<Col xs="7" sm="6">
         				<h6 className="font-weight-bold">
                             { typeof this.props.message !== 'undefined' ? this.props.message : 
         					"Subscribe to channels, ask questions & see full answers!"}
         				</h6>
         			</Col>
-        			<Col xs="3" sm="2" className="offset-sm-2 text-right">
-        				<Button color="primary">Get App</Button>
+        			<Col xs="4" sm="2" className="offset-sm-2 text-right">
+        				<Button color="primary" className="Get-app-btn">Get App</Button>
     				</Col>
                     <Col xs="1" className="offset-sm-1 offset-md-0">
                         <Button className="close" aria-label="Close" onClick={this.Close.bind(this, null)}>

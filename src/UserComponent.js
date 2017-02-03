@@ -149,8 +149,8 @@ var UserAnswers = React.createClass({
 
 	    var createItem = function(answer, index) {
 	      	return(
-        	<Col md="3" sm="6" xs="12" key={answer} className="col">
-	        	<Card>
+        	<Col lg="3" md="4" sm="6" xs="12" key={answer} className="pb-3">
+	        	<Card className="Answer-thumb">
 	       			<AnswerThumbComponent answerID={answer} onClick={this.showDetail} />
 	       			<AnswerQuestionComponent questionID={this.props.userAnswers[answer]} onClick={this.showDetail} />
 	        	</Card>
@@ -159,9 +159,13 @@ var UserAnswers = React.createClass({
 
 	    if (typeof this.props.userAnswers !== 'undefined') {
 		    return (
-		    	<Container className="Profile-answers">
-		    		<Row>{Object.keys(this.props.userAnswers).map(createItem)}</Row>
-		    		<div>{videoDetail}</div>
+		    	<Container className="Answers-content">
+		    		<Row className={ this.state.showDetail ? 'hidden-xs-up' : ''}>
+		    			{ Object.keys(this.props.userAnswers).map(createItem) }
+		    		</Row>
+		    		<Row className={ this.state.showDetail ? 'show pb-4' : 'invisible'}>
+		    			{ this.state.showDetail ? videoDetail : null }
+		    		</Row>
 		    	</Container>
 		    );
 	    } else {

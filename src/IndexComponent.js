@@ -11,17 +11,13 @@ var IndexHeader = React.createClass({
     return(
       <Jumbotron className="Index-header text-center" color="white">
         <Container>
-            <h1 className="display-3 text-capitalize">Pulse</h1>
-            <p className="lead">starting point for big decisions & questions that you don't know the answers to but you really should!</p>
+            <h1 className="display-3 text-capitalize hidden-xs-down">Pulse</h1>
+            <p className="lead hidden-xs-down">starting point for things that matter!</p>
             
-            <Form>
+            <Form inline>
               <FormGroup row>
-                <Col sm={10} xs={12}>
-                  <Input placeholder="search channels" onChange={this.props.handleSearch} />
-                </Col>
-                <Col sm={2} xs={12}>
-                  <Button>Check Pulse</Button>
-                </Col>
+                <Input placeholder="search channels" className="form-control col-9 col-sm-10" onChange={this.props.handleSearch} />
+                <Button color="primary" className="col-2 col-md-1 offset-md-1">Go</Button>
               </FormGroup>
             </Form>
 
@@ -105,7 +101,7 @@ var IndexComponent = React.createClass({
   render: function() {
     var createItem = function(channel, index) {
       return(
-        <Col md="4" sm="6" xs="12" key={channel['.key']} className="col padding-bottom-2">
+        <Col md="4" sm="6" xs="12" key={channel['.key']} className="pb-3">
           <ChannelItem channel={channel} />
         </Col>);
     }.bind(this);

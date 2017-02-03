@@ -1,6 +1,6 @@
 import React from 'react';
 import * as firebase from "firebase";
-import { CardBlock } from 'reactstrap';
+import { CardTitle } from 'reactstrap';
 
 var AnswerThumbComponent = React.createClass({
   getInitialState: function() {
@@ -32,7 +32,7 @@ var AnswerThumbComponent = React.createClass({
                          alt="click to load answer"/>; 
     }
 
-    return(<CardBlock>{answerImage}</CardBlock>);
+    return(<CardTitle>{answerImage}</CardTitle>);
   } 
 });
 

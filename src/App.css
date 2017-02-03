@@ -1,3 +1,32 @@
+@media (max-width: 767px) {
+  .display-3 {
+    font-size: 3.5rem;
+  }
+
+  .display-4 {
+    font-size: 2.5rem;
+  }
+
+  .lead {
+    font-size: 1rem;
+  }
+
+  h1 {
+    font-size: 2.0rem;
+  }
+
+  h6 {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 991px) {
+  h4 {
+    font-size: 1.25rem; 
+  }
+}
+
+
 body {
   padding-top: 60px;
 }
@@ -11,6 +40,10 @@ a:hover {
   color: black;
 }
 
+.jumbotron {
+  background-color: #f7f7f9;
+}
+
 .btn-primary {
     color: #fff;
     background-color: #3DC7E8;
@@ -21,7 +54,7 @@ a:hover {
    padding: 0;
 }
 
-.tab-content, .Index-content{
+.tab-content, .Index-content, .Answers-content, .Profile-expertise{
   min-height: 600px;
 }
 
@@ -97,17 +130,13 @@ a:hover {
   margin-bottom: 1rem;
 }
 
-.Channel-content .col, .Index-content .col {
-  padding-bottom: 15px;
-}
-
-.Channel-content .card-header {
+.Channel-content .card-header, .Video-content .card-header {
   border-bottom: none;
   background: none;
 }
 
-.Profile-answers, .Profile-expertise {
-  min-height: 400px;
+.card-footer {
+  border-top: none; 
 }
 
 .Channel-content .card-block, .Profile-expertise .card-block {
@@ -120,14 +149,55 @@ a:hover {
   min-height: 100px;
 }
 
+
 .Channel-content .tag-link {
   max-height: 300px;
   overflow: hidden;
 }
 
-
 .Answer-thumb img, .User-summary {
   cursor: pointer;
+}
+
+@media (max-width: 575px) {
+  .Answer-thumb .card-title {
+    margin-bottom: 0rem;
+    height: 360px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .Answer-thumb .card-title img {
+    position: absolute;
+    top:-100%; left:0; right: 0; bottom:-100%;
+    margin: auto;
+  }
+
+}
+
+@media (min-width: 768px) {
+  .Answer-thumb .card-block{
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .Channel-content .card-block, .Profile-expertise .card-block {
+    min-height: 100px;
+  }
+
+  .Channel-card .card-title {
+    min-height: 50px;
+  }
+  .Answer-thumb .card-block{
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 575px) {
+  .Channel-card .card-title {
+    min-height: 0px;
+  }
 }
 
 .Hash {
@@ -174,6 +244,10 @@ a:hover {
   margin-bottom: 2rem;
 }
 
+.Index-header .form-group {
+  width: 100%
+}
+
 .User-profile-header img {
   object-fit: cover;
   width:175px;
@@ -212,4 +286,37 @@ a:hover {
 
 .Get-app .close {
   float: none;
+}
+
+.Video-content {
+  float: none;
+  margin: 0 auto;
+}
+
+.Get-app-modal {
+  padding-top: 15%;
+}
+
+.Get-app-modal .modal-header, .Get-app-modal .modal-footer {
+  border: none;
+}
+
+.Get-app-modal .modal-title {
+  font-size: 1rem;
+}
+
+@media (max-width: 575px) {
+  .User-profile-header img {
+    width:150px;
+    height:150px;
+  }
+
+  .Get-app-btn {
+    white-space: normal;
+    font-size: 80%;
+  }
+  
+  .Get-app .close {
+    float: right;
+  }
 }

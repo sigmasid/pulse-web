@@ -7,6 +7,8 @@ import { Button, Jumbotron, Container, TabPane, TabContent, Nav, NavItem, NavLin
 
 import QuestionList from './QuestionListComponent.js';
 import UserList from './UserListComponent.js';
+import GetAppModal from './GetAppModal.js';
+
 import classnames from 'classnames';
 import Helmet from 'react-helmet';
 
@@ -18,9 +20,7 @@ var ChannelHeader = React.createClass({
           <h1 className="display-4">{this.props.selectedChannel.title}</h1>
           <hr className="my-2" />
           <p className="lead">{this.props.selectedChannel.description}</p>
-          <p className="lead">
-            <Button color="primary">Join Channel</Button>
-          </p>
+          <Button color="primary hidden-sm-down" onClick={this.props.onClick.bind(null, true)}>Join Channel</Button>
         </Jumbotron>
       )
     };
@@ -52,21 +52,14 @@ var ChannelsComponent = React.createClass({
     return {
       selectedChannel: '',
       selectedChannelName: '',
+      showGetApp: false
     };
   },
 
-  showDetail: function(selected) {
-    if (selected.hasOwnProperty("questions")) {
-      this.setState({
-        selectedChannel: selected,
-        selectedChannelName: selected.title
-      })
-    } else {
-      this.setState({
-        selectedChannel: selected,
-        selectedChannelName: selected.title
-      })
-    }
+  toggleGetApp: function(show) {
+    this.setState({
+      showGetApp: show
+    })
   },
 
   componentWillMount: function() {
@@ -104,7 +97,8 @@ var ChannelsComponent = React.createClass({
     return (
       <Container fluid>
         {addMeta}
-        <ChannelHeader selectedChannel={this.state.selectedChannel} />
+        <ChannelHeader selectedChannel={this.state.selectedChannel} onClick={this.toggleGetApp} />
+        {this.state.showGetApp ? <GetAppModal modal={this.state.showGetApp} onClose={this.toggleGetApp}/> : ''}
         <Container>
           <Nav pills className="container Channel-sub-nav">
             <NavItem>

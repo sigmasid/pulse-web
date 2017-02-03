@@ -2,7 +2,7 @@ import React from 'react'
 import * as firebase from "firebase";
 
 import { Link } from 'react-router';
-import { Row, Col, Card, CardBlock, CardLink, CardTitle, CardFooter } from 'reactstrap';
+import { Row, Col, Card, CardBlock, CardLink, Alert, CardFooter } from 'reactstrap';
 
 var UserThumbComponent = React.createClass({
   contextTypes: {
@@ -68,7 +68,7 @@ var UserDetailComponent = React.createClass({
   render: function() {
     if (typeof this.state.user !== 'undefined') {
       return(
-        <Col lg="3" md="4" sm="6" xs="12" className="col" key={this.props.userID}>
+        <Col lg="3" md="4" sm="6" xs="12" className="pb-2" key={this.props.userID}>
           <Card key={this.props.userID}>
             <UserThumbComponent user={this.state.user} userID={this.props.userID}/>
             <UserDetailItem user={this.state.user} userID={this.props.userID} />
@@ -77,7 +77,7 @@ var UserDetailComponent = React.createClass({
         );
     } else {
       return(
-        <Col lg="3" md="4" sm="6" xs="12" className="col" key={this.props.userID}>
+        <Col lg="3" md="4" sm="6" xs="12" className="pb-2" key={this.props.userID}>
           <Card block inverse color="warning" key={this.props.userID}>
             <CardBlock>
               <img className="rounded" width="100%" src="https://placeholdit.imgix.net/~text?txtsize=33&txt=Loading&w=318&h=180" alt="profile thumbnail" />
@@ -102,11 +102,13 @@ var UserList = React.createClass({
       );
     } else {
       return(
-        <Card>
-          <CardBlock>
-            <CardTitle>no experts yet!</CardTitle>
-          </CardBlock>
-        </Card>
+      <Row>
+        <Col xs="12">
+          <Alert color="warning text-center">
+              <strong>Sorry!</strong> We don't have any experts yet. Download the app to suggest one or apply!
+          </Alert>
+        </Col>
+      </Row>
       );
     }
   }

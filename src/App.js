@@ -80,7 +80,7 @@ var App = React.createClass({
 
     return (
     <Container fluid>
-      <Helmet defaultTitle="Welcome to Pulse" titleTemplate="Pulse | %s"/>
+      <Helmet defaultTitle="Welcome to Pulse" titleTemplate="%s | Pulse"/>
       <TopNav message={ message } />
         { renderedChildren }
       <BottomNav />

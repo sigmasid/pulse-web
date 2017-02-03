@@ -9,23 +9,18 @@ import UserSummary from './UserSummaryComponent.js';
 import Helmet from 'react-helmet';
 
 var QuestionHeader = React.createClass({
-	getLength(length) {
-    	return (<Badge color="default" pill>{length > 1 ? length + " Answers" : length + " Answer"}</Badge>);
-  	},
 	render: function() {
 		return(
 			<Jumbotron className="Question-header text-center" color="white">
       			<h1>{this.props.question.title}</h1>
-      			<small className="text-muted">Answers: { this.props.question.hasOwnProperty("answers") ? 
-      													this.getLength(Object.keys(this.props.question.answers).length) : 
-      													"No Answers" }
-      			</small>
+      			<p className="lead">answer by: {this.props.user.name}</p>
 	        </Jumbotron>
 		);
 	}
 });
 
-var AnswerDetailComponent = React.createClass({
+
+var AnswerComponent = React.createClass({
   	getInitialState: function() {
     	return {
       	answer: '',
@@ -68,7 +63,7 @@ var AnswerDetailComponent = React.createClass({
   }
 });
 
-var AnswersComponent = React.createClass({
+var AnswerComponent = React.createClass({
 	mixins: [ReactFireMixin],
 
 	contextTypes: {
@@ -123,38 +118,13 @@ var AnswersComponent = React.createClass({
       		return typeof title !== 'undefined' ? title.charAt(0).toUpperCase() + title.slice(1) : '';
     	};
 
-		var videoDetail = (this.state.showDetail) ?
-			<AnswerVideoComponent user={this.state.selectedUser} 
-									question={this.state.currentQuestion} 
-									questionID={this.props.params.questionID} 
-									answerID={this.state.selectedAnswerID} 
-									onClose={this.hideDetail} 
-									thumbURL={this.state.selectedThumbURL} /> : null;
-
-	    var createItem = function(answer, index) {
-	      return(
-	      	<Col lg="3" sm="6" md="4" xs="12" key={answer} className="col"><AnswerDetailComponent answerID={answer} onClick={this.showDetail} /></Col>
-	    )}.bind(this);
-
-	    var getQuestionTitle = function(question) {
-	    	return (typeof question !== 'undefined' ? question.title : '')
-	    };
-
-	    var metaDescription1 = typeof this.state.answersID !== 'undefined' ? "See " + Object.keys(this.state.answersID).length : "No " 
-	    var metaDescription2 = " answers to \"" + getQuestionTitle(this.state.currentQuestion) + "\" on Pulse";
-
-	    var noAnswers = <Col xs="12"><Alert color="warning text-center">
-	    				<strong>Sorry!</strong> No answers yet. Download the app to add your response or ask an expert!
-	    				</Alert></Col>
-
-	  	var addMeta = <Helmet 
-			title={ capitalizeFirstLetter(getQuestionTitle(this.state.currentQuestion)) } 
-			meta={[
-				{"name": "description", "content": metaDescription1 + metaDescription2},
-				{property: "og:title", content: getQuestionTitle(this.state.currentQuestion)},
-				{property: "og:type", content: "website"},
-				]}
-			/>;
+    	<QuestionHeader user={this.}
+		<AnswerVideoComponent user={this.state.selectedUser} 
+							question={this.state.currentQuestion} 
+							questionID={this.props.params.questionID} 
+							answerID={this.state.selectedAnswerID} 
+							onClose={this.hideDetail} 
+							thumbURL={this.state.selectedThumbURL} />
 
 	    return (
 	    	<Container fluid>
@@ -162,17 +132,21 @@ var AnswersComponent = React.createClass({
 	    		<Container fluid>
     				<QuestionHeader question={this.state.currentQuestion} />
 	    		</Container>
-		    	<Container className="Answers-content">
-		    		<Row className={ this.state.showDetail ? 'hidden-xs-up' : ''}>
-		    			{ typeof this.state.answersID !== 'undefined' ? Object.keys(this.state.answersID).map(createItem) : noAnswers }
-		    		</Row>
-		    		<Row className={ this.state.showDetail ? 'show pb-4' : 'invisible'}>
-		    			{ this.state.showDetail ? videoDetail : null }
-		    		</Row>
+		    	<Container>
+		    		<Row>{ typeof this.state.answersID !== 'undefined' ? 
+		    			Object.keys(this.state.answersID).map(createItem) : 
+		    		    <Col xs="12">
+		    		    	<Alert color="warning text-center">
+        						<strong>Sorry!</strong> No answers yet. Download the app to add your answer or send to an expert!
+      						</Alert>
+      					</Col>
+		    		}</Row>
+		    		<div>{videoDetail}</div>
 		    	</Container>
 	    	</Container>
 	    );	
 	}
 });
 
-export default AnswersComponent
+export default AnswerComponent
+

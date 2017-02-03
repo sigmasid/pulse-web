@@ -1,6 +1,6 @@
 import React from 'react';
 import * as firebase from "firebase";
-import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Card, CardTitle, CardHeader, Button } from 'reactstrap';
 import UserSummary from './UserSummaryComponent.js';
 import Helmet from 'react-helmet';
 
@@ -17,18 +17,13 @@ var AnswerVideoComponent = React.createClass({
   	getInitialState: function() {
     	return {
     		answerURL: '',
-    		modal: false
     	};
   	},
 
-   	toggle: function() {
+   	close: function() {
         if (typeof this.props.onClose === 'function') {
             this.props.onClose();
         }
-
-		this.setState({
-      		modal: !this.state.modal
-    	});
   	},
 
   	componentDidMount: function() {
@@ -62,18 +57,17 @@ var AnswerVideoComponent = React.createClass({
     }
     
     return(
-        <Modal isOpen={this.state.modal} toggle={this.toggle} className="modal-sm">
-          <ModalHeader toggle={this.toggle}>
-            <span className="font-weight-bold">{typeof this.props.question !== 'undefined' ? this.props.question.title : 'Current Question'}</span>
-          </ModalHeader>
-          <ModalBody itemProp="video" itemScope itemType="http://schema.org/VideoObject">
+        <Card className="Video-content">
+          <CardHeader>
+              <Button className="close" aria-label="Close" onClick={this.close.bind(this, null)}>
+                  <span aria-hidden="true">&times;</span>
+              </Button>
+          </CardHeader>
+          <CardTitle itemProp="video" itemScope itemType="http://schema.org/VideoObject">
             {answerVideo}
             {addMeta}
-          </ModalBody>
-          <ModalFooter>
-            <UserSummary user={typeof this.props.user !== 'undefined' ? this.props.user : 'Default User'} />
-          </ModalFooter>        
-        </Modal>
+          </CardTitle>        
+        </Card>
     );
   }	  
 });

@@ -2,7 +2,7 @@ import React from 'react'
 import * as firebase from "firebase";
 
 import { Link } from 'react-router';
-import { Badge, Row,Col, Card, CardHeader, CardBlock, CardLink, CardTitle, CardFooter} from 'reactstrap';
+import { Badge, Alert, Row,Col, Card, CardHeader, CardBlock, CardLink, CardTitle, CardFooter} from 'reactstrap';
 
 var QuestionDetailItem = React.createClass({
   contextTypes: {
@@ -10,8 +10,10 @@ var QuestionDetailItem = React.createClass({
   },
 
   getLength(length) {
-    return (<div><Badge color="info">{length}</Badge>
-            <span>{ length > 1 ? " Answers" : " Answer" }</span></div>);
+    return (<div>
+              <Badge color="info">{length}</Badge>
+              <span>{ length > 1 ? " Answers" : " Answer" }</span>
+            </div>);
   },
 
   render: function() {
@@ -68,7 +70,7 @@ var QuestionList = React.createClass({
 
     var createItem = function(question, index) {
       return(
-        <Col md="4" sm="6" xs="12" key={question} className="col">
+        <Col md="4" sm="6" xs="12" key={question} className="pb-3">
           <Card>
             <CardHeader>{"# " + this.props.channelName}</CardHeader>
             <QuestionDetailComponent questionID={question} index={question} key={question} />
@@ -85,11 +87,13 @@ var QuestionList = React.createClass({
     }
 
     return(
-      <Card>
-        <CardBlock>
-          <CardTitle>This channel has no questions</CardTitle>
-        </CardBlock>
-      </Card>
+      <Row>
+        <Col xs="12">
+          <Alert color="warning text-center">
+              <strong>Sorry!</strong> This channel has no questions. Download the app to ask a question!
+          </Alert>
+        </Col>
+      </Row>
     );
   }
 });
