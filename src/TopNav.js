@@ -2,6 +2,7 @@
 import React from 'react'
 import { Button, Navbar, Nav, Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import { Link } from 'react-router';
+import pulseLogo from './images/pulse-logo-100.png'; // Tell Webpack this JS file uses this image
 
 import 'bootstrap/dist/css/bootstrap.css';
 
@@ -12,12 +13,16 @@ export default class TopNav extends React.Component {
     <Navbar className="navbar fixed-top">
       <Nav className="mr-auto">
         <Breadcrumb tag="nav" className="navbar-brand">
-          <BreadcrumbItem tag={Link} to={"/"} className="navbar-toggler-left breadcrumb-item">PULSE</BreadcrumbItem>
+          <BreadcrumbItem tag={Link} to={"/"} className="navbar-toggler-left breadcrumb-item">
+            <img src={pulseLogo} alt="logo" className="nav-logo" />
+            PULSE
+          </BreadcrumbItem>
           <BreadcrumbItem tag="a" href="#" className="breadcrumb-item-first text-lower hidden-xs-down">
             {this.props.message !== 'undefined' ? this.props.message : ''}
           </BreadcrumbItem>
         </Breadcrumb>
-  		<Button color="primary" className="navbar-toggler-right">Get App</Button>
+  		<Button color="primary" className="navbar-toggler-right hidden-sm-up btn-sm">Get App</Button>
+      <Button color="primary" className="navbar-toggler-right hidden-xs-down">Get App</Button>
       </Nav>
     </Navbar>
     )

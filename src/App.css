@@ -73,6 +73,11 @@ a:hover {
   font-size: 1rem;
   color: black;
   letter-spacing: 3px;
+  line-height: 40px;
+}
+
+.navbar-brand img {
+  padding-right: 10px
 }
 
 .nav-pills .nav-link.active {
@@ -84,13 +89,18 @@ a:hover {
   padding-right: 15px;
 }
 
+.nav-logo {
+  max-height: 40px;
+}
+
 .breadcrumb {
   background-color: white;
   margin-bottom: 0rem;
+  padding: 0rem;
 }
 
 .breadcrumb-item-first {
-  margin-left: 60px;
+  margin-left: 120px;
 }
 
 .breadcrumb-item + .breadcrumb-item::before {
@@ -99,6 +109,11 @@ a:hover {
     font-style: normal;
 }
 
+@media (max-width: 575px) {
+  .navbar button {
+    margin-top: 5px; 
+  }
+}
 //** MODALS **//
 .modal-dialog {
   padding-top: 40px;
@@ -242,6 +257,10 @@ a:hover {
 
 .Index-header .lead {
   margin-bottom: 2rem;
+}
+
+.Index-header .form-control {
+  display: inline-block;
 }
 
 .Index-header .form-group {

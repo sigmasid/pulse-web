@@ -5,19 +5,23 @@ import ReactFireMixin from 'reactfire';
 import { Link } from 'react-router';
 import { Container, Badge, Jumbotron, Row, Col, Form, Input, FormGroup, Button } from 'reactstrap';
 import { Card, CardBlock, CardLink, CardTitle, CardFooter} from 'reactstrap';
+import pulseLogo from './images/pulse-logo-100.png'; // Tell Webpack this JS file uses this image
 
 var IndexHeader = React.createClass({
   render: function() {
     return(
       <Jumbotron className="Index-header text-center" color="white">
         <Container>
-            <h1 className="display-3 text-capitalize hidden-xs-down">Pulse</h1>
-            <p className="lead hidden-xs-down">starting point for things that matter!</p>
+            <h1 className="display-3 text-capitalize hidden-xs-down text-muted">
+              <img src={pulseLogo} alt="logo" className="pr-sm-4" />
+              Pulse
+            </h1>
+            <p className="lead hidden-xs-down">a trusted starting point for things that matter!</p>
             
             <Form inline>
-              <FormGroup row>
-                <Input placeholder="search channels" className="form-control col-9 col-sm-10" onChange={this.props.handleSearch} />
-                <Button color="primary" className="col-2 col-md-1 offset-md-1">Go</Button>
+              <FormGroup>
+                <Input placeholder="search channels" className="form-control col-9" onChange={this.props.handleSearch} />
+                <Button color="primary" className="col-2 col-md-2 col-lg-1 offset-1">Go</Button>
               </FormGroup>
             </Form>
 
