@@ -15,9 +15,9 @@ export default class TopNav extends React.Component {
         <Breadcrumb tag="nav" className="navbar-brand">
           <BreadcrumbItem tag={Link} to={"/"} className="navbar-toggler-left breadcrumb-item">
             <img src={pulseLogo} alt="logo" className="nav-logo" />
-            PULSE
+            PULSE<sub>beta</sub>
           </BreadcrumbItem>
-          <BreadcrumbItem tag="a" href="#" className="breadcrumb-item-first text-lower hidden-xs-down">
+          <BreadcrumbItem tag="a" href="#" className="breadcrumb-item-first text-lower hidden-xs-down text-muted">
             {this.props.message !== 'undefined' ? this.props.message : ''}
           </BreadcrumbItem>
         </Breadcrumb>

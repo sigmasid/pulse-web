@@ -93,6 +93,12 @@ a:hover {
   max-height: 40px;
 }
 
+.navbar sub {
+  font-size: 50%;
+  bottom: -0.5rem; 
+  letter-spacing: 0rem;
+}
+
 .breadcrumb {
   background-color: white;
   margin-bottom: 0rem;
@@ -100,7 +106,8 @@ a:hover {
 }
 
 .breadcrumb-item-first {
-  margin-left: 120px;
+  margin-left: 150px;
+  letter-spacing: 0rem;
 }
 
 .breadcrumb-item + .breadcrumb-item::before {

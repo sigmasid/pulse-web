@@ -1,7 +1,6 @@
 import React from 'react';
 import * as firebase from "firebase";
 import { Card, CardTitle, CardHeader, Button } from 'reactstrap';
-import UserSummary from './UserSummaryComponent.js';
 import Helmet from 'react-helmet';
 
 var AnswerVideoItem = React.createClass({

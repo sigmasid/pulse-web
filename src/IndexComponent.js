@@ -3,9 +3,10 @@ import * as firebase from "firebase";
 import ReactFireMixin from 'reactfire';
 
 import { Link } from 'react-router';
-import { Container, Badge, Jumbotron, Row, Col, Form, Input, FormGroup, Button } from 'reactstrap';
+import { Container, Badge, Jumbotron, Row, Col, Alert, Button } from 'reactstrap';
 import { Card, CardBlock, CardLink, CardTitle, CardFooter} from 'reactstrap';
 import pulseLogo from './images/pulse-logo-100.png'; // Tell Webpack this JS file uses this image
+import SearchComponent from './SearchComponent.js';
 
 var IndexHeader = React.createClass({
   render: function() {
@@ -18,16 +19,35 @@ var IndexHeader = React.createClass({
             </h1>
             <p className="lead hidden-xs-down">a trusted starting point for things that matter!</p>
             
-            <Form inline>
-              <FormGroup>
-                <Input placeholder="search channels" className="form-control col-9" onChange={this.props.handleSearch} />
-                <Button color="primary" className="col-2 col-md-2 col-lg-1 offset-1">Go</Button>
-              </FormGroup>
-            </Form>
-
+            <SearchComponent handleSearch={this.props.handleSearch} />
         </Container>
       </Jumbotron>
-      );
+    );
+  }
+});
+
+var SearchItem = React.createClass({
+  render: function() {
+    return(
+      <Card className="Channel-card">
+        <CardBlock>
+          <CardTitle className="row">
+            <Col xs="1" className="Hash">#</Col>
+            <Col xs="10">
+              <Link to={`/c/${this.props.channel._id}`}>
+                { this.props.channel._source.title }
+              </Link>
+            </Col>
+          </CardTitle>
+        </CardBlock>
+        <small className="text-muted card-block">{ this.props.channel._source.description }</small>
+        <CardFooter>
+          <CardLink tag={Link} className="tag-link" to={`/c/${this.props.channel._id}`} >
+            Browse Channel
+          </CardLink>
+        </CardFooter>
+      </Card>
+    );
   }
 });
 
@@ -37,11 +57,11 @@ var ChannelItem = React.createClass({
   },
 
   getLength(length) {
-      return(<div>
-              <Badge color="info">{length}</Badge>
-              <small className="text-muted"> { length === 1 ? " Question" : " Questions" }</small>
-            </div>); 
-    },
+    return(<div>
+            <Badge color="info">{length}</Badge>
+            <small className="text-muted"> { length === 1 ? " Question" : " Questions" }</small>
+          </div>); 
+  },
 
   render: function() {
     return(
@@ -67,7 +87,7 @@ var ChannelItem = React.createClass({
           </span>
       	</CardFooter>
       </Card>
-      );
+    );
   }
 });
 
@@ -79,10 +99,10 @@ var IndexComponent = React.createClass({
       setSelected: React.PropTypes.func.isRequired
   },
 
-  handleSearch: function() {
+  handleSearch: function(results) {
     this.setState({
-      headerText: 'Searching...',
-      channels: [],
+      headerText: 'Search Results',
+      results: results.hits,
       searchMode: true
     })
   },
@@ -90,6 +110,7 @@ var IndexComponent = React.createClass({
   getInitialState: function() {
     return {
       channels: [],
+      results: [],
       headerText: 'Trending Channels',
       searchMode: false 
     };
@@ -108,14 +129,42 @@ var IndexComponent = React.createClass({
         <Col md="4" sm="6" xs="12" key={channel['.key']} className="pb-3">
           <ChannelItem channel={channel} />
         </Col>);
-    }.bind(this);
+    };
+
+    var createSearchItem = function(result, index) {
+      return(
+        <Col md="4" sm="6" xs="12" key={result._id} className="pb-3">
+          <SearchItem channel={result} />
+        </Col>);
+    };
+
+    var results = function() {
+      return(typeof this.state.results !== 'undefined' ? 
+            this.state.results.map(createSearchItem) : 
+              <Col xs="12"><Alert color="warning text-center">
+              <strong>No Results!</strong> Sorry no results found for this search!</Alert></Col>
+    )}.bind(this);
+
+    var close = function() {
+      this.setState({
+        headerText: 'Trending Channels',
+        searchMode: false
+      })
+    };
+
+    var closeButton = <Col xs="1"><Button className="close" aria-label="Close" onClick={close.bind(this, null)}><span aria-hidden="true">&times;</span></Button></Col>
 
     return (
       <Container fluid>
         <IndexHeader handleSearch={ this.handleSearch }/>
         <Container className="Index-content">
-          <Row><Col xs="12"><p className="blockquote">{this.state.headerText}</p></Col></Row>
-          <Row>{ this.searchMode ? '' : this.state.channels.map(createItem) }</Row>
+          <Row>
+            <Col xs="11"><p className="blockquote">{this.state.headerText}</p></Col>
+            { this.state.searchMode ? closeButton : '' }
+          </Row>
+          <Row>{ this.state.searchMode ? 
+                  results() : 
+                  this.state.channels.map(createItem) }</Row>
         </Container>
         {this.props.children}
       </Container>
