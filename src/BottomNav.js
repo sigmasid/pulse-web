@@ -16,11 +16,11 @@ export default class BottomNav extends React.Component {
         </NavItem>
 
         <NavItem>
-          <NavLink href="#">Privacy</NavLink>
+          <NavLink tag={Link} to={`/privacy`}>Privacy</NavLink>
         </NavItem>
         
         <NavItem>
-          <NavLink href="#">Terms</NavLink>
+          <NavLink tag={Link} to={`/terms`}>Terms</NavLink>
         </NavItem>
       </Nav>
     </Navbar>

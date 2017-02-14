@@ -121,6 +121,28 @@ a:hover {
     margin-top: 5px; 
   }
 }
+
+.privacy li, .terms li {
+  border: none;
+}
+
+.showBullets li {
+  display: list-item;
+  list-style: square;
+  list-style-position: inside;
+}
+
+.showBulletsNested {
+  padding-left: 10px;
+}
+
+.showBulletsNested li {
+  display: list-item;
+  list-style: circle;
+  list-style-position: inside;
+  border: none;
+}
+
 //** MODALS **//
 .modal-dialog {
   padding-top: 40px;
