@@ -296,6 +296,33 @@ a:hover {
   width: 100%
 }
 
+.Verification-form {
+  min-height: 600px;
+}
+
+.Verification-form form {
+  padding-top: 30px;
+}
+
+.Verification-form .form-control {
+  width: 100%;
+}
+
+.Verification-form .form-group {
+    margin-bottom: 1rem;
+}
+
+.Verification-form .btn {
+  float: none;
+  margin: 0 auto;
+}
+
+.Verification-form .col-form-label {
+  padding-top: calc(.5rem - 1px * 2);
+  padding-bottom: calc(.5rem - 1px * 2);
+  margin-bottom: 0;
+}
+
 .User-profile-header img {
   object-fit: cover;
   width:175px;

@@ -47,7 +47,6 @@ var SearchComponent = React.createClass({
 	// conduct a search by writing it to the search/request path
 	doSearch: function(query) {
 		var ref = firebase.database().ref('search');
-		console.log('search query is '+ JSON.stringify(query));
 		var key = ref.child('request').push(query).key;
 
 		ref.child('response/'+key).on('value', this.showResults);

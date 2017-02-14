@@ -28,6 +28,7 @@ var AnswerVideoComponent = React.createClass({
   	componentDidMount: function() {
   	if (this.state.answerURL === '') {
 		var storageRef = firebase.storage().ref().child('answers');
+    console.log('question ID is ' + this.props.questionID + ' and answerID is ' + this.props.answerID);
 		storageRef.child(this.props.questionID).child(this.props.answerID).getDownloadURL().then(function(url) {
 	      	this.setState({
 	        	answerURL: url,

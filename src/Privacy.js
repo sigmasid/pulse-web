@@ -1,7 +1,7 @@
 import React from 'react'
 import { ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, Jumbotron, Container } from 'reactstrap';
 
-export default class Privacy extends React.Component {
+export default class Privacy extends React.Component {	
   render() {
     return (
 	<Container className="privacy">
