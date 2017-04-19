@@ -20,7 +20,7 @@ var ChannelHeader = React.createClass({
           <h1 className="display-4">{this.props.selectedChannel.title}</h1>
           <hr className="my-2" />
           <p className="lead">{this.props.selectedChannel.description}</p>
-          <Button color="primary hidden-sm-down" onClick={this.props.onClick.bind(null, true)}>Join Channel</Button>
+          <Button color="primary hidden-sm-down" onClick={this.props.onClick.bind(null, true)}>Subscribe</Button>
         </Jumbotron>
       )
     };
@@ -63,14 +63,14 @@ var ChannelsComponent = React.createClass({
   },
 
   componentWillMount: function() {
-    if (typeof this.props.selected.questions !== 'undefined') {
+    if (typeof this.props.selected.items !== 'undefined') {
       this.setState({
         selectedChannel: this.props.selected,
         selectedChannelName: this.props.selected.title
       })
       this.toggle('1');
     } else {
-      firebase.database().ref('/tags/' + this.props.params.channelID).once('value').then(function(snapshot) {
+      firebase.database().ref('/channelItems/' + this.props.params.channelID).once('value').then(function(snapshot) {
         this.setState({
           selectedChannel: snapshot.val(),
           selectedChannelName: snapshot.val().title

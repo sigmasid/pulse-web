@@ -1,6 +1,7 @@
 import React from 'react';
 import * as firebase from "firebase";
 import { Jumbotron, Card, CardTitle, CardText, Container, Alert, Label, Col, Form, FormGroup, Input, Button } from 'reactstrap';
+const util = require('util') //print an object
 
 var AccountCreated = React.createClass({
 	render: function() {
@@ -19,7 +20,7 @@ var AccountCreated = React.createClass({
 		} else {
 			return(
 				<Container className="Verification-form">
-					<Alert color="success text-center">You are in! Your account has been created </Alert>
+					<Alert color="success text-center"><strong>You are in! </strong>Your account has been created </Alert>
 				    <Card block>
 	      				<CardTitle className="text-center">Time to Get the App</CardTitle>
 			        	<CardText className="text-center">Our app allows you to answer questions, message users and be part of the Pulse experience.</CardText>
@@ -29,15 +30,37 @@ var AccountCreated = React.createClass({
 			);
 		}
 	}	
-})
+});
+
+var ExistingUser = React.createClass({
+	handleSubmit: function(event) {
+		event.preventDefault();
+		console.log('go to app store / open app');
+	},
+
+	render: function() {
+		return(
+		<Container className="Verification-form">
+	    	<Alert color="info text-center">
+          		<strong>Looks like you have a Pulse account!</strong> Download or open up the app to accept your invitation!
+			</Alert>
+		    <Card block>
+	        	<CardText className="text-center col-10 col-md-8 offset-md-2 offset-1">Answer questions, share your perspectives, do interviews & tell your stories - a better way to collaborate, create & share with the Pulse App.</CardText>
+				<Button color="primary">Download App</Button>
+			</Card>
+		</Container>
+
+		)
+	}
+});
 
 var InviteHeader = React.createClass({
 	render: function() {
 		return(
 			<Jumbotron className="Question-header text-center" color="white">
-      			<h1>{this.props.title === '' ? "Verifying Invite" : this.props.title}</h1>
-      			<small className="text-muted">{this.props.subtitle === '' ? "" : this.props.subtitle}
-      			</small>
+      			<h1>{this.props.title === '' ? "Verifying Invite" : this.props.title}</h1><br/>
+      			<p className="text-muted">{this.props.subtitle1 === '' ? "" : this.props.subtitle1}<br/>
+      			{this.props.subtitle2 === '' ? "" : this.props.subtitle2}</p>
 	        </Jumbotron>
 		);
 	}
@@ -68,7 +91,7 @@ var VerificationForm = React.createClass({
 	return(
 		<Container className="Verification-form">
 	    	<Alert color="info text-center">
-          		<strong>Let's get started!</strong> Please verify your information and select a password to claim your expert account!
+          		<strong>Let's get started!</strong> Please verify your information and select a password to become a verified expert!
         	</Alert>
 			<Form onSubmit={this.handleSubmit}>
 		  	<FormGroup row>
@@ -102,26 +125,51 @@ var VerificationForm = React.createClass({
 var InviteComponent = React.createClass({
   	getInitialState: function() {
     	return {
-      	email: '',
-      	name: '',
-      	channel: '',
-      	requestVerified: '',
-      	accountCreated: false,
-      	accountError: ''
+      	toUserEmail: '',
+      	toUserName: '',
+      	approved: '',
+      	toUserID: '',
+      	accountError: '',
     	};
   	},
 
+  	mainContent: function() {
+  		var content = '';
+
+  		if (!this.state.approved) {
+  			content = <Container className="Verification-form"><Alert color="warning text-center">Please contact us at hi@checkpulse.co for assistance!</Alert></Container>
+  		} else if (this.state.toUserID === '') {
+  			content = <VerificationForm name={this.state.toUserName} email={this.state.toUserEmail} claimAccount={this.claimAccount} />
+  		} else if (this.state.accountCreated === true) {
+  			content = <AccountCreated error={this.state.accountError} tryAgain={this.tryAgain} />
+  		} else {
+  			content = <ExistingUser />
+  		}
+
+  		return(
+  			<Container>{ content }</Container>
+  		)
+  	},
+
   	componentDidMount: function() {
-    	firebase.database().ref('/expertRequests/' + this.props.params.inviteID).once('value').then(function(snapshot) {
+    	firebase.database().ref('/invites/' + this.props.params.inviteID).once('value').then(function(snapshot) {
     		if (snapshot.exists()) {
+				console.log(util.inspect(snapshot.val(), false, null));
     			this.setState({
-        			email: snapshot.val().email,
-        			name: snapshot.val().name,
-        			requestVerified: true,
+        			toUserEmail: typeof snapshot.val().toUserEmail !== 'undefined' ? snapshot.val().toUserEmail  : '',
+        			toUserName: typeof snapshot.val().toUserName !== 'undefined' ? snapshot.val().toUserName  : '',
+        			toUserID: typeof snapshot.val().toUserID !== 'undefined' ? snapshot.val().toUserID  : '',
+        			title: typeof snapshot.val().title !== 'undefined' ? snapshot.val().title  : '',
+        			tagTitle: typeof snapshot.val().tagTitle !== 'undefined' ? snapshot.val().tagTitle  : '',
+        			approved: typeof snapshot.val().approved !== 'undefined' ? true : false,
+        			type: typeof snapshot.val().type !== 'undefined' ? snapshot.val().type : '',
+        			fromUserName: typeof snapshot.val().type !== 'fromUserName' ? snapshot.val().fromUserName : ''
       			})
+    			console.log('setting user name to '+snapshot.val().toUserName);
+
 			} else {
 				this.setState({
-					requestVerified: false
+					approved: false
 				})
 			}
     	}.bind(this));
@@ -129,29 +177,37 @@ var InviteComponent = React.createClass({
 
   	tryAgain: function() {
   		this.setState({
-  			accountCreated: false,
   			accountError: ''
   		})
   	},
 
   	claimAccount: function(name, email, password) {
   		firebase.auth().createUserWithEmailAndPassword(email, password).catch(function(error) {
-  			console.log('error is '+error)
+			var errorCode = error.code;
+			var errorMessage = error.message;
+
+			if (errorCode == 'auth/weak-password') {
+			    alert('The password is too weak.');
+			} else {
+				alert(errorMessage);
+			}
+			
+			console.log(error);
 			this.setState({
 				accountError: error.message,
-				accountCreated: true
 			})
 		}.bind(this));
 
 		firebase.auth().onAuthStateChanged(function(user) {
 		  	if (user) {
-		  		firebase.database().ref('/expertRequests/' + this.props.params.inviteID).update({
-		  			"name":name,
-          			"accountCreated":user.uid
+		  		firebase.database().ref('/invites/' + this.props.params.inviteID).update({
+		  			"toUserName":name,
+          			"toUserID":user.uid
 		  		});
 
 				firebase.auth().signOut().then(function() {
 					this.setState({
+						toUserID: user.uid,
 						accountCreated: true
 					})
 				}.bind(this));
@@ -162,23 +218,34 @@ var InviteComponent = React.createClass({
 	render: function() {
 
 	var title = '';
-	var subtitle = '';
-	var verificationForm = <VerificationForm name={this.state.name} email={this.state.email} claimAccount={this.claimAccount} />;
-	var invalidAlert = <Container className="Verification-form"><Alert color="warning text-center">Please contact us at hi@checkpulse.co for assistance!</Alert></Container>
+	var subtitle1 = '';
+	var subtitle2 = '';
 
-	if (this.state.requestVerified === '') {
+	if (this.state.approved === '') {
 		title = "Verifying Request";
-	} else if (this.state.requestVerified === false) {
+	} else if (this.state.approved === false) {
 		title = "Sorry! This invitation is invalid";
-	} else if (this.state.requestVerified === true) {
-		title = "Welcome " + this.state.name + "!";
-		subtitle = "We are excited to get you on board!";
+	} else if (this.state.approved === true) {
+		title = this.state.toUserName !== '' ? "Welcome " + this.state.toUserName + "!" : "Hi There!";
+		if (this.state.type === 'contributorInvite') {
+			subtitle1 = "You have been recommended as an expert for Channel "+this.state.title;
+			subtitle2 = "Pulse is home to top experts, critics & professionals - showcasing content, ideas & perspectives that matters. Want to join?";
+		} else if (this.state.type === 'interviewInvite') {
+			subtitle1 = "You received an interview invitation from "+this.state.fromUserName+" for the series "+this.state.tagTitle;
+			subtitle2 = "Interviews are a great way to showcase your expertise and grow your brand - we hope you will join us!";
+		} else if (this.state.type === 'questionInvite') {
+			subtitle1 = "Could you help answer this question from "+this.state.fromUserName;
+			subtitle2 = this.state.title;
+		} else if (this.state.type === 'perspectiveInvite') {
+			subtitle1 = "Could you share your perspectives on: ";
+			subtitle2 = this.state.title;
+		}
 	}
 
 	return(
 		<Container fluid>
-			<InviteHeader title={title} subtitle={subtitle} />
-			{ this.state.requestVerified ? !this.state.accountCreated ? verificationForm : <AccountCreated error={this.state.accountError} tryAgain={this.tryAgain} /> : invalidAlert }
+			<InviteHeader title={title} subtitle1={subtitle1} subtitle2={subtitle2}/>
+			{ this.mainContent() }
 		</Container>
 		)
 	}

@@ -26,7 +26,7 @@ var GetApp = React.createClass({
         			<Col xs="7" sm="6">
         				<h6 className="font-weight-bold">
                             { typeof this.props.message !== 'undefined' ? this.props.message : 
-        					"Subscribe to channels, ask questions & see full answers!"}
+        					"Subscribe to channels, join the discussion & check out exclusive content!"}
         				</h6>
         			</Col>
         			<Col xs="4" sm="2" className="offset-sm-2 text-right">

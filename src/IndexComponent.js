@@ -17,7 +17,7 @@ var IndexHeader = React.createClass({
               <img src={pulseLogo} alt="logo" className="pr-sm-4" />
               Pulse
             </h1>
-            <p className="lead hidden-xs-down">a trusted starting point for things that matter!</p>
+            <p className="lead hidden-xs-down">a trusted starting point for questions that matter!</p>
             
             <SearchComponent handleSearch={this.props.handleSearch} />
         </Container>
@@ -59,7 +59,7 @@ var ChannelItem = React.createClass({
   getLength(length) {
     return(<div>
             <Badge color="info">{length}</Badge>
-            <small className="text-muted"> { length === 1 ? " Question" : " Questions" }</small>
+            <small className="text-muted"> { length === 1 ? " Series" : " Series" }</small>
           </div>); 
   },
 
@@ -83,7 +83,7 @@ var ChannelItem = React.createClass({
             Browse Channel
           </CardLink>
           <span className="small float-right"> 
-            { this.props.channel.hasOwnProperty("questions") ? this.getLength(Object.keys(this.props.channel.questions).length) : this.getLength(0)}
+            { this.props.channel.hasOwnProperty("tags") ? this.getLength(Object.keys(this.props.channel.tags).length) : this.getLength(0)}
           </span>
       	</CardFooter>
       </Card>
@@ -119,7 +119,7 @@ var IndexComponent = React.createClass({
   componentWillMount: function() {
     this.context.setSelected('', true);
 
-    var firebaseRef = firebase.database().ref('tags');
+    var firebaseRef = firebase.database().ref('channels');
     this.bindAsArray(firebaseRef.limitToFirst(20), 'channels');
   },
 
