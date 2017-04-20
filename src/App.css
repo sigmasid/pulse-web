@@ -207,18 +207,21 @@ a:hover {
   cursor: pointer;
 }
 
+/** ITEM CARD ITEMS **/
 .Item-card .card-footer {
   background-color: white;
 }
 
-.Item-card .card-block-post a {
-  font-size: 1rem;
-  font-weight: 100;
+.Item-card .card-block-post a, .Item-card .card-block-perspective a, .Item-card .card-block-thread a {
+  font-size: 1.25rem;
+  font-weight: 200;
+  cursor: pointer; 
 }
 
-.Item-card .card-block-question a, .Item-card .card-block-answer a {
+.Item-card .card-block-question a, .Item-card .card-block-answer a, .card-block-interview a{
   font-size: 2rem;
   font-weight: 200;
+  cursor: pointer; 
 }
 
 .Item-card .card-block-question, .Item-card .card-block-answer  {
@@ -226,6 +229,14 @@ a:hover {
   display: flex;
   align-items: center;
 }
+
+.Item-card img {
+  max-height: 450px;
+  object-fit: cover;
+  object-position: center;
+  cursor: pointer; 
+}
+/** END ITEM CARD **/
 
 @media (max-width: 575px) {
   .Answer-thumb .card-title {

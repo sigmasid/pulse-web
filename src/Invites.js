@@ -163,7 +163,7 @@ var InviteComponent = React.createClass({
         			tagTitle: typeof snapshot.val().tagTitle !== 'undefined' ? snapshot.val().tagTitle  : '',
         			approved: typeof snapshot.val().approved !== 'undefined' ? true : false,
         			type: typeof snapshot.val().type !== 'undefined' ? snapshot.val().type : '',
-        			fromUserName: typeof snapshot.val().type !== 'fromUserName' ? snapshot.val().fromUserName : ''
+        			fromUserName: typeof snapshot.val().type !== 'undefined' ? snapshot.val().fromUserName : ''
       			})
     			console.log('setting user name to '+snapshot.val().toUserName);
 
@@ -186,7 +186,7 @@ var InviteComponent = React.createClass({
 			var errorCode = error.code;
 			var errorMessage = error.message;
 
-			if (errorCode == 'auth/weak-password') {
+			if (errorCode === 'auth/weak-password') {
 			    alert('The password is too weak.');
 			} else {
 				alert(errorMessage);

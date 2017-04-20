@@ -1,17 +1,13 @@
 import React from 'react';
 import * as firebase from "firebase";
 
-import { Link } from 'react-router';
-import { Alert, TabPane, TabContent, Nav, NavItem, NavLink } from 'reactstrap';
-import { Container, Jumbotron, Card, CardFooter, CardTitle, CardBlock, Col, Row, CardImg, CardHeader } from 'reactstrap';
-import classnames from 'classnames';
+import { Alert, Container, Jumbotron, Col, Row } from 'reactstrap';
 
-import AnswerThumbComponent from './AnswerThumbComponent.js';
-import AnswerVideoComponent from './AnswerVideoComponent.js';
+import ItemDetail from './ItemDetailComponent.js';
+import ItemVideoComponent from './ItemVideoComponent.js';
 import Helmet from 'react-helmet';
-import UserSummary from './UserSummaryComponent.js';
 
-const util = require('util') //print an object
+//const util = require('util') //print an object
 
 var UserProfileHeader = React.createClass({
 	render: function() {
@@ -27,273 +23,43 @@ var UserProfileHeader = React.createClass({
 	}
 });
 
-
 ///NOT USED BUT USEFUL IF WE NEED TO SEARCH THROUGH ARRAY OF OBJECTS
-function getQuestionID(value, arr, prop) {
+/* function getQuestionID(value, arr, prop) {
     for(var i = 0; i < arr.length; i++) {
         if(arr[i][prop] === value) {
             return arr[i]['.value'];
         }
     }
     return -1; //to handle the case where the value doesn't exist
-}
-
-var UserExpertiseTag = React.createClass({
-  	getInitialState: function() {
-    	return {
-      		tagTitle: ''
-    	};
-  	},
-
-  	componentDidMount: function() {
-		firebase.database().ref('/tags/' + this.props.tagID).child('title').once('value').then(function(snapshot) {
-  			this.setState({
-    			tagTitle: snapshot.val()
-  			})
-    	}.bind(this));
-	},
-
-	render: function() {
-	    return (
-	    	<Card>
-	    		<CardBlock>
-	    		    <CardTitle>
-	    		    	<Link to={`/c/${this.props.tagID}`}>{"# "+this.state.tagTitle}</Link>
-	    		    </CardTitle>
-	    		</CardBlock>
-	    		<CardFooter>
-	    			<Link to={`/c/${this.props.tagID}`}>See Details</Link>
-	    		</CardFooter>
-	    	</Card>
-	    );	
-	}
-});
-
-var UserExpertise = React.createClass({
-	render: function() {
-
-	    var createItem = function(tagID, index) {
-	      	return(
-        	<Col md="3" sm="6" xs="12" key={tagID} className="col">
-	       		<UserExpertiseTag tagID={tagID} />
-        	</Col>
-	    )};
-
-	    return (
-	    	<Container className="Profile-expertise">
-	    		<Row>{typeof this.props.expertiseTags !== 'undefined' ? 
-	    			Object.keys(this.props.expertiseTags).map(createItem) : 
-	    			<Col xs="12">
-		    		    <Alert color="warning text-center">
-    						<strong>Still to come!</strong> This user has not yet been endored as an expert yet!
-  						</Alert>
-  					</Col>
-      				}
-	    		</Row>
-	    	</Container>
-	    );	
-	}
-});
-
-var AnswerQuestionComponent = React.createClass({
-	getInitialState: function() {
-	    return {
-	      question: '',
-	    };
-  	},
-
-	componentWillMount: function() {
-	    firebase.database().ref('/questions/' + this.props.questionID).once('value').then(function(snapshot) {
-			this.setState({
-				question: snapshot.val()
-			})
-	    }.bind(this));
-	},
-
-	render: function() {
-	    return (
-	    	<CardFooter>{this.state.question.title}</CardFooter>
-	    );	
-	}
-});
-
-var UserItems = React.createClass({
-	hideDetail: function() {
-		this.setState({
-			selectedAnswer: '',
-			showDetail: false
-		})
-	},
-
-	showDetail: function(selected) {
-		var questionID = this.props.userAnswers[selected];
-	    firebase.database().ref('/questions/' + questionID).once('value').then(function(snapshot) {
-			this.setState({
-				showDetail: true,
-				selectedAnswerID: selected,
-				selectedQuestion: snapshot.val(),
-				selectedQuestionID: questionID
-			})
-	    }.bind(this));
-	},
-
-	getInitialState: function() {
-	    return {
-	      	selectedAnswer: '',
-	      	showDetail: false,
-	      	selectedQuestion: ''
-	    };
-  	},
-
-	render: function() {
-		var videoDetail = (this.state.showDetail) ?
-			<AnswerVideoComponent user={this.props.userSummary} questionID={this.state.selectedQuestionID} question={this.state.selectedQuestion} answerID={this.state.selectedAnswerID} onClose={this.hideDetail} /> :
-			null;
-
-	    var createItem = function(answer, index) {
-	      	return(
-        	<Col lg="3" md="4" sm="6" xs="12" key={answer} className="pb-3">
-	        	<Card className="Answer-thumb">
-	       			<AnswerThumbComponent answerID={answer} onClick={this.showDetail} />
-	       			<AnswerQuestionComponent questionID={this.props.userAnswers[answer]} onClick={this.showDetail} />
-	        	</Card>
-        	</Col>
-	    )}.bind(this);
-
-	    if (typeof this.props.userAnswers !== 'undefined') {
-		    return (
-		    	<Container className="Answers-content">
-		    		<Row className={ this.state.showDetail ? 'hidden-xs-up' : ''}>
-		    			{ Object.keys(this.props.userAnswers).map(createItem) }
-		    		</Row>
-		    		<Row className={ this.state.showDetail ? 'show pb-4' : 'invisible'}>
-		    			{ this.state.showDetail ? videoDetail : null }
-		    		</Row>
-		    	</Container>
-		    );
-	    } else {
-		    return (
-	    	<Container className="Profile-answers">
-		    	<Row>
-		    		<Col xs="12">
-		    		    <Alert color="warning text-center">
-    						<strong>Still to come!</strong> This user has not answered any questions yet!
-  						</Alert>
-  					</Col>
-		    	</Row>
-		    </Container>
-		    );
-	    }	
-	}
-});
-
-var ItemDetail = React.createClass({
-  contextTypes: {
-    setSelected: React.PropTypes.func.isRequired
-  },
-
-  getInitialState: function() {
-    return {
-      item: '',
-      thumbURL: '',
-    };
-  },
-
-  componentDidMount: function() {
-    firebase.database().ref('/items/' + this.props.itemID).once('value').then(function(snap) {
-    	var item = snap.val();
-	    if (item.type === 'post' || item.type === 'perspective' || item.type === 'thread') {
-	    	console.log('channelID is '+item.cID+' itemID is '+this.props.itemID);
-	      	var storageRef = firebase.storage().ref('channels').child(item.cID).child(this.props.itemID).child('thumb');
-	      	storageRef.getDownloadURL().then(function(url) {
-	        	this.setState({
-	        		item: snap.val(),
-	          		thumbURL: url
-	        	});
-	    	}.bind(this));
-	    } else {
-    		this.setState({
-        		item: snap.val()
-        	});
-	    }
-    }.bind(this));
-  },
-
-  render: function() {
-	var userSummaryItem = null; 
-    var itemImage = null;
-    var itemType = '';
-    var cssTag = '';
-
-    if (this.state.item.type === 'post' || this.state.item.type === 'perspective' || this.state.item.type === 'thread') {
-      if (this.state.thumbURL !== '') {
-        itemImage = <CardImg top width="100%" src={ this.state.thumbURL } alt="Card image cap" />
-      }
-    }
-
-    if (this.state.user !== '') {
-      userSummaryItem = <UserSummary user={this.props.user} />; 
-    }
-
-    switch (this.state.item.type) {
-      case 'post': 
-        cssTag = 'card-block-post';
-        itemType = ' posted';
-        break;
-      case 'question': 
-      	itemType = ' asked';
-        cssTag = 'card-block-question';
-        break;
-      case 'answer': 
-    	itemType = ' answered';
-        cssTag = 'card-block-answer';
-        break;
-      case 'perspective': 
-      	itemType = ' added a perspective';
-        cssTag = 'card-block-perspective';
-        break;
-      case 'thread':
-    	itemType = ' started a thread';
-        cssTag = 'card-block-thread';
-        break;
-      default: 
-        cssTag = 'card-block-default';
-        break;
-    }
-
-    var date = new Date(this.state.item.createdAt);
-
-    return(
-      <Card className="Item-card">
-        <CardHeader className="row">
-          <Col xs={10} sm={9} md={8}>{ userSummaryItem }</Col>
-          <Col xs={2} sm={3} md={4} className="card-tag-title"><small className="text-muted float-right">{ itemType }</small></Col>
-        </CardHeader>
-        { itemImage }
-        <CardBlock className={cssTag}>
-          <CardTitle>
-            <Link to={`/i/${this.props.itemID}`}>
-                { this.state.item.title }
-            </Link>
-          </CardTitle>
-        </CardBlock>
-        <CardFooter>
-            <small className="text-muted">{ date.toDateString() }</small>
-        </CardFooter>
-      </Card>
-    );
-  }
-});
+} */
 
 var UserProfileComponent = React.createClass({
 	contextTypes: {
     	setSelected: React.PropTypes.func.isRequired
   	},
 
+  	showDetail: function(selected, selectedUser, selectedThumbURL) {
+    this.setState({
+      showDetail: true,
+      selectedUser: selectedUser,
+      selectedItem: selected,
+      selectedThumbURL: selectedThumbURL
+    })
+  },
+
+  hideDetail: function() {
+    this.setState({
+      selectedItem: '',
+      selectedUser: '',
+      showDetail: false
+    })
+  },
+
 	getInitialState: function() {
 	    return {
-	      user: '',
-	      userItems: ''
+	      	user: '',
+	      	userItems: '',
+        	showDetail: false
 	    };
   	},
 
@@ -334,13 +100,19 @@ var UserProfileComponent = React.createClass({
     	};
 
 	   	var createItem = function(itemID, index) {
-			//console.log(util.inspect(itemID, false, null));
-
 	      	return(
 	        <Col xs="12" md="8" key={itemID} className="pb-3 offset-md-2">
-	          <ItemDetail itemID={itemID} user={this.state.user}/>
+	          <ItemDetail itemID={itemID} user={this.state.user} onClick={this.showDetail} />
 	        </Col>);
 	    };
+
+        var videoDetail = (this.state.showDetail) ?
+                  <ItemVideoComponent 
+                    user={this.state.selectedUser} 
+                    contentURL={this.state.selectedItem.url} 
+                    item={this.state.selectedItem} 
+                    onClose={this.hideDetail} 
+                    thumbURL={this.state.selectedThumbURL} /> : null;
 
     	var addMeta = <Helmet 
 	    			title={ capitalizeFirstLetter(typeof this.state.user.name !== 'undefined' ? this.state.user.name : '') } 
@@ -352,12 +124,22 @@ var UserProfileComponent = React.createClass({
 	    				]}
 	    			/>;
 
+	    var detail = this.state.userItems ? Object.keys(this.state.userItems).map((createItem), this) : 
+               <Alert className="col-12" color="warning text-center">
+                <strong>Still to come!</strong> No items yet - check back soon!
+              </Alert>
+
 	    return(
 	    	<Container fluid>
 	    		{addMeta}
 	          	<UserProfileHeader user={this.state.user} />
                 <Container>
-         	        { this.state.userItems !== '' ? Object.keys(this.state.userItems).map((createItem), this) : '' }
+                    <Row className={ this.state.showDetail ? 'hidden-xs-up' : ''}>
+		              	{ detail }
+		            </Row>
+		            <Row className={ this.state.showDetail ? 'show pb-4' : 'invisible'}>
+                		{ this.state.showDetail ? videoDetail : null }
+		            </Row>
 		        </Container>
 	        </Container>
 	    );	
