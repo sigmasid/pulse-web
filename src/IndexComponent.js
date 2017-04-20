@@ -118,7 +118,7 @@ var IndexComponent = React.createClass({
 
   componentWillMount: function() {
     this.context.setSelected('', true);
-
+    
     var firebaseRef = firebase.database().ref('channels');
     this.bindAsArray(firebaseRef.limitToFirst(20), 'channels');
   },
@@ -164,7 +164,8 @@ var IndexComponent = React.createClass({
           </Row>
           <Row>{ this.state.searchMode ? 
                   results() : 
-                  this.state.channels.map(createItem) }</Row>
+                  this.state.channels.map(createItem) }
+          </Row>
         </Container>
         {this.props.children}
       </Container>

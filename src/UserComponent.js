@@ -3,12 +3,15 @@ import * as firebase from "firebase";
 
 import { Link } from 'react-router';
 import { Alert, TabPane, TabContent, Nav, NavItem, NavLink } from 'reactstrap';
-import { Container, Jumbotron, Card, CardFooter, CardTitle, CardBlock, Col, Row } from 'reactstrap';
+import { Container, Jumbotron, Card, CardFooter, CardTitle, CardBlock, Col, Row, CardImg, CardHeader } from 'reactstrap';
 import classnames from 'classnames';
 
 import AnswerThumbComponent from './AnswerThumbComponent.js';
 import AnswerVideoComponent from './AnswerVideoComponent.js';
 import Helmet from 'react-helmet';
+import UserSummary from './UserSummaryComponent.js';
+
+const util = require('util') //print an object
 
 var UserProfileHeader = React.createClass({
 	render: function() {
@@ -114,7 +117,7 @@ var AnswerQuestionComponent = React.createClass({
 	}
 });
 
-var UserAnswers = React.createClass({
+var UserItems = React.createClass({
 	hideDetail: function() {
 		this.setState({
 			selectedAnswer: '',
@@ -184,6 +187,104 @@ var UserAnswers = React.createClass({
 	}
 });
 
+var ItemDetail = React.createClass({
+  contextTypes: {
+    setSelected: React.PropTypes.func.isRequired
+  },
+
+  getInitialState: function() {
+    return {
+      item: '',
+      thumbURL: '',
+    };
+  },
+
+  componentDidMount: function() {
+    firebase.database().ref('/items/' + this.props.itemID).once('value').then(function(snap) {
+    	var item = snap.val();
+	    if (item.type === 'post' || item.type === 'perspective' || item.type === 'thread') {
+	    	console.log('channelID is '+item.cID+' itemID is '+this.props.itemID);
+	      	var storageRef = firebase.storage().ref('channels').child(item.cID).child(this.props.itemID).child('thumb');
+	      	storageRef.getDownloadURL().then(function(url) {
+	        	this.setState({
+	        		item: snap.val(),
+	          		thumbURL: url
+	        	});
+	    	}.bind(this));
+	    } else {
+    		this.setState({
+        		item: snap.val()
+        	});
+	    }
+    }.bind(this));
+  },
+
+  render: function() {
+	var userSummaryItem = null; 
+    var itemImage = null;
+    var itemType = '';
+    var cssTag = '';
+
+    if (this.state.item.type === 'post' || this.state.item.type === 'perspective' || this.state.item.type === 'thread') {
+      if (this.state.thumbURL !== '') {
+        itemImage = <CardImg top width="100%" src={ this.state.thumbURL } alt="Card image cap" />
+      }
+    }
+
+    if (this.state.user !== '') {
+      userSummaryItem = <UserSummary user={this.props.user} />; 
+    }
+
+    switch (this.state.item.type) {
+      case 'post': 
+        cssTag = 'card-block-post';
+        itemType = ' posted';
+        break;
+      case 'question': 
+      	itemType = ' asked';
+        cssTag = 'card-block-question';
+        break;
+      case 'answer': 
+    	itemType = ' answered';
+        cssTag = 'card-block-answer';
+        break;
+      case 'perspective': 
+      	itemType = ' added a perspective';
+        cssTag = 'card-block-perspective';
+        break;
+      case 'thread':
+    	itemType = ' started a thread';
+        cssTag = 'card-block-thread';
+        break;
+      default: 
+        cssTag = 'card-block-default';
+        break;
+    }
+
+    var date = new Date(this.state.item.createdAt);
+
+    return(
+      <Card className="Item-card">
+        <CardHeader className="row">
+          <Col xs={10} sm={9} md={8}>{ userSummaryItem }</Col>
+          <Col xs={2} sm={3} md={4} className="card-tag-title"><small className="text-muted float-right">{ itemType }</small></Col>
+        </CardHeader>
+        { itemImage }
+        <CardBlock className={cssTag}>
+          <CardTitle>
+            <Link to={`/i/${this.props.itemID}`}>
+                { this.state.item.title }
+            </Link>
+          </CardTitle>
+        </CardBlock>
+        <CardFooter>
+            <small className="text-muted">{ date.toDateString() }</small>
+        </CardFooter>
+      </Card>
+    );
+  }
+});
+
 var UserProfileComponent = React.createClass({
 	contextTypes: {
     	setSelected: React.PropTypes.func.isRequired
@@ -192,7 +293,7 @@ var UserProfileComponent = React.createClass({
 	getInitialState: function() {
 	    return {
 	      user: '',
-	      detailedUser: ''
+	      userItems: ''
 	    };
   	},
 
@@ -220,11 +321,10 @@ var UserProfileComponent = React.createClass({
 		    }.bind(this)); 
 	    }   
 
-	   	firebase.database().ref('userDetailedPublicSummary').child(userID).once('value').then(function(snapshot) {
+	   	firebase.database().ref('userDetailedPublicSummary').child(userID).child('items').once('value').then(function(snapshot) {
 	    	this.setState({
-	    		detailedUser: snapshot.val()
+	    		userItems: snapshot.val()
 	    	})
-	    	this.toggle('1');
 	    }.bind(this)); 	
 	},
 
@@ -232,6 +332,15 @@ var UserProfileComponent = React.createClass({
 		var capitalizeFirstLetter = function(title) {
       		return typeof title !== 'undefined' || '' ? title.charAt(0).toUpperCase() + title.slice(1) : '';
     	};
+
+	   	var createItem = function(itemID, index) {
+			//console.log(util.inspect(itemID, false, null));
+
+	      	return(
+	        <Col xs="12" md="8" key={itemID} className="pb-3 offset-md-2">
+	          <ItemDetail itemID={itemID} user={this.state.user}/>
+	        </Col>);
+	    };
 
     	var addMeta = <Helmet 
 	    			title={ capitalizeFirstLetter(typeof this.state.user.name !== 'undefined' ? this.state.user.name : '') } 
@@ -247,33 +356,9 @@ var UserProfileComponent = React.createClass({
 	    	<Container fluid>
 	    		{addMeta}
 	          	<UserProfileHeader user={this.state.user} />
-      	        <Nav pills className="container User-sub-nav">
-		          <NavItem>
-		            <NavLink
-		              className={classnames({ active: this.state.activeTab === '1' })}
-		              onClick={() => { this.toggle('1'); }}>
-		              Answers
-		            </NavLink>
-		          </NavItem>
-		          <NavItem>
-		            <NavLink
-		              className={classnames({ active: this.state.activeTab === '2' })}
-		              onClick={() => { this.toggle('2'); }}
-		            >
-		              Expertise
-		            </NavLink>
-		          </NavItem>
-		        </Nav>
-                <TabContent activeTab={this.state.activeTab}>
-		          <TabPane tabId="1">
-         	        { this.state.detailedUser !== '' ? 
-         	        	<UserAnswers userSummary={this.state.user} userAnswers={this.state.detailedUser.answers} userID={this.props.params.uID} /> : '' 
-         	        }
-		          </TabPane>
-		          <TabPane tabId="2">
-        	        { this.state.detailedUser !== '' ? <UserExpertise expertiseTags={this.state.detailedUser.expertiseTags} userID={this.props.params.uID} /> : '' }		          	
-		          </TabPane>
-		        </TabContent>
+                <Container>
+         	        { this.state.userItems !== '' ? Object.keys(this.state.userItems).map((createItem), this) : '' }
+		        </Container>
 	        </Container>
 	    );	
 	}

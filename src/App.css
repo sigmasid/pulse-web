@@ -40,6 +40,11 @@ a:hover {
   color: black;
 }
 
+.padding-0 {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
 .jumbotron {
   background-color: #f7f7f9;
 }
@@ -174,7 +179,7 @@ a:hover {
   margin-bottom: 1rem;
 }
 
-.Channel-content .card-header, .Video-content .card-header {
+.Channel-content .card-header, .Video-content .card-header, .Item-card .card-header {
   border-bottom: none;
   background: none;
 }
@@ -183,7 +188,7 @@ a:hover {
   border-top: none; 
 }
 
-.Channel-content .card-block, .Profile-expertise .card-block {
+.Profile-expertise .card-block {
   min-height: 150px;
   display: flex;
   align-items: center;
@@ -193,7 +198,6 @@ a:hover {
   min-height: 100px;
 }
 
-
 .Channel-content .tag-link {
   max-height: 300px;
   overflow: hidden;
@@ -201,6 +205,26 @@ a:hover {
 
 .Answer-thumb img, .User-summary {
   cursor: pointer;
+}
+
+.Item-card .card-footer {
+  background-color: white;
+}
+
+.Item-card .card-block-post a {
+  font-size: 1rem;
+  font-weight: 100;
+}
+
+.Item-card .card-block-question a, .Item-card .card-block-answer a {
+  font-size: 2rem;
+  font-weight: 200;
+}
+
+.Item-card .card-block-question, .Item-card .card-block-answer  {
+  min-height: 150px;
+  display: flex;
+  align-items: center;
 }
 
 @media (max-width: 575px) {
@@ -226,7 +250,7 @@ a:hover {
 }
 
 @media (max-width: 767px) {
-  .Channel-content .card-block, .Profile-expertise .card-block {
+  .Profile-expertise .card-block {
     min-height: 100px;
   }
 
@@ -273,10 +297,36 @@ a:hover {
   color: black;
 }
 
-.User-summary img {
-  object-fit: cover;
-  width:50px;
-  height:50px;
+@media (max-width: 575px) {
+  .User-summary img {
+    object-fit: cover;
+    width:40px;
+    height:40px;
+  }
+
+  .User-summary-name, .User-summary-bio {
+    font-size: 0.8rem;
+  }
+
+  .card-block {
+    padding: 0.75rem;
+  }
+
+  .card-tag-title {
+    padding: 0px;
+  }
+}
+
+@media (min-width: 576px) {
+  .User-summary img {
+    object-fit: cover;
+    width:50px;
+    height:50px;
+  }
+
+  .User-summary-name, .User-summary-bio {
+    font-size: 100%;
+  }
 }
 
 .Question-header, .User-profile-header, .Index-header  {
