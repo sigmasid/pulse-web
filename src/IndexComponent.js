@@ -4,8 +4,8 @@ import ReactFireMixin from 'reactfire';
 
 import { Link } from 'react-router';
 import { Container, Badge, Jumbotron, Row, Col, Alert, Button } from 'reactstrap';
-import { Card, CardBlock, CardLink, CardTitle, CardFooter} from 'reactstrap';
-import pulseLogo from './images/pulse-logo-100.png'; // Tell Webpack this JS file uses this image
+import { Card, CardImg, CardText, CardBlock, CardLink, CardTitle, CardFooter} from 'reactstrap';
+import pulseLogo from './images/pulse-logo-text-only.png'; // Tell Webpack this JS file uses this image
 import SearchComponent from './SearchComponent.js';
 
 var IndexHeader = React.createClass({
@@ -13,12 +13,8 @@ var IndexHeader = React.createClass({
     return(
       <Jumbotron className="Index-header text-center" color="white">
         <Container>
-            <h1 className="display-3 text-capitalize hidden-xs-down text-muted">
-              <img src={pulseLogo} alt="logo" className="pr-sm-4" />
-              Pulse
-            </h1>
-            <p className="lead hidden-xs-down">a trusted starting point for questions that matter!</p>
-            
+            <img src={pulseLogo} alt="logo" className="pr-sm-4 hidden-xs-down" />
+            <p className="lead hidden-xs-down">ideas, content & voices that matter!</p>
             <SearchComponent handleSearch={this.props.handleSearch} />
         </Container>
       </Jumbotron>
@@ -39,8 +35,10 @@ var SearchItem = React.createClass({
               </Link>
             </Col>
           </CardTitle>
+          <CardText className="col-10 offset-2">
+            <small>{ this.props.channel._source.description }</small>
+          </CardText>
         </CardBlock>
-        <small className="text-muted card-block">{ this.props.channel._source.description }</small>
         <CardFooter>
           <CardLink tag={Link} className="tag-link" to={`/c/${this.props.channel._id}`} >
             Browse Channel
@@ -56,6 +54,21 @@ var ChannelItem = React.createClass({
     setSelected: React.PropTypes.func.isRequired
   },
 
+  getInitialState: function() {
+    return {
+      thumbURL: 'https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97270&w=500&h=270&bg=333333&txtclr=666666'
+    };
+  },
+
+  componentDidMount: function() {
+    var storageRef = firebase.storage().ref('channelCovers').child(this.props.channel['.key']).child('background');
+    storageRef.getDownloadURL().then(function(url) {
+      this.setState({
+        thumbURL: url
+      });
+    }.bind(this));
+  },
+
   getLength(length) {
     return(<div>
             <Badge color="info">{length}</Badge>
@@ -66,17 +79,19 @@ var ChannelItem = React.createClass({
   render: function() {
     return(
       <Card className="Channel-card">
-      	<CardBlock>
-        	<CardTitle className="row">
-            <Col xs="1" className="Hash">#</Col>
-            <Col xs="10">
-              <Link to={`/c/${this.props.channel['.key']}`} onClick={this.context.setSelected.bind(null,this.props.channel, true)}>
+        <Link to={`/c/${this.props.channel['.key']}`} onClick={this.context.setSelected.bind(null,this.props.channel, true)}>
+          <CardImg top width="100%" src={ this.state.thumbURL } alt="Card image cap" />
+          <CardBlock>
+            <CardTitle className="row">
+              <Col xs={1}>#</Col>
+              <Col xs={10}>
                 { this.props.channel.title }
-              </Link>
-            </Col>
-          </CardTitle>
-      	</CardBlock>
-        <small className="text-muted card-block">{ this.props.channel.description }</small>
+              </Col>  
+            </CardTitle>
+            <small className="offset-1">{ this.props.channel.description }</small>
+          </CardBlock>
+      </Link>
+        { /* 
       	<CardFooter>
           <CardLink tag={Link} className="tag-link" to={`/c/${this.props.channel['.key']}`} 
                     onClick={this.context.setSelected.bind(null,this.props.channel)}>
@@ -85,7 +100,7 @@ var ChannelItem = React.createClass({
           <span className="small float-right"> 
             { this.props.channel.hasOwnProperty("tags") ? this.getLength(Object.keys(this.props.channel.tags).length) : this.getLength(0)}
           </span>
-      	</CardFooter>
+      	</CardFooter> */ }
       </Card>
     );
   }

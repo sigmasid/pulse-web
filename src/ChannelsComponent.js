@@ -1,15 +1,15 @@
 import React from 'react'
 import * as firebase from "firebase";
-import ReactFireMixin from 'reactfire';
 import 'bootstrap/dist/css/bootstrap.css';
 
-import { Row, Col, Button, Jumbotron, Container } from 'reactstrap';
+import { Alert, Row, Col, Button, Jumbotron, Container } from 'reactstrap';
 
 import ItemDetail from './ItemDetailComponent.js';
 import ItemVideoComponent from './ItemVideoComponent.js';
 import GetAppModal from './GetAppModal.js';
 
 import Helmet from 'react-helmet';
+import InfiniteScroll from 'react-infinite-scroller';
 
 var ChannelHeader = React.createClass({
   render: function() {
@@ -33,8 +33,6 @@ var ChannelHeader = React.createClass({
 
 ///CHANNELS LIST///
 var ChannelsComponent = React.createClass({
-  mixins: [ReactFireMixin],
-
   contextTypes: {
       setSelected: React.PropTypes.func.isRequired
   },
@@ -62,7 +60,9 @@ var ChannelsComponent = React.createClass({
       channelID: '',
       channelItems: '',
       showGetApp: false,
-      showDetail: false
+      showDetail: false,
+      page: 5,
+      hasMore: true
     };
   },
 
@@ -72,8 +72,22 @@ var ChannelsComponent = React.createClass({
     })
   },
 
+  loadMore: function(page) {
+    let totalItems = Object.keys(this.state.channelItems).length
+    if (this.state.page < totalItems) {
+      this.setState({
+        page: page * 5,
+        hasMore: page * 5 > totalItems ? false : true
+      });
+    } else {
+      this.setState({
+        hasMore: false
+      });
+    }
+  },
+
   componentWillMount: function() {
-    var channelID = this.props.params.channelID;
+    var channelID = this.props.params.channelID; 
 
     if (typeof this.props.selected.title !== 'undefined') {
       this.setState({
@@ -88,12 +102,17 @@ var ChannelsComponent = React.createClass({
         })
       }.bind(this));
     }
-
-    var firebaseRef = firebase.database().ref('channelItems').child(channelID).orderByChild('createdAt').limitToLast(20);
-    this.bindAsArray(firebaseRef, 'channelItems');
+    firebase.database().ref('channelItems').child(channelID).orderByChild('createdAt').once('value').then(function(snapshot) {
+        this.setState({
+          channelItems: snapshot.val()
+        })
+    }.bind(this));  
   },
 
   render: function() {
+    var detail = "";
+    var cItems = [];
+
     var capitalizeFirstLetter = function(channel) {
       return typeof channel.title !== 'undefined' ? channel.title.charAt(0).toUpperCase() + channel.title.slice(1) : '';
     };
@@ -106,13 +125,6 @@ var ChannelsComponent = React.createClass({
                         onClose={this.hideDetail} 
                         thumbURL={this.state.selectedThumbURL} /> : null;
 
-    var createItem = function(item, index) {
-      return(
-        <Col xs="12" md="8" key={item['.key']} className="pb-3 offset-md-2">
-          <ItemDetail item={item} channelID={this.state.channelID} onClick={this.showDetail} />
-        </Col>);
-    };
-
     var addMeta = <Helmet 
       title={ capitalizeFirstLetter(this.state.selectedChannel) } 
       meta={[
@@ -121,6 +133,32 @@ var ChannelsComponent = React.createClass({
         ]}
       />;
 
+    Object.keys(this.state.channelItems).reverse().map((itemID, index) => {
+      let item = this.state.channelItems[itemID];
+      if (index < this.state.page) {
+        cItems.push(
+          <Col xs="12" md="8" key={itemID} className="pb-3 offset-md-2">
+            <ItemDetail item={item} channelID={this.state.channelID} itemID={itemID} onClick={this.showDetail} />
+          </Col>
+        );
+      }
+    });
+
+    if (this.state.channelItems) {
+      detail = <InfiniteScroll
+                  pageStart={0}
+                  element={'span'}
+                  loadMore={this.loadMore}
+                  hasMore={this.state.hasMore}
+                  loader={this.state.hasMore ? <Alert className="pb-3 col-12 col-md-8 offset-md-2" color="warning text-center"><strong>Loading ...</strong></Alert> : <span></span>} >
+                  { <Row>{cItems}</Row> }
+              </InfiniteScroll>
+    } else {
+      detail = <Alert className="col-12" color="warning text-center">
+                <strong>Still to come!</strong> No items yet - download the app to create something new!
+              </Alert>
+    } 
+
     return (
       <Container fluid>
         {addMeta}
@@ -128,7 +166,7 @@ var ChannelsComponent = React.createClass({
         {this.state.showGetApp ? <GetAppModal modal={this.state.showGetApp} onClose={this.toggleGetApp}/> : ''}
         <Container>
             <Row className={ this.state.showDetail ? 'hidden-xs-up' : ''}>
-              { typeof this.state.channelItems !== 'undefined' ? this.state.channelItems.reverse().map((createItem), this) : '' }
+              { detail }
             </Row>
             <Row className={ this.state.showDetail ? 'show pb-4' : 'invisible'}>
                 { this.state.showDetail ? videoDetail : null }

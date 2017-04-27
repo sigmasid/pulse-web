@@ -10,7 +10,9 @@ import ItemVideoComponent from './ItemVideoComponent.js';
 import GetAppModal from './GetAppModal.js';
 
 import Helmet from 'react-helmet';
-const util = require('util') //print an object
+import InfiniteScroll from 'react-infinite-scroller';
+
+//const util = require('util'); //print an object
 
 var SeriesHeader = React.createClass({
   render: function() {
@@ -60,7 +62,9 @@ var SeriesComponent = React.createClass({
     return {
       seriesItems: '',
       showGetApp: false,
-      showDetail: false
+      showDetail: false,
+      page: 5,
+      hasMore: true
     };
   },
 
@@ -70,22 +74,38 @@ var SeriesComponent = React.createClass({
     })
   },
 
+  loadMore: function(page) {
+    console.log('load more fired ' + Object.keys(this.state.seriesItems).length);
+    if (this.state.page < Object.keys(this.state.seriesItems).length) {
+      console.log('load more fired' + this.state.page + 5);
+      this.setState({
+        page: page * 5,
+        hasMore: page * 5 > this.state.seriesItems.length ? false : true
+      });
+    } else {
+      this.setState({
+        hasMore: false
+      });
+    }
+  },
+
   componentWillReceiveProps: function (nextProps) {
+    if (this.props.params.itemID !== nextProps.params.itemID) {
       var seriesID = nextProps.params.itemID;
 
-    firebase.database().ref('items').child(seriesID).once('value').then(function(snapshot) {
-      this.setState({
-        series: snapshot.val()
-      })
-      this.context.setSelected(snapshot.val(), true);
-    }.bind(this));  
+      firebase.database().ref('items').child(seriesID).once('value').then(function(snapshot) {
+        this.setState({
+          series: snapshot.val()
+        })
+        this.context.setSelected(snapshot.val(), true);
+      }.bind(this));  
 
-    firebase.database().ref('itemCollection').child(seriesID).once('value').then(function(snapshot) {
-      console.log(util.inspect(snapshot.val(), false, null)); 
-      this.setState({
-        seriesItems: snapshot.val()
-      })
-    }.bind(this));
+      firebase.database().ref('itemCollection').child(seriesID).once('value').then(function(snapshot) {
+        this.setState({
+          seriesItems: snapshot.val()
+        })
+      }.bind(this));
+    }
   },
 
   componentWillMount: function() {
@@ -99,13 +119,17 @@ var SeriesComponent = React.createClass({
     }.bind(this));  
 
     firebase.database().ref('itemCollection').child(seriesID).once('value').then(function(snapshot) {
-        this.setState({
-          seriesItems: snapshot.val()
-        })
+      console.log('snapshot is '+snapshot.val());
+      this.setState({
+        seriesItems: snapshot.val()
+      })
     }.bind(this));  
   },
 
   render: function() {
+    var detail = "";
+    var seriesItems = [];
+
     var capitalizeFirstLetter = function(series) {
       return typeof series.title !== 'undefined' ? series.title.charAt(0).toUpperCase() + series.title.slice(1) : '';
     };
@@ -118,14 +142,6 @@ var SeriesComponent = React.createClass({
                         onClose={this.hideDetail} 
                         thumbURL={this.state.selectedThumbURL} /> : null;
 
-    var createItem = function(item, index) {
-      //console.log(util.inspect(this.state.series, false, null)); 
-      return(
-        <Col xs="12" md="8" key={item} className="pb-3 offset-md-2">
-          <ItemDetail itemID={item} channelID={this.state.series.cID} onClick={this.showDetail} />
-        </Col>);
-    };
-
     var addMeta = (typeof this.state.series !== 'undefined') ? 
       <Helmet title={ capitalizeFirstLetter(this.state.series.title) } meta={[
         {"name": "description", "content": typeof this.state.series.description !== 'undefined' ? this.state.series.description : ''},
@@ -133,10 +149,32 @@ var SeriesComponent = React.createClass({
         ]}
       /> : '';
 
-    var detail = this.state.seriesItems ? Object.keys(this.state.seriesItems).map((createItem), this) : 
-               <Alert className="col-12" color="warning text-center">
+    if (this.state.seriesItems) {
+      Object.keys(this.state.seriesItems).map((item, index) => {
+        if (index < this.state.page) {
+          seriesItems.push(
+            <Col xs="12" md="8" key={item} className="pb-3 offset-md-2">
+              <ItemDetail itemID={item} channelID={this.state.series.cID} onClick={this.showDetail} />
+            </Col>
+          );
+        }
+      });
+    }
+
+    if (this.state.seriesItems) {
+      detail = <InfiniteScroll
+                  pageStart={0}
+                  element={'span'}
+                  loadMore={this.loadMore}
+                  hasMore={this.state.hasMore}
+                  loader={this.state.hasMore ? <Alert className="pb-3 col-12 col-md-8 offset-md-2" color="warning text-center"><strong>Loading ...</strong></Alert> : <span></span>} >
+                  { <Row>{seriesItems}</Row> }
+              </InfiniteScroll>
+    } else {
+      detail = <Alert className="col-12" color="warning text-center">
                 <strong>Still to come!</strong> No items yet - download the app to create something new!
               </Alert>
+    } 
 
     return (
       <Container fluid>
@@ -144,7 +182,7 @@ var SeriesComponent = React.createClass({
         <SeriesHeader selectedSeries={this.state.series} onClick={this.toggleGetApp} />
         {this.state.showGetApp ? <GetAppModal modal={this.state.showGetApp} onClose={this.toggleGetApp}/> : ''}
         <Container>
-            <Row className={ this.state.showDetail ? 'hidden-xs-up' : ''}>
+            <Row className={ this.state.showDetail ? 'hidden-xs-up Item-detail' : 'Item-detail'}>
               { detail }
             </Row>
             <Row className={ this.state.showDetail ? 'show pb-4' : 'invisible'}>

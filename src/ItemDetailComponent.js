@@ -5,7 +5,7 @@ import { Link } from 'react-router';
 import { Col, Card, CardBlock, CardTitle, CardFooter, CardHeader, CardImg } from 'reactstrap';
 
 import UserSummary from './UserSummaryComponent.js';
-const util = require('util') //print an object
+//const util = require('util') //print an object
 
 var ItemDetailComponent = React.createClass({
   contextTypes: {
@@ -22,12 +22,12 @@ var ItemDetailComponent = React.createClass({
     if (typeof this.props.item !== 'undefined') {
       firebase.database().ref('/userPublicSummary/' + this.props.item.uID).once('value').then(function(userSnap) {
         this.setState({
-            user: userSnap.val()
+          user: userSnap.val()
         })
       }.bind(this));
 
       if (this.props.item.type === 'post' || this.props.item.type === 'perspective' || this.props.item.type === 'thread') {
-        var storageRef = firebase.storage().ref('channels').child(this.props.channelID).child(this.props.item['.key']).child('thumb');
+        var storageRef = firebase.storage().ref('channels').child(this.props.channelID).child(this.props.itemID).child('thumb');
         storageRef.getDownloadURL().then(function(url) {
           this.setState({
             thumbURL: url
@@ -72,7 +72,7 @@ var ItemDetailComponent = React.createClass({
   handleClick: function() {
     var item = (typeof this.props.item !== 'undefined') ? this.props.item : (typeof this.state.item !== 'undefined') ? this.state.item : '';
     var itemID = (typeof this.state.itemID !== 'undefined' ? this.state.itemID : item['.key'])
-    console.log(util.inspect(item, false, null)); 
+    console.log("this fired"); 
 
     if (item !== '') {
       if (item.type === 'post' || item.type === 'perspective' || item.type === 'answer') {
@@ -104,7 +104,7 @@ var ItemDetailComponent = React.createClass({
 
     if (item !== '') {
       if ((item.type === 'post' || item.type === 'perspective' || item.type === 'thread') && this.state.thumbURL !== '') {
-        itemImage = <Link to={this.props.myroute} onClick={this.handleClick}>
+        itemImage = <Link to={this.props.myroute} onClick={ this.handleClick }>
                       <CardImg top width="100%" src={ this.state.thumbURL } alt="Card image cap" />
                     </Link>
       }
@@ -149,7 +149,7 @@ var ItemDetailComponent = React.createClass({
         { itemImage }
         <CardBlock className={cssTag}>
           <CardTitle>
-            <Link to={this.props.myroute} onClick={this.handleClick}>
+            <Link to={this.props.myroute} onClick={ this.handleClick }>
               { item.title }
             </Link>
           </CardTitle>

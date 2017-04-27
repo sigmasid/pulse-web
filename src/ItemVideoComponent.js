@@ -1,14 +1,16 @@
 import React from 'react';
 import * as firebase from "firebase";
-import { Card, CardTitle, CardHeader, Button, Col } from 'reactstrap';
+import { Card, CardTitle, CardFooter, CardHeader, Button, Col } from 'reactstrap';
 import Helmet from 'react-helmet';
 
 var VideoItem = React.createClass({
   render: function() {
     return(
-    <video controls>
+    <div className="embed-responsive Item-video embed-responsive-9by16">
+      <video autoPlay className="embed-responsive-item">
         <source src={this.props.videoURL} type="video/mp4" />
-    </video>
+      </video>
+    </div>
     )}
 });
 
@@ -69,11 +71,11 @@ var ItemVideoComponent = React.createClass({
     return(
         <Card className="Video-content">
           <CardHeader className="row">
-              <Col xs="9" className="padding-0">
+              <Col xs="10" className="padding-0">
                 <small className="text-muted">{ capitalizeFirstLetter(itemTitle) }</small><br/>
                 <small><strong>{ itemAuthor}</strong></small>
               </Col>
-              <Col xs="3 float-right">
+              <Col xs="2 float-right">
                 <Button className="close" aria-label="Close" onClick={this.close.bind(this, null)}>
                   <span aria-hidden="true">&times;</span>
                 </Button>
@@ -82,7 +84,10 @@ var ItemVideoComponent = React.createClass({
           <CardTitle itemProp="video" itemScope itemType="http://schema.org/VideoObject">
             {itemVideo}
             {addMeta}
-          </CardTitle>        
+          </CardTitle> 
+          <CardFooter>
+            <small className="text-muted">Download the app to see the rest</small>
+          </CardFooter>       
         </Card>
     );
   }	  

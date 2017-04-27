@@ -1,3 +1,10 @@
+
+@media (max-width: 991px) {
+  h4 {
+    font-size: 1.25rem; 
+  }
+}
+
 @media (max-width: 767px) {
   .display-3 {
     font-size: 3.5rem;
@@ -20,9 +27,25 @@
   }
 }
 
-@media (max-width: 991px) {
-  h4 {
-    font-size: 1.25rem; 
+@media (max-width: 575px) {
+  .display-3 {
+    font-size: 3.5rem;
+  }
+
+  .display-4 {
+    font-size: 2.0rem;
+  }
+
+  .lead {
+    font-size: 1rem;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+
+  h6 {
+    font-size: 0.85rem;
   }
 }
 
@@ -35,14 +58,30 @@ a {
   color: black;
 }
 
-a:hover {
+a:hover, a:active, a:visited {
   text-decoration: none;
   color: black;
+}
+
+//needs to be applied to the parent item
+.vertical-center {
+  display: flex;
+  align-items: center;
 }
 
 .padding-0 {
   padding: 0 !important;
   margin: 0 !important;
+}
+
+.padding-1 {
+  padding: 0.5rem !important;
+}
+
+@media (max-width: 575px) {
+  .padding-0-mobile {
+    padding: 0 !important;
+  }
 }
 
 .jumbotron {
@@ -63,6 +102,84 @@ a:hover {
   min-height: 600px;
 }
 
+.img-thumbnail {
+  border: 0px solid; 
+}
+
+//** HOME **/
+
+//not sure why needs to be done twice but container padding gets lost if not
+.next-button, .previous-button {
+  background:rgba(0,0,0,0.0);
+  border: 0px solid;
+}
+
+.next-button img, .previous-button img {
+  max-width: 20px;
+}
+
+.Container-home {
+  height: 700px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+.Container-home a {
+  color: #545454;
+}
+
+.next-button, .previous-button {
+  background:rgba(0,0,0,0.0);
+  border: 0px solid;
+}
+
+.next-button img, .previous-button img {
+  max-width: 20px;
+}
+
+.Home-carousel .slider-slide img {
+  width: 100%; 
+  height: auto;
+}
+
+.Home-carousel .card-title {
+  padding-bottom: 40px;
+  font-weight: 600;
+}
+
+@media (max-width: 767px) {
+  .Home-carousel .card-title, .Home-carousel .card-text {
+    font-size: 80%;
+    padding-bottom: 0px;
+  }
+
+  .Home-carousel .slider-slide img {
+    width: 65%; 
+    height: auto;
+  }
+}
+
+@media (max-width: 575px) {
+  .Home-carousel .card-title, .Home-carousel .card-text {
+    padding-bottom: 0px;
+    font-size: 80%;
+  }
+
+  .Home-carousel .slider-slide img {
+    width: 80%; 
+    height: auto;
+  }
+}
+
+.Home-carousel .card {
+  border: 0px solid;
+}
+
+.Home-carousel .Slide-row {
+  display: flex;
+  align-items: center;
+}
+
 //** NAV BAR **/
 .Channel-sub-nav .nav-item a:hover {
   background: lightGrey;
@@ -70,7 +187,6 @@ a:hover {
 
 .navbar {
   background-color: white;
-  border-bottom: 1px solid #e7e7e7;
   min-height: 60px;
 }
 
@@ -121,11 +237,22 @@ a:hover {
     font-style: normal;
 }
 
+.navbar button, .Get-app-btn {
+  margin-top: 2.5px; 
+  color: #3DC7E8;
+  background-color: rgba(0,0,0,0);
+  border-color: #3DC7E8;
+  border-width: 2px;
+  font-weight: 800;
+  font-size: 0.8rem;
+}
+
 @media (max-width: 575px) {
   .navbar button {
-    margin-top: 5px; 
+    margin-top: 7.5px; 
   }
 }
+
 
 .privacy li, .terms li {
   border: none;
@@ -166,8 +293,8 @@ a:hover {
   width: 100%;
 }
 
-.modal-sm video {
-  height: 600px;
+.Item-video {
+  height: 575px;
 }
 
 .User-profile-header {
@@ -188,14 +315,26 @@ a:hover {
   border-top: none; 
 }
 
-.Profile-expertise .card-block {
-  min-height: 150px;
-  display: flex;
-  align-items: center;
+.Channel-card {
+  border-radius: 0rem;
+}
+
+.Channel-card .card-block {
+  padding: 1rem;
+}
+
+.Channel-card .card-title, .Channel-card .card-title a, .Channel-card .card-text {
+  color: black;
+  font-weight: 800;
 }
 
 .Channel-card .card-title {
-  min-height: 100px;
+  background-color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 0.25rem;
+}
+
+.Channel-card .card-footer {
+  background: white;
 }
 
 .Channel-content .tag-link {
@@ -208,8 +347,13 @@ a:hover {
 }
 
 /** ITEM CARD ITEMS **/
+.Item-detail > span {
+  width: 100%;
+}
+
 .Item-card .card-footer {
   background-color: white;
+  padding: 0.75rem 0.75rem;
 }
 
 .Item-card .card-block-post a, .Item-card .card-block-perspective a, .Item-card .card-block-thread a {
@@ -218,13 +362,13 @@ a:hover {
   cursor: pointer; 
 }
 
-.Item-card .card-block-question a, .Item-card .card-block-answer a, .card-block-interview a{
-  font-size: 2rem;
-  font-weight: 200;
+.Item-card .card-block-question a, .Item-card .card-block-answer a, .Item-card .card-block-interview a{
+  font-size: 1.25rem;
+  font-weight: 300;
   cursor: pointer; 
 }
 
-.Item-card .card-block-question, .Item-card .card-block-answer  {
+.Item-card .card-block-question, .Item-card .card-block-answer, .Profile-expertise .card-block   {
   min-height: 150px;
   display: flex;
   align-items: center;
@@ -265,9 +409,6 @@ a:hover {
     min-height: 100px;
   }
 
-  .Channel-card .card-title {
-    min-height: 50px;
-  }
   .Answer-thumb .card-block{
     padding: 0.5rem;
   }
@@ -280,7 +421,7 @@ a:hover {
 }
 
 .Hash {
-  color: #3DC7E8;
+  color: black;
 }
 
 /** SIDEBAR **/
@@ -345,6 +486,13 @@ a:hover {
   border-bottom: 1px solid #e7e7e7;
 }
 
+@media (max-width: 575px) {
+  .Index-header  {
+    background: #f7f7f9;
+    border-bottom: 0px solid;
+  }
+}
+
 .Index-header .lead {
   margin-bottom: 2rem;
 }
@@ -354,7 +502,13 @@ a:hover {
 }
 
 .Index-header .form-group {
-  width: 100%
+  width: 100%;
+}
+
+@media (max-width: 575px) {
+  .Index-header .form-group {
+    margin-bottom: 0rem;
+  }
 }
 
 .Verification-form {
@@ -427,6 +581,12 @@ a:hover {
 .Video-content {
   float: none;
   margin: 0 auto;
+  border-radius: 0;
+  width: 325px;
+}
+
+.Video-content .card-title {
+  margin-bottom: 0px;
 }
 
 .Get-app-modal {

@@ -5,11 +5,11 @@ export default class Privacy extends React.Component {
   render() {
     return (
 	<Container className="privacy">
-		<Jumbotron className="Question-header text-center" color="white"><h1>Pulse Q&A Privacy Policy</h1></Jumbotron>
+		<Jumbotron className="Question-header text-center" color="white"><h1>Pulse Privacy Policy</h1></Jumbotron>
       	<ListGroup>
   		    <ListGroupItem>
 				<ListGroupItemText>Pulse is a trusted starting point for getting answers and information directly from experts. You can ask join channels that interest you, browse what others are interested in, ask your questions and get responses directly from selected experts in the field. You can continue the conversation and chat with the experts directly on the platform as well.</ListGroupItemText>
-				<ListGroupItemText>When you use these services—and any others we in the Pulse LLC corporate family roll out, whether in the Pulse Q&A app or elsewhere—you’ll share some information with us. We get that that can affect your privacy. So we want to be upfront about the information we collect, how we use it, whom we share it with, and the choices we give you to control, access, and update your information.</ListGroupItemText>
+				<ListGroupItemText>When you use these services—and any others we in the Pulse LLC corporate family roll out, whether in the Pulse app or elsewhere—you’ll share some information with us. We get that that can affect your privacy. So we want to be upfront about the information we collect, how we use it, whom we share it with, and the choices we give you to control, access, and update your information.</ListGroupItemText>
 				<ListGroupItemText>That’s why we’ve written this Privacy Policy. And it’s why we’ve tried to write it in a way that’s blissfully free of the legalese that often clouds these documents. Of course, if you still have questions about anything in our Privacy Policy, just email us.</ListGroupItemText>
 	        </ListGroupItem>
           	<ListGroupItem><ListGroupItemHeading><strong>Information We Collect</strong></ListGroupItemHeading></ListGroupItem>
