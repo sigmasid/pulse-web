@@ -17,7 +17,7 @@ var Slide = React.createClass({
     return(
       <Row className="Slide-row">
         <Col xs={10} md={4} className="slide-img offset-1 text-center">
-          <img src={this.props.slideImage} alt="logo" className="text-center" />
+          <img src={this.props.slideImage} alt="About Pulse" className="text-center" />
         </Col>
         <Col xs={10} md={4} className="slide-text offset-1 pt-5 pt-sm-5">
           <Card className="">
@@ -75,7 +75,7 @@ var HomeComponent = React.createClass({
 
   return(
     <Container fluid className="Container-home-fluid">
-      <Alert className="Row" color="info text-center">
+      <Alert className="Row text-center" color="info">
         <Link to={`/web`}><strong>Ideas, content and voices that matter</strong><br />see a preview of what you are missing</Link>
       </Alert>
       <Container className="Container-home">

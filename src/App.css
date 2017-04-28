@@ -119,13 +119,28 @@ a:hover, a:active, a:visited {
 }
 
 .Container-home {
-  height: 700px;
+  min-height: 700px;
+  min-height: 80vh;
   padding-top: 20px;
   padding-bottom: 20px;
 }
 
-.Container-home a {
-  color: #545454;
+.Container-home-fluid .alert {
+  margin-bottom: 0px;
+  padding: 0.25rem 1.75rem;
+}
+
+.Container-home-fluid .alert-info, .vision-container .jumbotron {
+  background: rgb(61,198,233); /* Old browsers */
+  background: -moz-linear-gradient(-45deg, rgba(61,198,233,1) 1%, rgba(255,223,81,1) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(-45deg, rgba(61,198,233,1) 1%,rgba(255,223,81,1) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(135deg, rgba(61,198,233,1) 1%,rgba(255,223,81,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  border: 0px solid;
+  border-radius: 0px;
+}
+
+.Container-home-fluid .alert-info a {
+  color: white;
 }
 
 .next-button, .previous-button {
@@ -180,6 +195,130 @@ a:hover, a:active, a:visited {
   align-items: center;
 }
 
+/** ABOUT **/
+.About-container {
+  padding-top: 50px;
+}
+
+.About-container {
+  min-height: 87vh;
+}
+.About-container .card {
+  border-radius: 0px;
+  border: 0px solid;
+}
+
+.About-container .jumbotron {
+  border-top: 1px solid lightgrey;
+  border-bottom: 1px solid lightgrey;
+  margin-bottom: 0px;
+}
+
+@media (max-width: 767px) {
+  .About-container p {
+    font-size: 0.85rem;
+  }
+}
+
+.About-container .jumbotron .navbar {
+  background-color: rgba(0,0,0,0);
+}
+
+.About-container .jumbotron ul {
+  margin: auto;
+}
+
+.About-container li {
+  border: 0px solid;
+}
+
+.vision-container .jumbotron p, .vision-container .jumbotron h5 {
+  color: white;
+}
+
+.About-container .list-group-item:before{
+  content:''; width:4px; height:20px; background:#3DC7E8; position:absolute; top:12px; left: 0px;
+}
+
+.About-container .list-group-item-heading{
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.About-container .list-group-item-text {
+  font-size: 0.85rem;
+  font-weight: 300;
+}
+
+.about-company .card-title {
+  font-size: 1.25rem;
+}
+
+.about-nav-col {
+  border-right: 1px solid lightgrey;
+}
+
+.creator-img {
+  text-align: center;
+}
+
+.creator-img img {
+  width: 80%; 
+  height: auto;
+}
+
+@media (min-width: 576px) {
+  .About-container .jumbotron {
+    padding: 2rem 1rem;
+  }
+}
+
+.About-container .value-prop-nav a {
+  font-weight: 600;
+  border-radius: 0px;
+  border: 1px solid white;
+  border-radius: 0px;
+  color: white;
+}
+
+.About-container .nav-tabs {
+  border-bottom: 0px;
+}
+
+.About-container .nav-tabs .nav-link.active {
+  border: 0px solid;
+  border-bottom: 1px solid #3DC7E8;
+}
+
+.About-container .jumbotron .nav-pills .nav-link.active {
+  background-color: white;
+  color: black;
+}
+
+@media (max-width: 575px) {
+  .About-container .jumbotron .nav-pills .nav-link {
+    font-size: 0.8rem;
+  }
+
+  .About-container {
+    padding-top: 20px;
+  }
+
+  .About-container .jumbotron {
+    border: 0px solid;
+  }
+}
+
+.nav-tabs .nav-link:hover{
+  border: 0px solid;
+  border-bottom: 1px solid #3DC7E8;
+}
+
+.About-container .jumbotron a:focus, .About-container .jumbotron a:hover, .About-container .jumbotron a:active {
+  background-color: white;
+  color: black;
+}
+
 //** NAV BAR **/
 .Channel-sub-nav .nav-item a:hover {
   background: lightGrey;
@@ -204,6 +343,17 @@ a:hover, a:active, a:visited {
 .nav-pills .nav-link.active {
     background-color: #3DC7E8;
 }
+
+.mobile-links .nav-pills .nav-link {
+  color: black;
+}
+
+.mobile-links .nav-pills .nav-link.active {
+  background: white;
+  color: #3DC7E8;
+  border-bottom: 2px solid #3DC7E8;
+}
+
 
 .nav-item {
   cursor: pointer;
