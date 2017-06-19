@@ -3,8 +3,9 @@ import * as firebase from "firebase";
 
 import { Link } from 'react-router';
 import { Row, Col, Card, CardBlock, CardLink, Alert, CardFooter } from 'reactstrap';
+var createReactClass = require('create-react-class');
 
-var UserThumbComponent = React.createClass({
+var UserThumbComponent = createReactClass({
   contextTypes: {
     setSelected: React.PropTypes.func.isRequired
   },
@@ -23,7 +24,7 @@ var UserThumbComponent = React.createClass({
   } 
 });
 
-var UserDetailItem = React.createClass({
+var UserDetailItem = createReactClass({
   contextTypes: {
     setSelected: React.PropTypes.func.isRequired
   },
@@ -50,7 +51,7 @@ var UserDetailItem = React.createClass({
   }
 });
 
-var UserDetailComponent = React.createClass({
+var UserDetailComponent = createReactClasss({
   getInitialState: function() {
     return {
       user: ''
@@ -89,7 +90,7 @@ var UserDetailComponent = React.createClass({
   }
 });
 
-var UserList = React.createClass({
+var UserList = createReactClass({
   render: function() {
 
     var createItem = function(userID, index) {

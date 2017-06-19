@@ -1,7 +1,8 @@
 import React from 'react';
 import { Row, Col } from 'reactstrap';
+var createReactClass = require('create-react-class');
 
-var UserSummary = React.createClass({
+var UserSummary = createReactClass({
 	render: function() {
 	    return(
 	    	<Row className="User-summary">

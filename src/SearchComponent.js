@@ -1,8 +1,9 @@
 import React from 'react'
 import * as firebase from "firebase";
 import { Form, FormGroup, Input, Button } from 'reactstrap';
+var createReactClass = require('create-react-class');
 
-var SearchComponent = React.createClass({
+var SearchComponent = createReactClass({
 	getInitialState: function() {
     	return {
       		term: ''

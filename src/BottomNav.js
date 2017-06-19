@@ -6,7 +6,6 @@ import { Link } from 'react-router';
 import 'bootstrap/dist/css/bootstrap.css';
 
 export default class BottomNav extends React.Component {
-
   render() {
     return(
     <Container>

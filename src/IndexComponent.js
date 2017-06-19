@@ -7,8 +7,9 @@ import { Container, Badge, Jumbotron, Row, Col, Alert, Button } from 'reactstrap
 import { Card, CardImg, CardText, CardBlock, CardLink, CardTitle, CardFooter} from 'reactstrap';
 import pulseLogo from './images/pulse-logo-text-only.png'; // Tell Webpack this JS file uses this image
 import SearchComponent from './SearchComponent.js';
+var createReactClass = require('create-react-class');
 
-var IndexHeader = React.createClass({
+var IndexHeader = createReactClass({
   render: function() {
     return(
       <Jumbotron className="Index-header text-center" color="white">
@@ -22,7 +23,7 @@ var IndexHeader = React.createClass({
   }
 });
 
-var SearchItem = React.createClass({
+var SearchItem = createReactClass({
   render: function() {
     return(
       <Card className="Channel-card">
@@ -49,14 +50,14 @@ var SearchItem = React.createClass({
   }
 });
 
-var ChannelItem = React.createClass({
+var ChannelItem = createReactClass({
   contextTypes: {
     setSelected: React.PropTypes.func.isRequired
   },
 
   getInitialState: function() {
     return {
-      thumbURL: 'https://placeholdit.imgix.net/~text?txtsize=33&txt=318%C3%97270&w=500&h=270&bg=333333&txtclr=666666'
+      thumbURL: 'https://placeholdit.imgix.net/~text?txtsize=33&txt=loading...&w=500&h=270&bg=333333&txtclr=666666'
     };
   },
 
@@ -107,7 +108,7 @@ var ChannelItem = React.createClass({
 });
 
 ///CHANNELS LIST///
-var IndexComponent = React.createClass({
+var IndexComponent = createReactClass({
   mixins: [ReactFireMixin],
   
   contextTypes: {

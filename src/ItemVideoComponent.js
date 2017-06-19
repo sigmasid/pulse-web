@@ -2,19 +2,20 @@ import React from 'react';
 import * as firebase from "firebase";
 import { Card, CardTitle, CardFooter, CardHeader, Button, Col } from 'reactstrap';
 import Helmet from 'react-helmet';
+var createReactClass = require('create-react-class');
 
-var VideoItem = React.createClass({
+var VideoItem = createReactClass({
   render: function() {
     return(
     <div className="embed-responsive Item-video embed-responsive-9by16">
-      <video autoPlay className="embed-responsive-item">
+      <video autoPlay muted playsInline className="embed-responsive-item" >
         <source src={this.props.videoURL} type="video/mp4" />
       </video>
     </div>
     )}
 });
 
-var ItemVideoComponent = React.createClass({
+var ItemVideoComponent = createReactClass({
   	getInitialState: function() {
     	return {
     		contentURL: '',
@@ -86,7 +87,7 @@ var ItemVideoComponent = React.createClass({
             {addMeta}
           </CardTitle> 
           <CardFooter>
-            <small className="text-muted">Download the app to see the rest</small>
+            <small className="text-muted">Preview Only - Download the app to see the rest</small>
           </CardFooter>       
         </Card>
     );

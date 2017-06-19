@@ -1,7 +1,19 @@
+@import url('https://fonts.googleapis.com/css?family=PT+Sans|Raleway:400,900');
+
+h1, h2, h3, h4, h5, h6, .display-3, .display-4, .display-5, ul a {
+  font-family: 'Raleway', sans-serif;
+}
+
+p, .lead, li a, a, small, button {
+  font-family: 'PT Sans', sans-serif;
+}
+
+
 
 @media (max-width: 991px) {
   h4 {
-    font-size: 1.25rem; 
+    font-size: 1rem; 
+    font-family: 'Raleway', sans-serif;
   }
 }
 
@@ -23,7 +35,7 @@
   }
 
   h6 {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 }
 
@@ -45,7 +57,7 @@
   }
 
   h6 {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
   }
 }
 
@@ -89,11 +101,14 @@ a:hover, a:active, a:visited {
 }
 
 .btn-primary {
-    color: #fff;
-    background-color: #3DC7E8;
-    border-color: #3DC7E8;
-  }
+  color: #fff;
+  background-color: #3DC7E8;
+  border-color: #3DC7E8;
+}
 
+.btn-sm {
+  padding: 0.45rem 0.5rem;
+}
 .container-fluid {
    padding: 0;
 }
@@ -236,8 +251,13 @@ a:hover, a:active, a:visited {
   color: white;
 }
 
+.vision-container h5 {
+  font-weight: 600;
+}
+
 .About-container .list-group-item:before{
-  content:''; width:4px; height:20px; background:#3DC7E8; position:absolute; top:12px; left: 0px;
+  content:''; width:4px; height:20px; position:absolute; top:12px; left: 0px;
+  background: linear-gradient(135deg, rgba(61,198,233,1) 1%,rgba(255,223,81,1) 100%);
 }
 
 .About-container .list-group-item-heading{

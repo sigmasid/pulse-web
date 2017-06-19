@@ -6,10 +6,11 @@ import { Alert, Container, Jumbotron, Col, Row } from 'reactstrap';
 import ItemDetail from './ItemDetailComponent.js';
 import ItemVideoComponent from './ItemVideoComponent.js';
 import Helmet from 'react-helmet';
+var createReactClass = require('create-react-class');
 
 //const util = require('util') //print an object
 
-var UserProfileHeader = React.createClass({
+var UserProfileHeader = createReactClass({
 	render: function() {
 		return(
 			<Jumbotron className="User-profile-header text-center" color="white">
@@ -33,7 +34,7 @@ var UserProfileHeader = React.createClass({
     return -1; //to handle the case where the value doesn't exist
 } */
 
-var UserProfileComponent = React.createClass({
+var UserProfileComponent = createReactClass({
 	contextTypes: {
     	setSelected: React.PropTypes.func.isRequired
   	},
@@ -135,7 +136,7 @@ var UserProfileComponent = React.createClass({
 	          	<UserProfileHeader user={this.state.user} />
                 <Container>
                     <Row className={ this.state.showDetail ? 'hidden-xs-up' : ''}>
-		              	{ detail }
+		              	<Row>{ detail }</Row>
 		            </Row>
 		            <Row className={ this.state.showDetail ? 'show pb-4' : 'invisible'}>
                 		{ this.state.showDetail ? videoDetail : null }

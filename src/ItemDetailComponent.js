@@ -6,8 +6,9 @@ import { Col, Card, CardBlock, CardTitle, CardFooter, CardHeader, CardImg } from
 
 import UserSummary from './UserSummaryComponent.js';
 //const util = require('util') //print an object
+var createReactClass = require('create-react-class');
 
-var ItemDetailComponent = React.createClass({
+var ItemDetailComponent = createReactClass({
   contextTypes: {
     setSelected: React.PropTypes.func.isRequired
   },
@@ -26,7 +27,7 @@ var ItemDetailComponent = React.createClass({
         })
       }.bind(this));
 
-      if (this.props.item.type === 'post' || this.props.item.type === 'perspective' || this.props.item.type === 'thread') {
+      if (this.props.item.type === 'post' || this.props.item.type === 'perspective' || this.props.item.type === 'thread' || this.props.item.type === 'session' || this.props.item.type === 'showcase') {
         var storageRef = firebase.storage().ref('channels').child(this.props.channelID).child(this.props.itemID).child('thumb');
         storageRef.getDownloadURL().then(function(url) {
           this.setState({
@@ -37,7 +38,7 @@ var ItemDetailComponent = React.createClass({
     } else {
       firebase.database().ref('/items/' + this.props.itemID).once('value').then(function(snap) {
         var item = snap.val();
-        if (item.type === 'post' || item.type === 'perspective' || item.type === 'thread') {
+        if (item.type === 'post' || item.type === 'perspective' || item.type === 'thread' || item.type === 'session' || item.type === 'showcase') {
             var storageRef = firebase.storage().ref('channels').child(item.cID).child(this.props.itemID).child('thumb');
             storageRef.getDownloadURL().then(function(url) {
               this.setState({
@@ -72,10 +73,9 @@ var ItemDetailComponent = React.createClass({
   handleClick: function() {
     var item = (typeof this.props.item !== 'undefined') ? this.props.item : (typeof this.state.item !== 'undefined') ? this.state.item : '';
     var itemID = (typeof this.state.itemID !== 'undefined' ? this.state.itemID : item['.key'])
-    console.log("this fired"); 
 
     if (item !== '') {
-      if (item.type === 'post' || item.type === 'perspective' || item.type === 'answer') {
+      if (item.type === 'post' || item.type === 'perspective' || item.type === 'answer' || item.type === 'session' || item.type === 'showcase') {
         this.props.onClick(item, this.state.user, this.state.thumbURL);
       } else {
 
@@ -103,9 +103,9 @@ var ItemDetailComponent = React.createClass({
     }
 
     if (item !== '') {
-      if ((item.type === 'post' || item.type === 'perspective' || item.type === 'thread') && this.state.thumbURL !== '') {
+      if ((item.type === 'post' || item.type === 'perspective' || item.type === 'thread' || item.type === 'session' || item.type === 'showcase') && this.state.thumbURL !== '') {
         itemImage = <Link to={this.props.myroute} onClick={ this.handleClick }>
-                      <CardImg top width="100%" src={ this.state.thumbURL } alt="Card image cap" />
+                      <CardImg top width="100%" src={ this.state.thumbURL } alt="Card image" />
                     </Link>
       }
     } 
@@ -134,6 +134,14 @@ var ItemDetailComponent = React.createClass({
       case 'interview':
         itemType = ' interview';
         cssTag = 'card-block-interview';
+        break;
+      case 'session':
+        itemType = ' requested feedback';
+        cssTag = 'card-block-thread';
+        break;
+      case 'showcase':
+        itemType = ' added a showcase';
+        cssTag = 'card-block-post';
         break;
       default: 
         cssTag = 'card-block-default';

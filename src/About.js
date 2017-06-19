@@ -1,8 +1,10 @@
 import React from 'react'
-import { Container, Jumbotron, Alert, Nav, Navbar, NavItem, NavLink, Row, Col, Card, CardTitle, CardBlock, CardText, TabContent, TabPane, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText } from 'reactstrap';
+import { Container, Jumbotron, Nav, Navbar, NavItem, NavLink, Row, Col, Card, CardTitle, CardBlock, CardText, TabContent, TabPane, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText } from 'reactstrap';
 import imgForCreators from './images/site_for_creators.png'; // Tell Webpack this JS file uses this image
+import channelDetailImage from './images/site_channel_detail.png'; // Tell Webpack this JS file uses this image
+var createReactClass = require('create-react-class');
 
-var About = React.createClass({
+var About = createReactClass({
 	getInitialState: function() {
     return {
     	activeTab: '1'
@@ -49,7 +51,7 @@ var About = React.createClass({
   }
 });
 
-var ValueProposition = React.createClass({
+var ValueProposition = createReactClass({
 	getInitialState: function() {
     return {
     	activeTab: '1'
@@ -68,23 +70,23 @@ var ValueProposition = React.createClass({
     return(
     	<Container className="vision-container">
   		 <Jumbotron className="hidden-sm-down">
-          <h5 className="text-center">Building What's Next</h5>
+          <h5 className="text-center">Building What Matters</h5>
           <hr className="mb-3 mt-3" />
           <p className="text-center">a home for ideas, content & topics that matter</p>
-          <p className="text-center">join us as we build media channels, brands, shows & magazines of tomorrow</p>
-			   	<Navbar>
-		    	  <Nav pills className="value-prop-nav">
-		    	  	<NavItem>
-		          	<NavLink href="#" onClick={this.toggle.bind(null, "1")} className={ this.state.activeTab === '1' ? 'active' : ''}>for creators</NavLink>
-		          </NavItem>
-		          <NavItem>
-		          	<NavLink href="#" onClick={this.toggle.bind(null, "2")} className={ this.state.activeTab === '2' ? 'active' : ''}>for users</NavLink>
-		        	</NavItem>
-		        </Nav>
-			    </Navbar>
+		   	<Navbar>
+	    	  <Nav pills className="value-prop-nav">
+	    	  	<NavItem>
+	          	<NavLink href="#" onClick={this.toggle.bind(null, "1")} className={ this.state.activeTab === '1' ? 'active' : ''}>for creators</NavLink>
+	          </NavItem>
+	          <NavItem>
+	          	<NavLink href="#" onClick={this.toggle.bind(null, "2")} className={ this.state.activeTab === '2' ? 'active' : ''}>for users</NavLink>
+	        	</NavItem>
+	        </Nav>
+		    </Navbar>
       </Jumbotron>
       <Container className="hidden-md-up mobile-links">
-        <h3 className="mt-3 mb-3 text-center">Building What's Next</h3>
+        <h3 className="mt-4 mb-2 text-center">Building What's Next</h3>
+	    <p className="mt-2 mb-4 text-center">a home for ideas, content & topics that matter</p>
 	  		<Navbar>
 	    	  <Nav pills className="value-prop-nav">
 	    	  	<NavItem>
@@ -111,7 +113,7 @@ var ValueProposition = React.createClass({
   }
 });
 
-var Contact = React.createClass({
+var Contact = createReactClass({
 	render: function() {
     return(
     	<Container>
@@ -123,7 +125,7 @@ var Contact = React.createClass({
   }
 });
 
-var Company = React.createClass({
+var Company = createReactClass({
 	render: function() {
     return(
       <Container className="about-company">
@@ -143,7 +145,7 @@ var Company = React.createClass({
 });
 
 
-var CreatorValueProp = React.createClass({
+var CreatorValueProp = createReactClass({
   render: function() {
     return(
   		<Row className="creator-value-prop">
@@ -158,41 +160,35 @@ var CreatorValueProp = React.createClass({
 			          </ListGroupItemText>
 			        </ListGroupItem>
 			        <ListGroupItem>
-			        	<ListGroupItemHeading>built bottoms up</ListGroupItemHeading>
+			        	<ListGroupItemHeading>create different, create bold, create new</ListGroupItemHeading>
 			        	<ListGroupItemText className="text-muted">
-			        		you are now the brand - future is decentralized, targeted & nimble (RIP top-down, monolithic media pubs)
-			          </ListGroupItemText>
+			        	discussions, debates, interviews, roundtables, panels, Q&A, feedback sessions and on and on
+			        </ListGroupItemText>
 			        </ListGroupItem>
 			        <ListGroupItem>
-			        	<ListGroupItemHeading>create + collaborate</ListGroupItemHeading>
+			        	<ListGroupItemHeading>interact + engage + collaborate</ListGroupItemHeading>
 			        	<ListGroupItemText className="text-muted">
-			          	create wherever, whenever with whomever - invite & engage peers, experts & users directly on platform
-			          </ListGroupItemText>
-							</ListGroupItem>
-			        <ListGroupItem>
-			        	<ListGroupItemHeading>interactive by nature</ListGroupItemHeading>
-			        	<ListGroupItemText className="text-muted">
-			          	discussions, debates, interviews, roundtables, panels, Q&A, feedback sessions and on and on
-			          </ListGroupItemText>
-							</ListGroupItem>
+			          	connect whoever, wherever, whenever - connect people, ideas, content in real-time, directly on platform
+			          	</ListGroupItemText>
+						</ListGroupItem>
 			        <ListGroupItem>
 			        	<ListGroupItemHeading>you are the star</ListGroupItemHeading>
 			        	<ListGroupItemText className="text-muted">
-			          	showcase your brand in front of like-minded audiences (no competing with selfies)
+			          	build thriving brands for any topic big or small (minus the overhead) - RIP top-down, monolithic media pubs
 			          </ListGroupItemText>
-							</ListGroupItem>
+					</ListGroupItem>
 		      	</ListGroup>
 					</CardBlock>
 				</Card>
 			</Col>
 			<Col md={6} className="hidden-sm-down creator-img">
-				<img src={imgForCreators} />
+				<img src={imgForCreators} alt="value for creators" />
 			</Col>
 			</Row>
     )}
 });
 
-var UserValueProp = React.createClass({
+var UserValueProp = createReactClass({
   render: function() {
     return(
 		<Row>
@@ -213,26 +209,29 @@ var UserValueProp = React.createClass({
 			          </ListGroupItemText>
 			        </ListGroupItem>
 			        <ListGroupItem>
-			        	<ListGroupItemHeading>bite sized & swipe ready</ListGroupItemHeading>
+			        	<ListGroupItemHeading>bite sized & tap ready</ListGroupItemHeading>
 			        	<ListGroupItemText className="text-muted">
-			          	RIP long articles - why? because you won't probably finish reading this
+			          	RIP long articles - why? because you probably won't even finish reading this
 			          </ListGroupItemText>
 							</ListGroupItem>
 			        <ListGroupItem>
-			        	<ListGroupItemHeading>15 mins of fame</ListGroupItemHeading>
+			        	<ListGroupItemHeading>be part of the story</ListGroupItemHeading>
 			        	<ListGroupItemText className="text-muted">
-			          	ask a question, get feedback, share you story - all in one place
+			          	ask a question, get feedback on a project, share you perspectives (and a lot more)
 			          </ListGroupItemText>
 							</ListGroupItem>
 			        <ListGroupItem>
 			        	<ListGroupItemHeading>curated for you</ListGroupItemHeading>
 			        	<ListGroupItemText className="text-muted">
-			          	trusted editors & critics curating the experience - no need to follow / unfollow
+			          	channel editors curate the experience - no need to follow / unfollow
 			          </ListGroupItemText>
-							</ListGroupItem>
+					</ListGroupItem>
 		      	</ListGroup>
 					</CardBlock>
 				</Card>
+			</Col>
+			<Col md={6} className="hidden-sm-down creator-img">
+				<img src={channelDetailImage} alt="value for creators" />
 			</Col>
 		</Row>
     )}

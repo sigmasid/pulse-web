@@ -11,10 +11,11 @@ import GetAppModal from './GetAppModal.js';
 
 import Helmet from 'react-helmet';
 import InfiniteScroll from 'react-infinite-scroller';
+var createReactClass = require('create-react-class');
 
 //const util = require('util'); //print an object
 
-var SeriesHeader = React.createClass({
+var SeriesHeader = createReactClass({
   render: function() {
     if (typeof this.props.selectedSeries !== 'undefined') {
       return(
@@ -34,7 +35,7 @@ var SeriesHeader = React.createClass({
 });
 
 ///CHANNELS LIST///
-var SeriesComponent = React.createClass({
+var SeriesComponent = createReactClass({
   mixins: [ReactFireMixin],
 
   contextTypes: {
@@ -75,9 +76,7 @@ var SeriesComponent = React.createClass({
   },
 
   loadMore: function(page) {
-    console.log('load more fired ' + Object.keys(this.state.seriesItems).length);
     if (this.state.page < Object.keys(this.state.seriesItems).length) {
-      console.log('load more fired' + this.state.page + 5);
       this.setState({
         page: page * 5,
         hasMore: page * 5 > this.state.seriesItems.length ? false : true
@@ -119,7 +118,6 @@ var SeriesComponent = React.createClass({
     }.bind(this));  
 
     firebase.database().ref('itemCollection').child(seriesID).once('value').then(function(snapshot) {
-      console.log('snapshot is '+snapshot.val());
       this.setState({
         seriesItems: snapshot.val()
       })

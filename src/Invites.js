@@ -2,8 +2,9 @@ import React from 'react';
 import * as firebase from "firebase";
 import { Jumbotron, Card, CardTitle, CardText, Container, Alert, Label, Col, Form, FormGroup, Input, Button } from 'reactstrap';
 const util = require('util') //print an object
+var createReactClass = require('create-react-class');
 
-var AccountCreated = React.createClass({
+var AccountCreated = createReactClass({
 	render: function() {
 		console.log(this.props.error);
 		if (this.props.error !== '') {
@@ -32,7 +33,7 @@ var AccountCreated = React.createClass({
 	}	
 });
 
-var ExistingUser = React.createClass({
+var ExistingUser = createReactClass({
 	handleSubmit: function(event) {
 		event.preventDefault();
 		console.log('go to app store / open app');
@@ -54,7 +55,7 @@ var ExistingUser = React.createClass({
 	}
 });
 
-var InviteHeader = React.createClass({
+var InviteHeader = createReactClass({
 	render: function() {
 		return(
 			<Jumbotron className="Question-header text-center" color="white">
@@ -66,7 +67,7 @@ var InviteHeader = React.createClass({
 	}
 });
 
-var VerificationForm = React.createClass({
+var VerificationForm = createReactClass({
   	getInitialState: function() {
     	return {
       	email: this.props.email,
@@ -122,7 +123,7 @@ var VerificationForm = React.createClass({
 	)}
 });
 
-var InviteComponent = React.createClass({
+var InviteComponent = createReactClass({
   	getInitialState: function() {
     	return {
       	toUserEmail: '',
@@ -152,6 +153,7 @@ var InviteComponent = React.createClass({
   	},
 
   	componentDidMount: function() {
+  		console.log('params ID is '+this.props.params.inviteID);
     	firebase.database().ref('/invites/' + this.props.params.inviteID).once('value').then(function(snapshot) {
     		if (snapshot.exists()) {
 				console.log(util.inspect(snapshot.val(), false, null));
@@ -161,7 +163,7 @@ var InviteComponent = React.createClass({
         			toUserID: typeof snapshot.val().toUserID !== 'undefined' ? snapshot.val().toUserID  : '',
         			title: typeof snapshot.val().title !== 'undefined' ? snapshot.val().title  : '',
         			tagTitle: typeof snapshot.val().tagTitle !== 'undefined' ? snapshot.val().tagTitle  : '',
-        			approved: typeof snapshot.val().approved !== 'undefined' ? true : false,
+        			approved: snapshot.val().approved !== false,
         			type: typeof snapshot.val().type !== 'undefined' ? snapshot.val().type : '',
         			fromUserName: typeof snapshot.val().type !== 'undefined' ? snapshot.val().fromUserName : ''
       			})
@@ -239,7 +241,10 @@ var InviteComponent = React.createClass({
 		} else if (this.state.type === 'perspectiveInvite') {
 			subtitle1 = "Could you share your perspectives on: ";
 			subtitle2 = this.state.title;
-		}
+		} else if (this.state.type === 'showcaseInvite') {
+			subtitle1 = "You are invited to create a showcase!";
+			subtitle2 = this.state.title;
+		}	
 	}
 
 	return(

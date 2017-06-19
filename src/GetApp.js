@@ -1,7 +1,8 @@
 import React from 'react'
 import { Container, Row, Col, Button } from 'reactstrap';
+var createReactClass = require('create-react-class');
 
-var GetApp = React.createClass({
+var GetApp = createReactClass({
     getInitialState: function() {
         return {
             closed: false
@@ -26,11 +27,11 @@ var GetApp = React.createClass({
         			<Col xs="7" sm="6">
         				<h6 className="font-weight-bold">
                             { typeof this.props.message !== 'undefined' ? this.props.message : 
-        					"Subscribe to channels, join the discussion & check out exclusive content!"}
+        					"Subscribe to channels, join the discussion & showcase your expertise!"}
         				</h6>
         			</Col>
         			<Col xs="4" sm="2" className="offset-sm-2 text-right">
-        				<Button color="primary" className="Get-app-btn">Get App</Button>
+        				<Button color="primary" className="Get-app-btn">get app</Button>
     				</Col>
                     <Col xs="1" className="offset-sm-1 offset-md-0">
                         <Button className="close" aria-label="Close" onClick={this.Close.bind(this, null)}>

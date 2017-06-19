@@ -1,7 +1,8 @@
 import React from 'react'
 import { Modal, Button, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+var createReactClass = require('create-react-class');
 
-var GetAppModal = React.createClass({
+var GetAppModal = createReactClass({
     componentWillMount: function() {
       	this.setState({
         	modal: this.props.modal

@@ -11,8 +11,9 @@ import contentDetailImage from './images/site_content_detail.png'; // Tell Webpa
 
 import previousButton from './images/back_button.png'; // Tell Webpack this JS file uses this image
 import nextButton from './images/next_button.png'; // Tell Webpack this JS file uses this image
+var createReactClass = require('create-react-class');
 
-var Slide = React.createClass({
+var Slide = createReactClass({
   render: function() {
     return(
       <Row className="Slide-row">
@@ -30,21 +31,22 @@ var Slide = React.createClass({
   }
 });
 
-var HomeComponent = React.createClass({
+var HomeComponent = createReactClass({
   mixins: [Carousel.ControllerMixin],
 
   render: function() {
+  console.log('render function fired');
 
   var exploreTitle = "Pulse is content that matters";
   var channelDetailTitle = "Pulse is voices that matter";
   var contentDetailTitle = "Pulse is creating what matters";
 
-  var exploreDescription = "Pulse is channels for stock market investing, starting a business, browsing real estate, joining book clubs, following sports teams";
-  var channelDetailDescription = "Pulse is executives talking IPOs & M&A, founders showcasing products, Q&A with new authors, advice from admission counselors, debates with scientists & researchers";
-  var contentDetailDescription = "Pulse is mobile publishing & discovery tools for collaborating, creating & showcasing professional content that is as craveworthy as artisnal lattes";
+  var exploreDescription = "Pulse is channels for finance & investing, entrepreneurship, real estate, arts, movies, sports & more";
+  var channelDetailDescription = "Pulse is execs talking IPOs, VCs talking deals, founders showcasing new idea, authors giving interviews, admission counselors doing Q&A, scientists debating scientists";
+  var contentDetailDescription = "Pulse mobile publishing & discovery tools for collaborating, creating & showcasing professional content that is as craveworthy as artisnal lattes";
 
   var Decorators = [{
-    component: React.createClass({
+    component: createReactClass({
       render() {
         return (
           <button onClick={this.props.previousSlide} className="previous-button hidden-xs-down">
@@ -58,7 +60,7 @@ var HomeComponent = React.createClass({
       padding: 20
     }
   }, { 
-    component: React.createClass({
+    component: createReactClass({
       render() {
         return (
           <button
@@ -76,7 +78,7 @@ var HomeComponent = React.createClass({
   return(
     <Container fluid className="Container-home-fluid">
       <Alert className="Row text-center" color="info">
-        <Link to={`/web`}><strong>Ideas, content and voices that matter</strong><br />see a preview of what you are missing</Link>
+        <Link to={`/web`}><strong>Ideas, content and voices that matter</strong><br /><u>see a preview</u></Link>
       </Alert>
       <Container className="Container-home">
         <Carousel autoplay={true} autoplayInterval={3000} initialSlideHeight={500} slideWidth={1} wrapAround={true} decorators={Decorators} className="Home-carousel pt-1">

@@ -10,8 +10,9 @@ import GetAppModal from './GetAppModal.js';
 
 import Helmet from 'react-helmet';
 import InfiniteScroll from 'react-infinite-scroller';
+var createReactClass = require('create-react-class');
 
-var ChannelHeader = React.createClass({
+var ChannelHeader = createReactClass({
   render: function() {
     if (typeof this.props.selectedChannel.title !== 'undefined') {
       return(
@@ -32,7 +33,7 @@ var ChannelHeader = React.createClass({
 });
 
 ///CHANNELS LIST///
-var ChannelsComponent = React.createClass({
+var ChannelsComponent = createReactClass({
   contextTypes: {
       setSelected: React.PropTypes.func.isRequired
   },

@@ -22,8 +22,8 @@ export default class TopNav extends React.Component {
               {this.props.message !== 'undefined' ? this.props.message : ''}
             </BreadcrumbItem>
           </Breadcrumb>
-    		<Button color="primary" className="navbar-toggler-right hidden-sm-up btn-sm">Get App</Button>
-        <Button color="primary" className="navbar-toggler-right hidden-xs-down">Get App</Button>
+    		<Button color="primary" className="navbar-toggler-right hidden-sm-up btn-sm">get app</Button>
+        <Button color="primary" className="navbar-toggler-right hidden-xs-down">get app</Button>
         </Nav>
       </Navbar>
     )
