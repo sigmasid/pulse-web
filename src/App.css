@@ -129,8 +129,24 @@ a:hover, a:active, a:visited {
   border: 0px solid;
 }
 
-.next-button img, .previous-button img {
+.next-button img, .previous-button img, .next-detail-item img, .previous-detail-item img {
   max-width: 20px;
+}
+
+.next-detail-item {
+  position: absolute;
+  top: 48%;
+  right: 5px;
+  padding: 10px;
+  background: whitesmoke;
+}
+
+.previous-detail-item {
+  position: absolute;
+  top: 48%;
+  left: 5px;
+  padding: 10px;
+  background: whitesmoke;
 }
 
 .Container-home {
@@ -476,7 +492,7 @@ a:hover, a:active, a:visited {
   margin-bottom: 1rem;
 }
 
-.Channel-content .card-header, .Video-content .card-header, .Item-card .card-header {
+.Channel-content .card-header, .Item-content .card-header, .Item-card .card-header {
   border-bottom: none;
   background: none;
 }
@@ -499,6 +515,7 @@ a:hover, a:active, a:visited {
 }
 
 .Channel-card .card-title {
+  font-size: 1.15rem;
   background-color: rgba(255, 255, 255, 0.5);
   margin-bottom: 0.25rem;
 }
@@ -544,11 +561,53 @@ a:hover, a:active, a:visited {
   align-items: center;
 }
 
+.Item-content {
+  float: none;
+  border-radius: 0;
+  background-color: whitesmoke;
+  border: none;
+}
+
+.Item-content .card-title {
+  margin-bottom: 0px;
+}
+
 .Item-card img {
-  max-height: 450px;
+  max-height: 575px;
   object-fit: cover;
   object-position: center;
   cursor: pointer; 
+}
+
+.Item-content img {
+  height: 575px;
+  object-fit: cover;
+  object-position: center;
+}
+
+.Item-card .text-quote {
+  height: 575px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 50px;
+}
+
+.text-quote:before { 
+    content: open-quote;
+    font-weight: bold;
+    position:absolute;
+    top:2%;
+    left: 2%;
+    font-size: 4rem;
+} 
+
+.text-quote:after { 
+    content: close-quote;
+    font-weight: bold;
+    position:absolute;
+    bottom:2%; right: 2%;
+    font-size: 4rem;
 }
 /** END ITEM CARD **/
 
@@ -746,17 +805,6 @@ a:hover, a:active, a:visited {
 
 .Get-app .close {
   float: none;
-}
-
-.Video-content {
-  float: none;
-  margin: 0 auto;
-  border-radius: 0;
-  width: 325px;
-}
-
-.Video-content .card-title {
-  margin-bottom: 0px;
 }
 
 .Get-app-modal {

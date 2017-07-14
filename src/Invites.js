@@ -1,12 +1,10 @@
 import React from 'react';
 import * as firebase from "firebase";
 import { Jumbotron, Card, CardTitle, CardText, Container, Alert, Label, Col, Form, FormGroup, Input, Button } from 'reactstrap';
-const util = require('util') //print an object
 var createReactClass = require('create-react-class');
 
 var AccountCreated = createReactClass({
 	render: function() {
-		console.log(this.props.error);
 		if (this.props.error !== '') {
 			return(
 				<Container className="Verification-form">
@@ -78,7 +76,6 @@ var VerificationForm = createReactClass({
 
 	handleSubmit: function(event) {
 		event.preventDefault();
-		console.log('values are ' + this.state.name + ' ' + this.state.email + ' ' + this.state.password);
 		this.props.claimAccount(this.state.name, this.state.email, this.state.password);
 	},
 
@@ -92,7 +89,7 @@ var VerificationForm = createReactClass({
 	return(
 		<Container className="Verification-form">
 	    	<Alert color="info text-center">
-          		<strong>Let's get started!</strong> Please verify your information and select a password to become a verified expert!
+          		<strong>Let's get started!</strong> Please verify your information and select a password so we can get you onboard!
         	</Alert>
 			<Form onSubmit={this.handleSubmit}>
 		  	<FormGroup row>
@@ -153,10 +150,8 @@ var InviteComponent = createReactClass({
   	},
 
   	componentDidMount: function() {
-  		console.log('params ID is '+this.props.params.inviteID);
     	firebase.database().ref('/invites/' + this.props.params.inviteID).once('value').then(function(snapshot) {
     		if (snapshot.exists()) {
-				console.log(util.inspect(snapshot.val(), false, null));
     			this.setState({
         			toUserEmail: typeof snapshot.val().toUserEmail !== 'undefined' ? snapshot.val().toUserEmail  : '',
         			toUserName: typeof snapshot.val().toUserName !== 'undefined' ? snapshot.val().toUserName  : '',
@@ -167,7 +162,6 @@ var InviteComponent = createReactClass({
         			type: typeof snapshot.val().type !== 'undefined' ? snapshot.val().type : '',
         			fromUserName: typeof snapshot.val().type !== 'undefined' ? snapshot.val().fromUserName : ''
       			})
-    			console.log('setting user name to '+snapshot.val().toUserName);
 
 			} else {
 				this.setState({
@@ -194,7 +188,6 @@ var InviteComponent = createReactClass({
 				alert(errorMessage);
 			}
 			
-			console.log(error);
 			this.setState({
 				accountError: error.message,
 			})
@@ -244,7 +237,10 @@ var InviteComponent = createReactClass({
 		} else if (this.state.type === 'showcaseInvite') {
 			subtitle1 = "You are invited to create a showcase!";
 			subtitle2 = this.state.title;
-		}	
+		} else if (this.state.type === 'feedbackInvite') {
+			subtitle1 = "Could you share your feedback on:";
+			subtitle2 = this.state.title;
+		}
 	}
 
 	return(

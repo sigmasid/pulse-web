@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { Alert, Row, Col, Button, Jumbotron, Container } from 'reactstrap';
 
 import ItemDetail from './ItemDetailComponent.js';
-import ItemVideoComponent from './ItemVideoComponent.js';
+import ItemContentComponent from './ItemContentComponent.js';
 import GetAppModal from './GetAppModal.js';
 
 import Helmet from 'react-helmet';
@@ -103,9 +103,15 @@ var ChannelsComponent = createReactClass({
         })
       }.bind(this));
     }
-    firebase.database().ref('channelItems').child(channelID).orderByChild('createdAt').once('value').then(function(snapshot) {
+    firebase.database().ref('channelItems').child(channelID).orderByChild('createdAt').limitToLast(50).once('value').then(function(snapshot) {
+        var orderedItems = {};
+
+        snapshot.forEach(function(child) {
+          orderedItems[child.key] = child.val();
+        });
+
         this.setState({
-          channelItems: snapshot.val()
+          channelItems: orderedItems
         })
     }.bind(this));  
   },
@@ -118,8 +124,8 @@ var ChannelsComponent = createReactClass({
       return typeof channel.title !== 'undefined' ? channel.title.charAt(0).toUpperCase() + channel.title.slice(1) : '';
     };
 
-    var videoDetail = (this.state.showDetail) ?
-                      <ItemVideoComponent 
+    var itemDetail = (this.state.showDetail) ?
+                      <ItemContentComponent 
                         user={this.state.selectedUser} 
                         contentURL={this.state.selectedItem.url} 
                         item={this.state.selectedItem} 
@@ -143,6 +149,7 @@ var ChannelsComponent = createReactClass({
           </Col>
         );
       }
+      return null;
     });
 
     if (this.state.channelItems) {
@@ -170,7 +177,7 @@ var ChannelsComponent = createReactClass({
               { detail }
             </Row>
             <Row className={ this.state.showDetail ? 'show pb-4' : 'invisible'}>
-                { this.state.showDetail ? videoDetail : null }
+                { this.state.showDetail ? itemDetail : null }
             </Row>
         </Container>
       </Container>

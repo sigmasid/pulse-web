@@ -148,7 +148,7 @@ var SeriesComponent = createReactClass({
       /> : '';
 
     if (this.state.seriesItems) {
-      Object.keys(this.state.seriesItems).map((item, index) => {
+      Object.keys(this.state.seriesItems).reverse().map((item, index) => {
         if (index < this.state.page) {
           seriesItems.push(
             <Col xs="12" md="8" key={item} className="pb-3 offset-md-2">
@@ -156,6 +156,7 @@ var SeriesComponent = createReactClass({
             </Col>
           );
         }
+        return null
       });
     }
 

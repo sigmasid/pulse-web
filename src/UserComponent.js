@@ -88,7 +88,7 @@ var UserProfileComponent = createReactClass({
 		    }.bind(this)); 
 	    }   
 
-	   	firebase.database().ref('userDetailedPublicSummary').child(userID).child('items').once('value').then(function(snapshot) {
+	   	firebase.database().ref('userDetailedPublicSummary').child(userID).child('items').limitToLast(10).once('value').then(function(snapshot) {
 	    	this.setState({
 	    		userItems: snapshot.val()
 	    	})
@@ -125,7 +125,7 @@ var UserProfileComponent = createReactClass({
 	    				]}
 	    			/>;
 
-	    var detail = this.state.userItems ? Object.keys(this.state.userItems).map((createItem), this) : 
+	    var detail = this.state.userItems ? Object.keys(this.state.userItems).reverse().map((createItem), this) : 
                <Alert className="col-12" color="warning text-center">
                 <strong>Still to come!</strong> No items yet - check back soon!
               </Alert>

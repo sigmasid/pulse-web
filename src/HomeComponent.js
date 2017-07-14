@@ -35,7 +35,6 @@ var HomeComponent = createReactClass({
   mixins: [Carousel.ControllerMixin],
 
   render: function() {
-  console.log('render function fired');
 
   var exploreTitle = "Pulse is content that matters";
   var channelDetailTitle = "Pulse is voices that matter";

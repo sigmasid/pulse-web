@@ -4,7 +4,7 @@ import ReactFireMixin from 'reactfire';
 
 import { Link } from 'react-router';
 import { Container, Badge, Jumbotron, Row, Col, Alert, Button } from 'reactstrap';
-import { Card, CardImg, CardText, CardBlock, CardLink, CardTitle, CardFooter} from 'reactstrap';
+import { Card, CardImg, CardBlock, CardTitle} from 'reactstrap';
 import pulseLogo from './images/pulse-logo-text-only.png'; // Tell Webpack this JS file uses this image
 import SearchComponent from './SearchComponent.js';
 var createReactClass = require('create-react-class');
@@ -27,24 +27,17 @@ var SearchItem = createReactClass({
   render: function() {
     return(
       <Card className="Channel-card">
-        <CardBlock>
-          <CardTitle className="row">
-            <Col xs="1" className="Hash">#</Col>
-            <Col xs="10">
-              <Link to={`/c/${this.props.channel._id}`}>
-                { this.props.channel._source.title }
-              </Link>
-            </Col>
-          </CardTitle>
-          <CardText className="col-10 offset-2">
+        <Link to={`/c/${this.props.props.channel._id}`} onClick={this.context.setSelected.bind(null,this.props.channel, true)}>
+          <CardImg top width="100%" src={ this.state.thumbURL } alt="Card image cap" />
+          <CardBlock>
+            <CardTitle className="row">
+              <Col xs={12}>
+                { this.props.channel.title }
+              </Col>  
+            </CardTitle>
             <small>{ this.props.channel._source.description }</small>
-          </CardText>
-        </CardBlock>
-        <CardFooter>
-          <CardLink tag={Link} className="tag-link" to={`/c/${this.props.channel._id}`} >
-            Browse Channel
-          </CardLink>
-        </CardFooter>
+          </CardBlock>
+        </Link>
       </Card>
     );
   }
@@ -62,7 +55,7 @@ var ChannelItem = createReactClass({
   },
 
   componentDidMount: function() {
-    var storageRef = firebase.storage().ref('channelCovers').child(this.props.channel['.key']).child('background');
+    var storageRef = firebase.storage().ref('channelCovers').child(this.props.channel['.key']).child('content');
     storageRef.getDownloadURL().then(function(url) {
       this.setState({
         thumbURL: url
@@ -84,15 +77,16 @@ var ChannelItem = createReactClass({
           <CardImg top width="100%" src={ this.state.thumbURL } alt="Card image cap" />
           <CardBlock>
             <CardTitle className="row">
-              <Col xs={1}>#</Col>
-              <Col xs={10}>
+              <Col xs={12}>
                 { this.props.channel.title }
               </Col>  
             </CardTitle>
-            <small className="offset-1">{ this.props.channel.description }</small>
+            <small>{ this.props.channel.description }</small>
           </CardBlock>
-      </Link>
-        { /* 
+        </Link>
+      </Card>
+
+        /* 
       	<CardFooter>
           <CardLink tag={Link} className="tag-link" to={`/c/${this.props.channel['.key']}`} 
                     onClick={this.context.setSelected.bind(null,this.props.channel)}>
@@ -101,8 +95,7 @@ var ChannelItem = createReactClass({
           <span className="small float-right"> 
             { this.props.channel.hasOwnProperty("tags") ? this.getLength(Object.keys(this.props.channel.tags).length) : this.getLength(0)}
           </span>
-      	</CardFooter> */ }
-      </Card>
+      	</CardFooter> */
     );
   }
 });
@@ -142,14 +135,14 @@ var IndexComponent = createReactClass({
   render: function() {
     var createItem = function(channel, index) {
       return(
-        <Col md="4" sm="6" xs="12" key={channel['.key']} className="pb-3">
+        <Col md="6" sm="6" xs="12" lg="4" key={channel['.key']} className="pb-3">
           <ChannelItem channel={channel} />
         </Col>);
     };
 
     var createSearchItem = function(result, index) {
       return(
-        <Col md="4" sm="6" xs="12" key={result._id} className="pb-3">
+        <Col md="6" sm="6" xs="12" lg="4" key={result._id} className="pb-3">
           <SearchItem channel={result} />
         </Col>);
     };
