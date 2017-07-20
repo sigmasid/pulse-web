@@ -2,39 +2,49 @@ import React from 'react'
 import { Container, Jumbotron, Nav, Navbar, NavItem, NavLink, Row, Col, Card, CardTitle, CardBlock, CardText, TabContent, TabPane, ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText } from 'reactstrap';
 import imgForCreators from './images/site_for_creators.png'; // Tell Webpack this JS file uses this image
 import channelDetailImage from './images/site_channel_detail.png'; // Tell Webpack this JS file uses this image
+import FAQ from './Faq.js';
+
 var createReactClass = require('create-react-class');
 
 var About = createReactClass({
-	getInitialState: function() {
-    return {
-    	activeTab: '1'
-    };
-  },
+	contextTypes: {
+    	setSelected: React.PropTypes.func.isRequired
+    },
 
-  render() {
+  	getInitialState: function() {
+    	return {
+    		activeTab: '1'
+    	};
+  	},
+
+  	render() {
     return (
     <Container className="About-container">
     	<Row>
 	    	<Col xs={12} md={2} className="about-nav-col">
-	    		<Navbar>
+	    		<Navbar className="row">
 	    	  <Nav tabs navbar className="about-nav">
 	          <NavLink href="#" onClick={this.toggle.bind(null, "1")} className={ this.state.activeTab === '1' ? 'active' : ''}>Vision</NavLink>
 	          <NavLink href="#" onClick={this.toggle.bind(null, "2")} className={ this.state.activeTab === '2' ? 'active' : ''}>Company</NavLink>
-	          <NavLink href="#" onClick={this.toggle.bind(null, "3")} className={ this.state.activeTab === '3' ? 'active' : ''}>Contact</NavLink>
+  	          <NavLink href="#" onClick={this.toggle.bind(null, "3")} className={ this.state.activeTab === '3' ? 'active' : ''}>FAQs</NavLink>
+	          <NavLink href="#" onClick={this.toggle.bind(null, "4")} className={ this.state.activeTab === '4' ? 'active' : ''}>Contact</NavLink>
 	        </Nav>
 	        </Navbar>
 	    	</Col>
 	    	<Col xs={12} md={10}>
 	    	  <TabContent activeTab={this.state.activeTab}>
-	          <TabPane tabId="1">
-	    				<ValueProposition />
-	          </TabPane>
+	          	<TabPane tabId="1">
+	    			<ValueProposition />
+	          	</TabPane>
 	         	<TabPane tabId="2">
 	         		<Company />
-	          </TabPane>
+	          	</TabPane>
 	         	<TabPane tabId="3">
+	         		<FAQ />
+	          	</TabPane>
+	         	<TabPane tabId="4">
 	         		<Contact />
-	          </TabPane>
+	          	</TabPane>
 	        </TabContent>
 	    	</Col>
   		</Row>
@@ -69,9 +79,8 @@ var ValueProposition = createReactClass({
 	render: function() {
     return(
     	<Container className="vision-container">
-  		 <Jumbotron className="hidden-sm-down">
-          <h5 className="text-center">Building What Matters</h5>
-          <hr className="mb-3 mt-3" />
+  		 <Jumbotron className="hidden-xs-down">
+          <h5 className="text-center display-5">Building What Matters</h5>
           <p className="text-center">a home for ideas, content & topics that matter</p>
 		   	<Navbar>
 	    	  <Nav pills className="value-prop-nav">
@@ -84,8 +93,8 @@ var ValueProposition = createReactClass({
 	        </Nav>
 		    </Navbar>
       </Jumbotron>
-      <Container className="hidden-md-up mobile-links">
-        <h3 className="mt-4 mb-2 text-center">Building What's Next</h3>
+      <Container className="hidden-sm-up mobile-links">
+        <h3 className="mt-4 mb-2 text-center display-4">Building What Matters</h3>
 	    <p className="mt-2 mb-4 text-center">a home for ideas, content & topics that matter</p>
 	  		<Navbar>
 	    	  <Nav pills className="value-prop-nav">
@@ -118,7 +127,7 @@ var Contact = createReactClass({
     return(
     	<Container>
         <h3 className="mt-3 mb-5">Contact</h3>
-        <p>we are a small (and growing) San Francisco based team!</p>
+        <p>we are a fast growing San Francisco based team!</p>
         <p>want to get in touch? interested in joining the team? send us a note at <strong>hi@checkpulse.co</strong></p>
 	    </Container>
   	)
@@ -131,10 +140,10 @@ var Company = createReactClass({
       <Container className="about-company">
       	<h3 className="mt-3 mb-5">The Team</h3>
       	<Card>
-    			<CardTitle>Sid Tiwari (CEO & Founder)</CardTitle>
+    			<CardTitle>Sid Tiwari (Founder)</CardTitle>
     			<CardText>Sid is the founder of Pulse. The vision behind Pulse was to leverage visual storytelling tools for creating impactful professional content. 
     				Pulse is designed to empower professionals, experts, though leaders, authors, critics, creatives, editors and everyone else who wants to 
-    				create content that can compete with farm-to-table brunche stories.<br/><br/>
+    				create a smarter alternative to farm-to-table brunch stories.<br/><br/>
     				After spending 8 years in Finance, most recently as Vice President and Head of Internet & E-Commerce at Blackstone, Sid was the co-founder of Jeweliq,
     				a direct-to-consumer fashion brand, where he lead business development and overall strategy for the company. 
     			</CardText>

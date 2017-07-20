@@ -4,7 +4,7 @@ import * as firebase from "firebase";
 import { Alert, Container, Jumbotron, Col, Row } from 'reactstrap';
 
 import ItemDetail from './ItemDetailComponent.js';
-import ItemVideoComponent from './ItemVideoComponent.js';
+import ItemContentComponent from './ItemContentComponent.js';
 import Helmet from 'react-helmet';
 var createReactClass = require('create-react-class');
 
@@ -12,14 +12,20 @@ var createReactClass = require('create-react-class');
 
 var UserProfileHeader = createReactClass({
 	render: function() {
-		return(
+	    if (typeof this.props.user !== 'undefined') {
+			return(
 			<Jumbotron className="User-profile-header text-center" color="white">
 				<Container>
-					<img src={this.props.user.thumbPic} alt={this.props.user.name} className="rounded-circle img-thumbnail" />
+					<img src={this.props.user.thumbPic} alt={this.props.user.name} className="rounded-circle img-thumbnail mb-5" />
 	      			<h1 className="display-4 text-capitalize">{this.props.user.name}</h1>
           			<p className="lead text-capitalize">{this.props.user.hasOwnProperty('shortBio') ? this.props.user.shortBio : ''}</p>
 	        	</Container>
 	        </Jumbotron>
+	    )};
+	    return(
+	      <Jumbotron>
+	        <h1 className="display-4 container text-center">Loading Pulse...</h1>
+	      </Jumbotron>
 	    );
 	}
 });
@@ -79,6 +85,7 @@ var UserProfileComponent = createReactClass({
 			this.setState({
 	    		user: this.props.selected
 	    	})
+	    	this.context.setSelected(this.props.selected, true);
 		} else {
 		    firebase.database().ref('userPublicSummary').child(userID).once('value').then(function(snapshot) {
 		    	this.setState({
@@ -107,8 +114,8 @@ var UserProfileComponent = createReactClass({
 	        </Col>);
 	    };
 
-        var videoDetail = (this.state.showDetail) ?
-                  <ItemVideoComponent 
+        var itemDetail = (this.state.showDetail) ?
+                  <ItemContentComponent 
                     user={this.state.selectedUser} 
                     contentURL={this.state.selectedItem.url} 
                     item={this.state.selectedItem} 
@@ -136,11 +143,11 @@ var UserProfileComponent = createReactClass({
 	          	<UserProfileHeader user={this.state.user} />
                 <Container>
                     <Row className={ this.state.showDetail ? 'hidden-xs-up' : ''}>
-		              	<Row>{ detail }</Row>
+		              	<Row className="Card-detail">{ detail }</Row>
 		            </Row>
-		            <Row className={ this.state.showDetail ? 'show pb-4' : 'invisible'}>
-                		{ this.state.showDetail ? videoDetail : null }
-		            </Row>
+                    <Row className={ this.state.showDetail ? 'show pb-4' : 'invisible'}>
+                		{ this.state.showDetail ? itemDetail : null }
+            		</Row>
 		        </Container>
 	        </Container>
 	    );	

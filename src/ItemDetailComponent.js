@@ -11,6 +11,7 @@ import previousButton from './images/back_button.png'; // Tell Webpack this JS f
 import nextButton from './images/next_button.png'; // Tell Webpack this JS file uses this image
 
 var createReactClass = require('create-react-class');
+//const util = require('util'); //print an object
 
 var ItemDetailComponent = createReactClass({
   contextTypes: {
@@ -19,12 +20,13 @@ var ItemDetailComponent = createReactClass({
   getInitialState: function() {
     return {
       user: '',
-      thumbURL: '',
       showDetail: false,
       showNext: false,
       showPrevious: false,
       nextItemIndex: 0,
-      createdItems: {}
+      createdItems: {},
+      isLoading: false,
+      thumbURL: 'https://placeholdit.imgix.net/~text?txtsize=20&txt=loading...&w=500&h=500&bg=ffffff&txtclr=666666'
     };
   },
 
@@ -46,6 +48,14 @@ var ItemDetailComponent = createReactClass({
     }
   },
 
+  hasCover: function(type) {
+    if (type === 'showcase' || type === 'post' || type === 'interview') {
+      return true;
+    } else {
+      return false;
+    }
+  },
+
   getSeriesItems: function(seriesID) {
     firebase.database().ref('itemCollection').child(seriesID).once('value').then(function(snapshot) {
       if (snapshot.val() !== null) {
@@ -55,27 +65,59 @@ var ItemDetailComponent = createReactClass({
           orderedItems.push(child.key);
         });
 
-        var reorderedItems = this.reorderItems(orderedItems, this.state.item.type);
-        this.getNextItem(reorderedItems[1]);
+        var reorderedItems = ""; 
+
+        if (this.state.hasCover === true) {
+          reorderedItems = this.reorderItems(orderedItems, this.state.item.type);
+          this.getNextItem(reorderedItems[1], true);
+        } else {
+          reorderedItems = orderedItems;
+          this.getNextItem(reorderedItems[0], true);
+        }
 
         this.setState({
           seriesItems: reorderedItems,
-          showNext: true,
-          nextItemIndex: 1
+          nextItemIndex: this.state.hasCover ? 1 : 0
         });
+      } else {
+
+        if (this.state.hasCover === true) {
+          this.setState({
+            isLoading: false
+          });
+        } else {
+          var lastCreatedItem = {};
+          lastCreatedItem[this.props.itemID] = this.props.item;
+          this.setState({
+            seriesItems: lastCreatedItem,
+            createdItems: lastCreatedItem
+          });
+          this.getNextItem(this.props.itemID, true);
+        }
       }
     }.bind(this));
   },
 
-  getNextItem: function(itemID) {
+  getNextItem: function(itemID, updateShowDetail) {
     firebase.database().ref('items').child(itemID).once('value').then(function(snapshot) {
       if (snapshot.val() !== null) {
         var newItems = this.state.createdItems;
         newItems[itemID] = snapshot.val();
-        this.setState({
-          nextItem: snapshot.val(),
-          createdItems: newItems
-        })
+
+        if (updateShowDetail === true) {
+          this.setState({
+            nextItem: snapshot.val(),
+            createdItems: newItems,
+            isLoading: false,
+            showDetail: true
+          })
+          this.handleNextItem();
+        } else {
+          this.setState({
+            nextItem: snapshot.val(),
+            createdItems: newItems
+          })
+        }
       }
     }.bind(this));
   },
@@ -87,17 +129,21 @@ var ItemDetailComponent = createReactClass({
         previousItem: this.state.item,
         item: this.state.nextItem,
         nextItem: '',
-        showPrevious: true,
+        showPrevious: this.state.hasCover ? tempIndex > 2 : tempIndex > 1,
         nextItemIndex: tempIndex
       });
 
-      if (this.state.nextItemIndex + 1 < this.state.seriesItems.length) {
+      if (tempIndex < this.state.seriesItems.length) {
         if (typeof this.state.createdItems[this.state.seriesItems[tempIndex]] !== 'undefined') {
           this.setState({
+            showNext: true,
             nextItem: this.state.createdItems[this.state.seriesItems[tempIndex]]
           })
         } else {
-          this.getNextItem(this.state.seriesItems[this.state.nextItemIndex + 1]);
+          this.setState({
+            showNext: true
+          })
+          this.getNextItem(this.state.seriesItems[tempIndex], false);
         }
       } else {
         this.setState({
@@ -118,9 +164,9 @@ var ItemDetailComponent = createReactClass({
       })
 
       //since we are using nextItemIndex - it will be 1 when we are at the index item
-      if (tempIndex - 1 >= 1) {
+      if (this.state.hasCover ? tempIndex - 1 >= 2 : tempIndex - 1 >= 1) {
         this.setState({
-          previousItem: this.state.createdItems[this.state.seriesItems[tempIndex - 2]],
+          previousItem: this.state.createdItems[this.state.seriesItems[tempIndex - 1]],
           showPrevious: true,
           showNext: true
         })
@@ -138,15 +184,19 @@ var ItemDetailComponent = createReactClass({
     if (typeof this.props.item !== 'undefined') {
       if (typeof this.props.user === 'undefined') {
         firebase.database().ref('/userPublicSummary/' + this.props.item.uID).once('value').then(function(userSnap) {
+          var hasCover = this.hasCover(this.props.item.type);
           this.setState({
             user: userSnap.val(),
-            item: this.props.item
+            item: this.props.item,
+            hasCover: hasCover
           })
         }.bind(this));
       } else {
+        var hasCover = this.hasCover(this.props.item.type);
         this.setState({
           user: this.props.user,
-          item: this.props.item
+          item: this.props.item,
+          hasCover: hasCover
         })
       }
 
@@ -215,8 +265,12 @@ var ItemDetailComponent = createReactClass({
       if (item.type === 'post' || item.type === 'perspective' || item.type === 'answer' || item.type === 'session' || item.type === 'showcase') {
         this.getSeriesItems(itemID);
         this.setState({
+          isLoading: true
+        });
+        /**
+        this.setState({
           showDetail: true,
-        })
+        }) **/
         //this.props.onClick(item, this.state.user, this.state.thumbURL);
       } else {
         browserHistory.push(`/i/${itemID}`);
@@ -234,6 +288,7 @@ var ItemDetailComponent = createReactClass({
     var item  = typeof this.props.item !== 'undefined' ? this.props.item : typeof this.state.item !== 'undefined' ? this.state.item : '';
     var date = new Date(item.createdAt);
     var tagTitle = '';
+    var loading = <div className="Loading-container"><div className="Loader"></div></div>
 
     if (typeof item.tagTitle !== 'undefined') {
       tagTitle = <Link to={`/i/${item.tagID}`}># { item.tagTitle }</Link>;
@@ -244,9 +299,13 @@ var ItemDetailComponent = createReactClass({
     }
 
     if (item !== '') {
-      if ((item.type !== 'question') && this.state.thumbURL !== '') {
+      if ((item.type !== 'question') && item.contentType !== 'postcard') {
         itemImage = <Link to={this.props.myroute} onClick={ this.handleClick }>
                       <CardImg top width="100%" src={ this.state.thumbURL } alt="Card image" />
+                    </Link>
+      } else if (item.contentType === 'postcard') {
+        itemImage = <Link to={this.props.myroute} onClick={ this.handleClick } className="Item-main">
+                      <span className="text-quote"><h1 className="display-5" itemProp="conversation">{ item.title }</h1></span>
                     </Link>
       }
     } 
@@ -261,34 +320,34 @@ var ItemDetailComponent = createReactClass({
     switch (item.type) {
       case 'post': 
         cssTag = 'card-block-post';
-        itemType = ' posted';
+        itemType = ' post';
         break;
       case 'question': 
-        itemType = ' asked';
+        itemType = ' question';
         cssTag = 'card-block-question';
         break;
       case 'answer': 
-        itemType = ' answered';
-        cssTag = 'card-block-answer';
+        itemType = ' answer';
+        cssTag = 'card-block-post';
         break;
       case 'perspective': 
-        itemType = ' added a perspective';
-        cssTag = 'card-block-perspective';
+        itemType = ' perspective';
+        cssTag = 'card-block-post';
         break;
       case 'thread':
-        itemType = ' started a thread';
-        cssTag = 'card-block-thread';
+        itemType = ' thread';
+        cssTag = 'card-block-post';
         break;
       case 'interview':
-        itemType = ' gave an interview';
-        cssTag = 'card-block-interview';
+        itemType = ' interview';
+        cssTag = 'card-block-post';
         break;
       case 'session':
-        itemType = ' requested feedback';
-        cssTag = 'card-block-thread';
+        itemType = ' feedback session';
+        cssTag = 'card-block-post';
         break;
       case 'showcase':
-        itemType = ' added a showcase';
+        itemType = ' showcase';
         cssTag = 'card-block-post';
         break;
       default: 
@@ -301,17 +360,9 @@ var ItemDetailComponent = createReactClass({
     var rightHeader = this.state.showDetail ? closeButton : itemTypeDescription
     var nextItemButton = this.state.showNext ? <span className="next-detail-item"><Link to={this.props.myroute} onClick={ this.handleNextItem.bind(this, null) }><img src={nextButton} alt="next" /></Link></span> : null
     var previousItemButton = this.state.showPrevious ? <span className="previous-detail-item"><Link to={this.props.myroute} onClick={ this.handlePreviousItem.bind(this, null) }><img src={previousButton} alt="next" /></Link></span> : null
-
-
-    return(
-      <Card className="Item-card">
-        <CardHeader className="row">
-          <Col xs={10} sm={9} md={8}>{ userSummaryItem }</Col>
-          { rightHeader }
-        </CardHeader>
-        { this.state.showDetail ? itemDetail : itemImage }
-        { previousItemButton }
-        { nextItemButton }
+    
+    //don't show the title if it's a postcard
+    var itemTitleBlock = item.contentType === 'postcard' ? null : 
         <CardBlock className={cssTag}>
           <CardTitle>
             <Link to={this.props.myroute} onClick={ this.handleClick }>
@@ -319,6 +370,18 @@ var ItemDetailComponent = createReactClass({
             </Link>
           </CardTitle>
         </CardBlock>
+
+    return(
+      <Card className="Item-card">
+        <CardHeader className="row">
+          <Col xs={10} sm={9} md={8}>{ userSummaryItem }</Col>
+          { rightHeader }
+        </CardHeader>
+        { this.state.isLoading ? loading : null }
+        { this.state.showDetail ? itemDetail : itemImage }
+        { previousItemButton }
+        { nextItemButton }
+        { itemTitleBlock }
         <CardFooter>
             <small className="text-muted">{ date.toDateString() }</small>
             <small className="text-muted float-right">{ tagTitle }</small>

@@ -29,8 +29,8 @@ var SearchComponent = createReactClass({
 
 	buildQuery: function(searchTerm) {
 		// this just gets data out of the form
-		var index = "tags";
-		var type = "tags";
+		var index = "channels";
+		var type = "channels";
 		var term = searchTerm;
 		var matchWholePhrase = true;
 

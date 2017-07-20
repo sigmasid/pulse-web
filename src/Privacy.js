@@ -8,8 +8,8 @@ export default class Privacy extends React.Component {
 		<Jumbotron className="Question-header text-center" color="white"><h1>Pulse Privacy Policy</h1></Jumbotron>
       	<ListGroup>
   		    <ListGroupItem>
-				<ListGroupItemText>Pulse is a trusted starting point for getting answers and information directly from experts. You can ask join channels that interest you, browse what others are interested in, ask your questions and get responses directly from selected experts in the field. You can continue the conversation and chat with the experts directly on the platform as well.</ListGroupItemText>
-				<ListGroupItemText>When you use these services—and any others we in the Pulse LLC corporate family roll out, whether in the Pulse app or elsewhere—you’ll share some information with us. We get that that can affect your privacy. So we want to be upfront about the information we collect, how we use it, whom we share it with, and the choices we give you to control, access, and update your information.</ListGroupItemText>
+				<ListGroupItemText>Pulse is a trusted home for professional mobile content. You can join interactive channels that interest you, browse what others are interested in, interact directly with experts & contributors and also apply to become a featured contributor for channels. You can continue the conversation and chat with experts, users & contributors directly on the platform as well.</ListGroupItemText>
+				<ListGroupItemText>When you use these services—and any others we in the Think Apart corporate family roll out, whether in the Pulse app or elsewhere—you’ll share some information with us. We get that that can affect your privacy. So we want to be upfront about the information we collect, how we use it, whom we share it with, and the choices we give you to control, access, and update your information.</ListGroupItemText>
 				<ListGroupItemText>That’s why we’ve written this Privacy Policy. And it’s why we’ve tried to write it in a way that’s blissfully free of the legalese that often clouds these documents. Of course, if you still have questions about anything in our Privacy Policy, just email us.</ListGroupItemText>
 	        </ListGroupItem>
           	<ListGroupItem><ListGroupItemHeading><strong>Information We Collect</strong></ListGroupItemHeading></ListGroupItem>
@@ -19,15 +19,15 @@ export default class Privacy extends React.Component {
 			<ListGroupItem>
 	  		    <ListGroupItemText><strong>1. Information You Choose to Give Us</strong></ListGroupItemText>
 	  		    <ListGroupItemText>When you interact with our services, we collect the information that you choose to share with us. For example, most of our services require you to set up a basic account, so we need to collect a few important details about you, such as a password, an email address, a phone number, and your date of birth. To make it easier for others to find you, we may also ask you to provide us with some additional information that will be publicly visible on our services, such as profile pictures, a name, or other useful identifying information. </ListGroupItemText>
-				<ListGroupItemText>Of course, you’ll also provide us whatever information you send through the services, such as Questions and Answers. Keep in mind that the users you interact with and message can always save that content or copy it outside the app. It probably goes without saying, but we’ll say it anyway: When you contact Pulse Support or communicate with us in any other way, we’ll collect whatever information you volunteer.</ListGroupItemText>
+				<ListGroupItemText>Of course, you’ll also provide us whatever information you send through the services. Keep in mind that the users you interact with and message can always save that content or copy it outside the app. It probably goes without saying, but we’ll say it anyway: When you contact Pulse Support or communicate with us in any other way, we’ll collect whatever information you volunteer.</ListGroupItemText>
 	  		    <ListGroupItemText><strong>2. Information We Get When You Use Our Services</strong></ListGroupItemText>
 				<ListGroupItemText>When you use our services, we collect information about which of those services you’ve used and how you’ve used them. We might know, for instance, that you watched a particular Answer, joined a specific channel, and sent messages to other users. Here’s a fuller explanation of the types of information we collect when you use our services :</ListGroupItemText>	
       			<ListGroup className="showBullets">
-					<ListGroupItem><strong>Usage Information.</strong> We collect information about your activity through our services. For example, we may collect information about how you interact with the services, such as which questions you view or which channels you watch, or which search queries you submit.</ListGroupItem>
+					<ListGroupItem><strong>Usage Information.</strong> We collect information about your activity through our services. For example, we may collect information about how you interact with the services, such as which channels you view or which videos you watch, or which search queries you submit.</ListGroupItem>
 					<ListGroupItem><strong>Content Information. </strong>We collect information about the content you provide, such as if the recipient has viewed the content and the metadata that is provided with the content.</ListGroupItem>
 					<ListGroupItem><strong>Device Information. </strong>We collect device-specific information, such as the hardware model, operating system version, advertising identifier, unique application identifiers, unique device identifiers, browser type, language, wireless network, and mobile network information (including the mobile phone number).</ListGroupItem>
-					<ListGroupItem><strong>Device Phonebook. </strong>Because you may want to share questions, channels or answers with friends we may—with your consent—collect information from your device’s phonebook.</ListGroupItem>
-					<ListGroupItem><strong>Camera and Photos. </strong>Many of our services require us to collect images and other information from your device’s camera and photos. For example, you won’t be able to add Answers or upload photos from your camera roll unless we can access your camera or photos.</ListGroupItem>
+					<ListGroupItem><strong>Device Phonebook. </strong>Because you may want to share content, channels or other information on Pulse with friends we may—with your consent—collect information from your device’s phonebook.</ListGroupItem>
+					<ListGroupItem><strong>Camera and Photos. </strong>Many of our services require us to collect images and other information from your device’s camera and photos. For example, you won’t be able to add perspectives or interviews or upload photos from your camera roll unless we can access your camera or photos.</ListGroupItem>
 					<ListGroupItem><strong>Location Information. </strong>When you use our services we may collect information about your location. With your consent, we may also collect information about your precise location using methods that include GPS, wireless networks, cell towers, Wi-Fi access points, and other sensors, such as gyroscopes, accelerometers, and compasses.</ListGroupItem>
 					<ListGroupItem><strong>Information Collected by Cookies and Other Technologies. </strong>Like most online services and mobile applications, we may use cookies and other technologies, such as web beacons, web storage, and unique advertising identifiers, to collect information about your activity, browser, and device. We may also use these technologies to collect information when you interact with services we offer through one of our partners, such as commerce features. Most web browsers are set to accept cookies by default. If you prefer, you can usually remove or reject browser cookies through the settings on your browser or device. Keep in mind, though, that removing or rejecting cookies could affect the availability and functionality of our services. </ListGroupItem>
 					<ListGroupItem><strong>Log Information. </strong>We also collect log information when you use our website. That information includes, among other things:
@@ -53,7 +53,7 @@ export default class Privacy extends React.Component {
 					<ListGroupItem>send you communications, including by email. For example, we may use email to respond to support inquiries or to share information about our products, services, and promotional offers that we think may interest you.</ListGroupItem>
 					<ListGroupItem>monitor and analyze trends and usage.</ListGroupItem>
 					<ListGroupItem>personalize the services by, among other things, suggesting experts or channels you would be interested in.</ListGroupItem>
-					<ListGroupItem>contextualize your experience by, among other things, tagging your Answers using your precise location data (if, of course, you’ve consented to us collecting that data) and applying other labels based on the content.</ListGroupItem>
+					<ListGroupItem>contextualize your experience by, among other things, tagging your content using your precise location data (if, of course, you’ve consented to us collecting that data) and applying other labels based on the content.</ListGroupItem>
 					<ListGroupItem>enhance the safety and security of our products and services.</ListGroupItem>
 					<ListGroupItem>verify your identity and prevent fraud or other unauthorized or illegal activity.</ListGroupItem>
 					<ListGroupItem>use information we’ve collected from cookies and other technology to enhance the services and your experience with them.</ListGroupItem>
@@ -72,13 +72,13 @@ export default class Privacy extends React.Component {
 						<ListGroupItem>information about you, such as your name, public profile and contact information.</ListGroupItem>
 						<ListGroupItem>information about how you have interacted with the services, such as which channels you follow, and other information that will help Pulse understand your connections with others using the services. </ListGroupItem>
 						<ListGroupItem>any additional information you have consented for us to share. For example, when you let us access your device phonebook, we may share information about you with other users who have your phone number in their device phonebook.</ListGroupItem>
-						<ListGroupItem>content you post or send will be shared with other Pulse users; most of the time all Answers posted on Pulse are public and are viewable by anyone using our service. </ListGroupItem>
+						<ListGroupItem>content you post or send will be shared with other Pulse users; most of the time all content posted on Pulse is public and is viewable by anyone using our service. </ListGroupItem>
 						</ListGroup>
 					</ListGroupItem>
 					<ListGroupItem><strong>With all users, our business partners, and the general public. </strong>We may share the following information with all users as well as with our business partners and the general public:
 						<ListGroup className="showBulletsNested">
 						<ListGroupItem>public information like your public profile name, profile pictures.</ListGroupItem>
-						<ListGroupItem>any answers that you submit to questions in public channels. This content may be viewed by the public at large or rebroadcast by our business partners.</ListGroupItem>
+						<ListGroupItem>any content that you create. This content may be viewed by the public at large or rebroadcast by our business partners.</ListGroupItem>
 						</ListGroup>
 					</ListGroupItem>
 					<ListGroupItem><strong>With third parties. </strong>We may share your information with the following third parties:</ListGroupItem>
@@ -107,7 +107,7 @@ export default class Privacy extends React.Component {
 			</ListGroupItem>
           	<ListGroupItem>
           		<ListGroupItemHeading><strong>How Long We Keep Your Content</strong></ListGroupItemHeading>
-				<ListGroupItemText>Most content, questions and answers that you share on Pulse are stored as long as unnecessary unless you explicitly request the content to be removed from our service. To request your content be removed, please email us at hi@checkpulse.co and we will be happy to help you. Finally, we may also retain certain information in backup for a limited period of time or as required by law.</ListGroupItemText>
+				<ListGroupItemText>Most content that you share on Pulse are stored as long as unnecessary unless you explicitly request the content to be removed from our service. To request your content be removed, please email us at hi@checkpulse.co and we will be happy to help you. Finally, we may also retain certain information in backup for a limited period of time or as required by law.</ListGroupItemText>
 			</ListGroupItem>
           	<ListGroupItem>
           		<ListGroupItemHeading><strong>Control Over Your Information</strong></ListGroupItemHeading></ListGroupItem>

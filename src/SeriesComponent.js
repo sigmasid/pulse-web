@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { Alert, Row, Col, Jumbotron, Container } from 'reactstrap';
 
 import ItemDetail from './ItemDetailComponent.js';
-import ItemVideoComponent from './ItemVideoComponent.js';
+import ItemContentComponent from './ItemContentComponent.js';
 import GetAppModal from './GetAppModal.js';
 
 import Helmet from 'react-helmet';
@@ -21,14 +21,13 @@ var SeriesHeader = createReactClass({
       return(
         <Jumbotron className="text-center">
           <h1 className="display-4">{this.props.selectedSeries.title}</h1>
-          <hr className="my-2" />
-          <p className="lead">{this.props.selectedSeries.description}</p>
+          <p className="lead">{typeof this.props.selectedSeries.description === 'undefined' ? this.props.selectedSeries.type : this.props.selectedSeries.description }</p>
         </Jumbotron>
       )
     };
     return(
       <Jumbotron>
-        <h1 className="display-4">Loading Pulse</h1>
+        <h1 className="display-4 container text-center">Loading Pulse...</h1>
       </Jumbotron>
     );
     }
@@ -96,7 +95,7 @@ var SeriesComponent = createReactClass({
         this.setState({
           series: snapshot.val()
         })
-        this.context.setSelected(snapshot.val(), true);
+        //this.context.setSelected(snapshot.val(), true);
       }.bind(this));  
 
       firebase.database().ref('itemCollection').child(seriesID).once('value').then(function(snapshot) {
@@ -114,7 +113,7 @@ var SeriesComponent = createReactClass({
       this.setState({
         series: snapshot.val()
       })
-      this.context.setSelected(snapshot.val(), true);
+      //this.context.setSelected(snapshot.val(), true);
     }.bind(this));  
 
     firebase.database().ref('itemCollection').child(seriesID).once('value').then(function(snapshot) {
@@ -132,8 +131,8 @@ var SeriesComponent = createReactClass({
       return typeof series.title !== 'undefined' ? series.title.charAt(0).toUpperCase() + series.title.slice(1) : '';
     };
 
-    var videoDetail = (this.state.showDetail) ?
-                      <ItemVideoComponent 
+    var itemDetail = (this.state.showDetail) ?
+                      <ItemContentComponent 
                         user={this.state.selectedUser} 
                         contentURL={this.state.selectedItem.url} 
                         item={this.state.selectedItem} 
@@ -185,7 +184,7 @@ var SeriesComponent = createReactClass({
               { detail }
             </Row>
             <Row className={ this.state.showDetail ? 'show pb-4' : 'invisible'}>
-              { this.state.showDetail ? videoDetail : null }
+              { this.state.showDetail ? itemDetail : null }
             </Row>
         </Container>
       </Container>

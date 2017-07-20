@@ -10,7 +10,7 @@ export default class TopNav extends React.Component {
 
   render() {
     return(
-      <Navbar className="navbar fixed-top container">
+      <Navbar className="navbar fixed-top container hidden-xs-down">
         <Nav className="mr-auto">
           <Breadcrumb tag="nav" className="navbar-brand">
             <BreadcrumbItem tag={Link} to={"/"} className="navbar-toggler-left breadcrumb-item">

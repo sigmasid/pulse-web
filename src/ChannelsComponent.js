@@ -18,15 +18,14 @@ var ChannelHeader = createReactClass({
       return(
         <Jumbotron className="text-center">
           <h1 className="display-4">{this.props.selectedChannel.title}</h1>
-          <hr className="my-2" />
           <p className="lead">{this.props.selectedChannel.description}</p>
-          <Button color="primary hidden-sm-down" onClick={this.props.onClick.bind(null, true)}>Subscribe</Button>
+          <Button color="primary hidden-sm-down font-weight-bold" onClick={this.props.onClick.bind(null, true)}>Subscribe</Button>
         </Jumbotron>
       )
     };
     return(
       <Jumbotron>
-        <h1 className="display-4">Loading Pulse</h1>
+        <h1 className="display-4 container text-center">Loading Pulse</h1>
       </Jumbotron>
     );
     }
@@ -87,22 +86,46 @@ var ChannelsComponent = createReactClass({
     }
   },
 
+  componentWillReceiveProps: function (nextProps) {
+    if (this.props.params.channelID !== nextProps.params.channelID) {
+      var channelID = this.props.params.channelID; 
+
+      if (typeof this.props.selected.title !== 'undefined') {
+        this.setState({
+          channelID: channelID,
+          selectedChannel: this.props.selected
+        });
+        this.context.setSelected(this.props.selected, true);
+      } else {
+          firebase.database().ref('/channels/' + channelID).once('value').then(function(snapshot) {
+          this.setState({
+            channelID: channelID,
+            selectedChannel: snapshot.val()
+          });
+          this.context.setSelected(snapshot.val(), true);
+        }.bind(this));
+      }
+    }
+  },
+
   componentWillMount: function() {
     var channelID = this.props.params.channelID; 
-
     if (typeof this.props.selected.title !== 'undefined') {
       this.setState({
         channelID: channelID,
         selectedChannel: this.props.selected
       });
+      this.context.setSelected(this.props.selected, true);
     } else {
         firebase.database().ref('/channels/' + channelID).once('value').then(function(snapshot) {
         this.setState({
           channelID: channelID,
           selectedChannel: snapshot.val()
-        })
+        });
+        this.context.setSelected(snapshot.val(), true);
       }.bind(this));
     }
+
     firebase.database().ref('channelItems').child(channelID).orderByChild('createdAt').limitToLast(50).once('value').then(function(snapshot) {
         var orderedItems = {};
 

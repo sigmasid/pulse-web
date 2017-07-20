@@ -8,6 +8,7 @@ import { Card, CardImg, CardBlock, CardTitle} from 'reactstrap';
 import pulseLogo from './images/pulse-logo-text-only.png'; // Tell Webpack this JS file uses this image
 import SearchComponent from './SearchComponent.js';
 var createReactClass = require('create-react-class');
+const util = require('util'); //print an object
 
 var IndexHeader = createReactClass({
   render: function() {
@@ -24,15 +25,20 @@ var IndexHeader = createReactClass({
 });
 
 var SearchItem = createReactClass({
+  contextTypes: {
+    setSelected: React.PropTypes.func.isRequired
+  },
+
   render: function() {
+    console.log("passed props are "+util.inspect(this.props.channel));
     return(
       <Card className="Channel-card">
-        <Link to={`/c/${this.props.props.channel._id}`} onClick={this.context.setSelected.bind(null,this.props.channel, true)}>
-          <CardImg top width="100%" src={ this.state.thumbURL } alt="Card image cap" />
+        <Link to={`/c/${this.props.channel._id}`} onClick={this.context.setSelected.bind(null,this.props.channel, true)}>
+          <CardImg top width="100%" src={this.props.channel._source.url}  alt="Card image cap" />
           <CardBlock>
             <CardTitle className="row">
               <Col xs={12}>
-                { this.props.channel.title }
+                { this.props.channel._source.title }
               </Col>  
             </CardTitle>
             <small>{ this.props.channel._source.description }</small>
@@ -109,6 +115,7 @@ var IndexComponent = createReactClass({
   },
 
   handleSearch: function(results) {
+    console.log("response is "+util.inspect(results));
     this.setState({
       headerText: 'Search Results',
       results: results.hits,
