@@ -19,7 +19,7 @@ var ChannelHeader = createReactClass({
         <Jumbotron className="text-center">
           <h1 className="display-4">{this.props.selectedChannel.title}</h1>
           <p className="lead">{this.props.selectedChannel.description}</p>
-          <Button color="primary hidden-sm-down font-weight-bold" onClick={this.props.onClick.bind(null, true)}>Subscribe</Button>
+          <Button color="primary hidden-sm-down Subscribe-button" onClick={this.props.onClick.bind(null, true)}>Subscribe</Button>
         </Jumbotron>
       )
     };
@@ -135,7 +135,7 @@ var ChannelsComponent = createReactClass({
 
         this.setState({
           channelItems: orderedItems
-        })
+        });
     }.bind(this));  
   },
 
@@ -175,14 +175,14 @@ var ChannelsComponent = createReactClass({
       return null;
     });
 
-    if (this.state.channelItems) {
+    if (this.state.channelItems !== 'undefined') {
       detail = <InfiniteScroll
                   pageStart={0}
                   element={'span'}
                   loadMore={this.loadMore}
                   hasMore={this.state.hasMore}
                   loader={this.state.hasMore ? <Alert className="pb-3 col-12 col-md-8 offset-md-2" color="warning text-center"><strong>Loading ...</strong></Alert> : <span></span>} >
-                  { <Row>{cItems}</Row> }
+                  {cItems}
               </InfiniteScroll>
     } else {
       detail = <Alert className="col-12" color="warning text-center">
@@ -191,7 +191,7 @@ var ChannelsComponent = createReactClass({
     } 
 
     return (
-      <Container fluid>
+      <Container fluid className="Channel-content">
         {addMeta}
         <ChannelHeader selectedChannel={this.state.selectedChannel} onClick={this.toggleGetApp} />
         {this.state.showGetApp ? <GetAppModal modal={this.state.showGetApp} onClose={this.toggleGetApp}/> : ''}

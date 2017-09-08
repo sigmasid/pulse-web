@@ -8,7 +8,7 @@ var VideoItem = createReactClass({
   render: function() {
     return(
     <div className="embed-responsive Item-video embed-responsive-9by16">
-      <video autoPlay muted playsInline className="embed-responsive-item" src={this.props.videoURL}></video>
+      <video autoPlay muted playsInline src={this.props.videoURL}></video>
     </div>
     )}
 });
@@ -64,7 +64,7 @@ var ItemContentComponent = createReactClass({
     if (this.state.contentURL !== '' && (this.props.item.contentType === "recordedVideo" ||  this.props.item.contentType === "albumVideo")) {
       itemContent = <CardTitle itemProp="video" itemScope itemType="http://schema.org/VideoObject"><VideoItem videoURL={this.state.contentURL} /></CardTitle>
     } else if (this.state.contentURL !== '' && (this.props.item.contentType === "recordedImage" ||  this.props.item.contentType === "albumImage")) {
-      itemContent = <CardTitle itemProp="image" itemScope itemType="http://schema.org/ImageObject"><CardImg top width="100%" src={this.state.contentURL} alt="pulse image" /></CardTitle>
+      itemContent = <CardTitle itemProp="image" itemScope itemType="http://schema.org/ImageObject" className="text-center"><CardImg top src={this.state.contentURL} alt="pulse image" /></CardTitle>
     } else if (this.props.item.contentType === "postcard") {
       itemContent = <span className="text-quote"><h1 className="display-5" itemProp="conversation">{ itemTitle }</h1></span>
     }

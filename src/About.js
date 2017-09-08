@@ -11,6 +11,12 @@ var About = createReactClass({
     	setSelected: React.PropTypes.func.isRequired
     },
 
+	componentWillMount: function() {
+    	var selectedNav = {};
+    	selectedNav["title"] = "About";
+	    this.context.setSelected(selectedNav, true);
+	},
+
   	getInitialState: function() {
     	return {
     		activeTab: '1'
@@ -128,7 +134,7 @@ var Contact = createReactClass({
     	<Container>
         <h3 className="mt-3 mb-5">Contact</h3>
         <p>we are a fast growing San Francisco based team!</p>
-        <p>want to get in touch? interested in joining the team? send us a note at <strong>hi@checkpulse.co</strong></p>
+        <p>want to get in touch? interested in joining the team? send us a note at <strong>hi@getpulse.tv</strong></p>
 	    </Container>
   	)
   }

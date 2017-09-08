@@ -6,6 +6,8 @@ import { Alert, Container, Jumbotron, Col, Row } from 'reactstrap';
 import ItemDetail from './ItemDetailComponent.js';
 import ItemContentComponent from './ItemContentComponent.js';
 import Helmet from 'react-helmet';
+import GetAppModal from './GetAppModal.js';
+
 var createReactClass = require('create-react-class');
 
 //const util = require('util') //print an object
@@ -46,21 +48,21 @@ var UserProfileComponent = createReactClass({
   	},
 
   	showDetail: function(selected, selectedUser, selectedThumbURL) {
-    this.setState({
-      showDetail: true,
-      selectedUser: selectedUser,
-      selectedItem: selected,
-      selectedThumbURL: selectedThumbURL
-    })
-  },
+	    this.setState({
+	      showDetail: true,
+	      selectedUser: selectedUser,
+	      selectedItem: selected,
+	      selectedThumbURL: selectedThumbURL
+	    })
+  	},
 
-  hideDetail: function() {
-    this.setState({
-      selectedItem: '',
-      selectedUser: '',
-      showDetail: false
-    })
-  },
+  	hideDetail: function() {
+	    this.setState({
+	      selectedItem: '',
+	      selectedUser: '',
+	      showDetail: false
+	    })
+  	},
 
 	getInitialState: function() {
 	    return {
@@ -72,9 +74,9 @@ var UserProfileComponent = createReactClass({
 
 	toggle: function(tab) {
 		if (this.state.activeTab !== tab) {
-		this.setState({
-			activeTab: tab
-		});
+			this.setState({
+				activeTab: tab
+			});
 		}
 	},
 
@@ -138,12 +140,13 @@ var UserProfileComponent = createReactClass({
               </Alert>
 
 	    return(
-	    	<Container fluid>
+	    	<Container fluid className="User-content">
 	    		{addMeta}
 	          	<UserProfileHeader user={this.state.user} />
+      	        {this.state.showGetApp ? <GetAppModal modal={this.state.showGetApp} onClose={this.toggleGetApp}/> : ''}
                 <Container>
                     <Row className={ this.state.showDetail ? 'hidden-xs-up' : ''}>
-		              	<Row className="Card-detail">{ detail }</Row>
+		              	<span className="Card-detail">{ detail }</span>
 		            </Row>
                     <Row className={ this.state.showDetail ? 'show pb-4' : 'invisible'}>
                 		{ this.state.showDetail ? itemDetail : null }

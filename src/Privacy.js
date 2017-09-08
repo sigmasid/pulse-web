@@ -1,8 +1,18 @@
 import React from 'react'
 import { ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, Jumbotron, Container } from 'reactstrap';
 
-export default class Privacy extends React.Component {	
-  render() {
+export default class Privacy extends React.Component {
+    static contextTypes = {
+    	setSelected: React.PropTypes.func.isRequired
+  	}
+
+	componentWillMount() {
+		var selectedNav = {};
+		selectedNav["title"] = "Privacy";
+	    this.context.setSelected(selectedNav, true);
+	}
+
+	render() {
     return (
 	<Container className="privacy">
 		<Jumbotron className="Question-header text-center" color="white"><h1>Pulse Privacy Policy</h1></Jumbotron>
@@ -107,7 +117,7 @@ export default class Privacy extends React.Component {
 			</ListGroupItem>
           	<ListGroupItem>
           		<ListGroupItemHeading><strong>How Long We Keep Your Content</strong></ListGroupItemHeading>
-				<ListGroupItemText>Most content that you share on Pulse are stored as long as unnecessary unless you explicitly request the content to be removed from our service. To request your content be removed, please email us at hi@checkpulse.co and we will be happy to help you. Finally, we may also retain certain information in backup for a limited period of time or as required by law.</ListGroupItemText>
+				<ListGroupItemText>Most content that you share on Pulse are stored as long as necessary unless you explicitly request the content to be removed from our service. To request your content be removed, please email us at hi@getpulse.tv and we will be happy to help you. Finally, we may also retain certain information in backup for a limited period of time or as required by law.</ListGroupItemText>
 			</ListGroupItem>
           	<ListGroupItem>
           		<ListGroupItemHeading><strong>Control Over Your Information</strong></ListGroupItemHeading></ListGroupItem>
@@ -116,7 +126,7 @@ export default class Privacy extends React.Component {
 				<ListGroup className="showBullets">
 				<ListGroupItem>Access and Updates. We strive to let you access and update most of the personal information that we have about you. There are limits though to the requests we’ll accommodate. We may reject a request for a number of reasons, including, for example, that the request risks the privacy of other users, requires technical efforts that are disproportionate to the request, is repetitive, or is unlawful. You can access and update most of your basic account information right in the app by visiting the app’s Profile page. Because your privacy is important to us, we may ask you to verify your identity or provide additional information before we let you access or update your personal information. We will try to update and access your information for free, but if it would require a disproportionate effort on our part, we may charge a fee. We will of course disclose the fee before we comply with your request.</ListGroupItem>
 				<ListGroupItem>Revoking Permissions. If you change your mind about our ongoing ability to collect information from certain sources that you have already consented to, such as your phonebook or location services, you can simply revoke your consent by changing the settings on your device if your device offers those options. Of course, if you do that, certain services may lose full functionality.</ListGroupItem>
-				<ListGroupItem>Account Deletion. While we hope you’ll remain a lifelong Pulse user, if for some reason you ever want to delete your account, just email us at hi@checkpulse.co. </ListGroupItem>
+				<ListGroupItem>Account Deletion. While we hope you’ll remain a lifelong Pulse user, if for some reason you ever want to delete your account, just email us at hi@getpulse.tv. </ListGroupItem>
 				</ListGroup>
 			</ListGroupItem>
           	<ListGroupItem>

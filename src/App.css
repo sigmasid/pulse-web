@@ -1,21 +1,25 @@
-@import url('https://fonts.googleapis.com/css?family=PT+Sans|Raleway:400,900');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,900');
 
-h1, h2, h3, h4, h5, h6, .display-3, .display-4, .display-5, ul a, li a, a, button {
-  font-family: 'Raleway', sans-serif;
-}
-
-p, .lead, small {
-  font-family: 'PT Sans', sans-serif;
+body, button {
+  font-family: 'Montserrat', sans-serif;
 }
 
 .display-3, .display-4 {
   font-weight: 600;
 }
 
+:focus {
+  outline: none;
+}
+
+button, .btn {
+  border-radius: 0px;
+  cursor: pointer;
+}
+
 @media (max-width: 991px) {
   h4 {
     font-size: 1rem; 
-    font-family: 'Raleway', sans-serif;
   }
 }
 
@@ -77,9 +81,22 @@ a {
   color: black;
 }
 
-a:hover, a:active, a:visited {
+a:link, a:visited {
   text-decoration: none;
-  color: black;
+  border-bottom: 2px solid transparent;
+  transition: border .3s ease-in-out,color .3s ease-in-out;
+  color: #000;
+}
+
+a:hover {
+  text-decoration: none;
+  color: #000;
+  border-color: #3DC7E8;
+  transition: border .1s ease-in-out,color .1s ease-in-out;
+}
+
+.btn-primary:active, .btn-primary.active, .show > .btn-primary.dropdown-toggle, .btn-primary:hover {
+  background-color: white;
 }
 
 //needs to be applied to the parent item
@@ -101,10 +118,6 @@ a:hover, a:active, a:visited {
   .padding-0-mobile {
     padding: 0 !important;
   }
-
-  .bottom-nav .ml-auto {
-    margin: 0 auto;
-  }
 }
 
 .btn-primary {
@@ -120,9 +133,23 @@ a:hover, a:active, a:visited {
    padding: 0;
 }
 
-.tab-content, .Index-content, .Answers-content, .Profile-expertise{
-  min-height: 600px;
+.opacity-0 {
+  opacity: 0;
 }
+
+/** MAIN CONTAINER FRAMES **/
+.Channel-content, .Index-content, .Answers-content, .User-content, .Series-content, .Container-home-fluid {
+  min-height: 87vh;
+}
+
+.Index-content a:hover, .Channel-content a:hover, .User-content a:hover {
+  color: black;
+}
+
+.Index-content .blockquote {
+  font-weight: 600;
+}
+
 
 .img-thumbnail {
   border: 0px solid; 
@@ -139,7 +166,7 @@ a:hover, a:active, a:visited {
   }
 }
 
-//** HOME **/
+//** START NEXT BUTTONS **/
 
 //not sure why needs to be done twice but container padding gets lost if not
 .next-button, .previous-button {
@@ -151,27 +178,52 @@ a:hover, a:active, a:visited {
   max-width: 20px;
 }
 
+@media (max-width: 575px) {
+  .next-button img, .previous-button img, .next-detail-item img, .previous-detail-item img {
+    max-width: 15px;
+  }
+}
+
+.next-button, .previous-button {
+  background:rgba(0,0,0,0.0);
+  border: 0px solid;
+}
+
+.next-detail-item, .previous-detail-item {
+  display: flex;
+  align-items: center;
+}
+
 .next-detail-item {
-  position: absolute;
-  top: 48%;
-  right: 5px;
-  padding: 10px;
-  background: whitesmoke;
+  padding-left: 10px;
 }
 
 .previous-detail-item {
-  position: absolute;
-  top: 48%;
-  left: 5px;
-  padding: 10px;
-  background: whitesmoke;
+  padding-right: 10px;
+}
+/** END NEXT BUTTON **/
+
+.Main-container {
+  min-height: 87vh;
 }
 
 .Container-home {
   min-height: 700px;
   min-height: 80vh;
-  padding-top: 20px;
+  padding-top: 50px;
   padding-bottom: 20px;
+}
+
+@media (max-width: 991px) {
+  .Container-home {
+    padding-top: 60px;
+  }
+}
+
+@media (max-width: 768px) {
+  .Container-home {
+    padding-top: 40px;
+  }
 }
 
 .Container-home-fluid .alert {
@@ -179,8 +231,8 @@ a:hover, a:active, a:visited {
 }
 
 .Container-home-fluid .alert img {
-  background: white;
-  padding: 5px;
+  //background: white;
+  padding: 3px;
 }
 
 .Container-home-fluid .alert .row {
@@ -189,27 +241,38 @@ a:hover, a:active, a:visited {
 }
 
 .Container-home-fluid .alert-info, .vision-container .jumbotron {
-  background: rgb(61,198,233); /* Old browsers */
-  background: -moz-linear-gradient(-45deg, rgba(61,198,233,1) 1%, rgba(255,223,81,1) 100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(-45deg, rgba(61,198,233,1) 1%,rgba(255,223,81,1) 100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(135deg, rgba(61,198,233,1) 1%,rgba(255,223,81,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  background: whitesmoke;
   border: 0px solid;
   border-radius: 0px;
+  padding: 0px;
+  font-size: 0.8rem;
 }
 
 .Container-home-fluid .alert-info a, .Container-home-fluid .alert-info h5 {
-  color: white;
+  color: black;
   padding-bottom: 0;
   margin-bottom: 0;
+  font-size: 1.1rem;
 }
 
-.next-button, .previous-button {
-  background:rgba(0,0,0,0.0);
-  border: 0px solid;
+.Container-home .card-title {
+  font-size: 3rem;
 }
 
-.next-button img, .previous-button img {
-  max-width: 20px;
+@media (max-width: 991px) {
+  .Container-home .card-title {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 767px) {
+  .Container-home-fluid .alert-info h5 {
+    font-size: 0.8rem;
+  }
+
+  .Container-home .card-title {
+    font-size: 2rem;
+  }
 }
 
 .Home-carousel .slider-slide img {
@@ -219,11 +282,16 @@ a:hover, a:active, a:visited {
 
 .Home-carousel .card-title {
   padding-bottom: 40px;
-  font-weight: 600;
+  font-weight: 900;
 }
 
 @media (max-width: 767px) {
-  .Home-carousel .card-title, .Home-carousel .card-text {
+  .Home-carousel .card-title {
+    font-size: 1.25rem;
+    padding-bottom: 0px;
+  }
+
+  .Home-carousel .card-text {
     font-size: 80%;
     padding-bottom: 0px;
   }
@@ -235,7 +303,12 @@ a:hover, a:active, a:visited {
 }
 
 @media (max-width: 575px) {
-  .Home-carousel .card-title, .Home-carousel .card-text {
+  .Home-carousel .card-title {
+    padding-bottom: 0px;
+    font-size: 1.25rem;
+  }
+
+  .Home-carousel .card-text {
     padding-bottom: 0px;
     font-size: 80%;
   }
@@ -292,10 +365,6 @@ a:hover, a:active, a:visited {
   border: 0px solid;
 }
 
-.vision-container .jumbotron p, .vision-container .jumbotron h5 {
-  color: white;
-}
-
 .vision-container h5 {
   font-weight: 600;
 }
@@ -331,15 +400,18 @@ a:hover, a:active, a:visited {
 @media (min-width: 576px) {
   .About-container .jumbotron {
     padding: 2rem 1rem;
+    border: none;
+  }
+
+  .About-container .jumbotron h5 {
+    font-size: 2rem;
   }
 }
 
 .About-container .value-prop-nav a {
-  font-weight: 600;
+  font-weight: 300;
   border-radius: 0px;
-  border: 1px solid white;
   border-radius: 0px;
-  color: white;
 }
 
 .About-container .nav-tabs {
@@ -347,12 +419,20 @@ a:hover, a:active, a:visited {
 }
 
 .About-container .about-nav .nav-link.active {
-    font-weight: 600;
-    border: none;
-    background: none;
+  font-weight: 900;
+  border: none;
+  background: none;
+  color: black;
 }
 
-.About-container .jumbotron .nav-pills .nav-link.active {
+.About-container .nav-pills .nav-link.active {
+  background-color: white;
+  color: black;
+  font-weight: 900;
+}
+
+
+.About-container .jumbotron a:focus, .About-container .jumbotron a:hover, .About-container .jumbotron a:active {
   background-color: white;
   color: black;
 }
@@ -396,26 +476,28 @@ a:hover, a:active, a:visited {
     border: none;
     background: none;
   }
-}
 
-.nav-tabs .nav-link:hover{
-  border: 0px solid;
-  //border-bottom: 1px solid #3DC7E8;
-}
+  .value-prop-nav .nav-item {
+    padding-right: 0px;
+  }
 
-.About-container .jumbotron a:focus, .About-container .jumbotron a:hover, .About-container .jumbotron a:active {
-  background-color: white;
-  color: black;
+  .About-container .nav-pills .nav-link {
+    background-color: white;
+    color: black;
+    font-weight: 300;
+    font-weight: 0.8rem;
+  }
 }
 
 //** NAV BAR **/
 .Channel-sub-nav .nav-item a:hover {
-  background: lightGrey;
+  //background: lightGrey;
 }
 
-.navbar {
+.top-nav{
   background-color: white;
-  min-height: 60px;
+  border-bottom: 1px solid #eee;
+  height: 60px;
 }
 
 .navbar-brand {
@@ -425,21 +507,16 @@ a:hover, a:active, a:visited {
   line-height: 40px;
 }
 
+.navbar-brand a:focus, .navbar-brand a:hover {
+  border-color: white;
+}
+
 .navbar-brand img {
   padding-right: 10px
 }
 
-.nav-pills .nav-link.active {
-    background-color: #3DC7E8;
-}
-
-.mobile-links .nav-pills .nav-link {
-  color: black;
-}
-
-.mobile-links .nav-pills .nav-link.active {
-  background: white;
-  color: #3DC7E8;
+.navbar .nav-preview-button {
+  margin-right: 100px;
 }
 
 .nav-item {
@@ -448,12 +525,29 @@ a:hover, a:active, a:visited {
 }
 
 .nav-logo {
-  max-height: 40px;
+  max-height: 30px;
 }
 
-@media (max-width: 575px) {
+.nav-tabs .nav-link{
+  font-size: 0.8rem;
+  border: 0px solid transparent;
+}
+
+.nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
+  border: white;
+}
+
+.bottom-nav a {
+  font-size: 0.8rem;
+}
+
+@media (max-width: 768px) {
   .bottom-nav {
     margin-bottom: 60px;
+  }
+
+  .bottom-nav .ml-auto {
+    margin: 0 auto;
   }
 }
 
@@ -484,13 +578,30 @@ a:hover, a:active, a:visited {
     font-style: normal;
 }
 
-.navbar button, .Get-app-btn {
+
+
+.navbar button {
   margin-top: 2.5px; 
-  color: whitesmoke;
-  background-color: black;
+  background: black;
+  color: white;
   border: none;
-  font-weight: 800;
   font-size: 0.8rem;
+  background: white;
+  font-weight: 300;
+}
+
+.Get-app .btn-primary, .Subscribe-button {
+  background: black;
+  color: white;
+  font-weight: 900;
+  font-size: 0.8rem; 
+  border:none;
+}
+
+.Get-app .btn-primary:hover, .Subscribe-button:hover {
+  font-weight: 900;
+  color: white;
+  background: #3DC7E8;
 }
 
 @media (max-width: 575px) {
@@ -543,12 +654,18 @@ a:hover, a:active, a:visited {
   height: 575px;
 }
 
+.Item-video video, .embed-responsive video {
+  position: relative;
+}
+
 .User-profile-header {
   padding: 2rem 2rem;
 }
 
-.Card-detail {
-  width: 100%;
+@media (min-width: 576px) {
+  .Card-detail {
+    width: 100%;
+  }
 }
 
 .Channel-sub-nav, .User-sub-nav {
@@ -559,6 +676,62 @@ a:hover, a:active, a:visited {
 .Channel-content .card-header, .Item-content .card-header, .Item-card .card-header {
   border-bottom: none;
   background: none;
+}
+
+/** LIST CARD **/
+.List-card .card-header {
+  border-bottom: none;
+}
+
+.List-card img {
+  max-width: 100%;
+  height: auto;
+}
+
+.List-card .add-border {
+  border: 3px solid #3DC7E8;
+}
+
+.List-card .list-group-item {
+  border: 0px solid;
+  border-top: 1px solid rgba(0, 0, 0, 0.125);
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
+.List-card h5 {
+  font-weight: 600;
+}
+
+@media (max-width: 991px) {
+  .List-card .list-group-item {
+    padding: 0.75rem 0.5rem;
+  }
+
+  .List-card .List-cols {
+    padding-right: 10px;
+    padding-left: 10px;
+  }
+}
+
+@media (max-width: 575px) {
+  .List-card .list-group-item {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .List-card .List-cols {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+}
+
+
+/** END LIST CARD **/
+
+.Item-card-detail {
+  margin: 0 auto;
+  display: flex;
 }
 
 .card-footer {
@@ -580,11 +753,10 @@ a:hover, a:active, a:visited {
 
 .Channel-card .card-title, .Channel-card .card-title a, .Channel-card .card-text {
   color: black;
-  font-weight: 800;
 }
 
 .Channel-card .card-title {
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   background-color: rgba(255, 255, 255, 0.5);
   margin-bottom: 0.25rem;
 }
@@ -622,13 +794,30 @@ a:hover, a:active, a:visited {
 
 .Item-card .card-block-post a {
   font-size: 1.25rem;
-  font-weight: 200;
   cursor: pointer; 
+}
+
+@media (max-width: 575px) {
+  .Item-card .card-block-post a {
+    font-size: 0.9rem;
+    cursor: pointer; 
+  }
+
+  .Item-card .card-footer {
+    padding: 0.5rem 0.5rem;
+  }
+
+  .Channel-card .card-block {
+    padding: 0.5rem;
+  }
+
+  .Channel-card .card-title {
+    font-size: 1.0rem;
+  }
 }
 
 .Item-card .card-block-question a {
   font-size: 1.25rem;
-  font-weight: 300;
   cursor: pointer; 
 }
 
@@ -645,7 +834,7 @@ a:hover, a:active, a:visited {
   border: none;
 }
 
-.Item-content .card-title {
+.Item-content .card-title, .Item-card .card-title  {
   margin-bottom: 0px;
 }
 
@@ -657,7 +846,7 @@ a:hover, a:active, a:visited {
 }
 
 .Item-content img {
-  height: 575px;
+  max-width: 100%;
   object-fit: cover;
   object-position: center;
 }
@@ -671,7 +860,6 @@ a:hover, a:active, a:visited {
 }
 
 .Item-content .text-quote:before { 
-    font-family: 'Raleway', sans-serif;
     content: open-quote;
     font-weight: bold;
     position:absolute;
@@ -681,7 +869,6 @@ a:hover, a:active, a:visited {
 } 
 
 .Item-content .text-quote:after { 
-    font-family: 'Raleway', sans-serif;
     content: close-quote;
     font-weight: bold;
     position:absolute;
@@ -691,7 +878,6 @@ a:hover, a:active, a:visited {
 }
 
 .Item-main .text-quote {
-  font-family: 'Raleway', sans-serif;
   height: 575px;
   display: flex;
   flex-direction: column;
@@ -701,7 +887,6 @@ a:hover, a:active, a:visited {
 }
 
 .Item-main .text-quote:before { 
-    font-family: 'Raleway', sans-serif;
     content: open-quote;
     font-weight: bold;
     position:absolute;
@@ -711,7 +896,6 @@ a:hover, a:active, a:visited {
 } 
 
 .Item-main .text-quote:after { 
-    font-family: 'Raleway', sans-serif;
     content: close-quote;
     font-weight: bold;
     position:absolute;
@@ -757,6 +941,11 @@ a:hover, a:active, a:visited {
   .Channel-card .card-title {
     min-height: 0px;
   }
+
+  .Channel-card h4 {
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
 }
 
 .Hash {
@@ -800,7 +989,7 @@ a:hover, a:active, a:visited {
   }
 
   .card-block {
-    padding: 0.75rem;
+    padding: 0.5rem;
   }
 
   .card-tag-title {
@@ -869,6 +1058,11 @@ a:hover, a:active, a:visited {
 .Verification-form .btn {
   float: none;
   margin: 0 auto;
+  background: #000;
+}
+
+.Verification-form .btn:hover {
+  background: #3dc7e8;
 }
 
 .Verification-form .col-form-label {
@@ -921,6 +1115,7 @@ a:hover, a:active, a:visited {
   float: none;
 }
 
+/** GET APP MODAL **/
 .Get-app-modal {
   padding-top: 15%;
 }
@@ -931,6 +1126,11 @@ a:hover, a:active, a:visited {
 
 .Get-app-modal .modal-title {
   font-size: 1rem;
+}
+
+.Get-app-modal .modal-footer {
+  display: block;
+  text-align: center;
 }
 
 @media (max-width: 575px) {

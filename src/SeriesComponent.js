@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 
 import { Alert, Row, Col, Jumbotron, Container } from 'reactstrap';
 
+import ListDetail from './ListDetailComponent.js';
 import ItemDetail from './ItemDetailComponent.js';
 import ItemContentComponent from './ItemContentComponent.js';
 import GetAppModal from './GetAppModal.js';
@@ -74,6 +75,14 @@ var SeriesComponent = createReactClass({
     })
   },
 
+  getListItems: function(seriesID) {
+    firebase.database().ref('lists').child(seriesID).once('value').then(function(snapshot) {
+      this.setState({
+        seriesItems: snapshot.val()
+      })
+    }.bind(this));
+  },
+
   loadMore: function(page) {
     if (this.state.page < Object.keys(this.state.seriesItems).length) {
       this.setState({
@@ -95,7 +104,7 @@ var SeriesComponent = createReactClass({
         this.setState({
           series: snapshot.val()
         })
-        //this.context.setSelected(snapshot.val(), true);
+        this.context.setSelected(snapshot.val(), false);
       }.bind(this));  
 
       firebase.database().ref('itemCollection').child(seriesID).once('value').then(function(snapshot) {
@@ -112,14 +121,19 @@ var SeriesComponent = createReactClass({
     firebase.database().ref('items').child(seriesID).once('value').then(function(snapshot) {
       this.setState({
         series: snapshot.val()
-      })
-      //this.context.setSelected(snapshot.val(), true);
+      });
+
+      if (snapshot.val() !== 'undefined' && snapshot.val().type === 'collection') {
+        this.getListItems(seriesID);
+      };
+
+      this.context.setSelected(snapshot.val(), false);
     }.bind(this));  
 
     firebase.database().ref('itemCollection').child(seriesID).once('value').then(function(snapshot) {
       this.setState({
         seriesItems: snapshot.val()
-      })
+      });
     }.bind(this));  
   },
 
@@ -146,7 +160,7 @@ var SeriesComponent = createReactClass({
         ]}
       /> : '';
 
-    if (this.state.seriesItems) {
+    if (this.state.seriesItems && typeof this.state.series !== 'undefined' && this.state.series.type !== 'collection') {
       Object.keys(this.state.seriesItems).reverse().map((item, index) => {
         if (index < this.state.page) {
           seriesItems.push(
@@ -157,16 +171,27 @@ var SeriesComponent = createReactClass({
         }
         return null
       });
+    } else if (this.state.seriesItems && typeof this.state.series !== 'undefined' && this.state.series.type === 'collection') {
+      Object.keys(this.state.seriesItems).map((item, index) => {
+        if (index < this.state.page) {
+          seriesItems.push(
+            <Col xs="12" md="8" key={item} className="pb-3 offset-md-2">
+              <ListDetail itemID={item} channelID={this.state.series.cID} userID={this.state.seriesItems[item]} />
+            </Col>
+          );
+        }
+        return null
+      });
     }
 
-    if (this.state.seriesItems) {
+    if (typeof this.state.seriesItems !== 'undefined') {
       detail = <InfiniteScroll
                   pageStart={0}
                   element={'span'}
                   loadMore={this.loadMore}
                   hasMore={this.state.hasMore}
                   loader={this.state.hasMore ? <Alert className="pb-3 col-12 col-md-8 offset-md-2" color="warning text-center"><strong>Loading ...</strong></Alert> : <span></span>} >
-                  { <Row>{seriesItems}</Row> }
+                  {seriesItems}
               </InfiniteScroll>
     } else {
       detail = <Alert className="col-12" color="warning text-center">
@@ -175,7 +200,7 @@ var SeriesComponent = createReactClass({
     } 
 
     return (
-      <Container fluid>
+      <Container fluid className="Series-content">
         {addMeta}
         <SeriesHeader selectedSeries={this.state.series} onClick={this.toggleGetApp} />
         {this.state.showGetApp ? <GetAppModal modal={this.state.showGetApp} onClose={this.toggleGetApp}/> : ''}

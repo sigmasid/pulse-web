@@ -1,6 +1,6 @@
 /* esli nt-disable react-in-jsx-scope */
 import React from 'react'
-import { Button, Navbar, Nav, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { Button, Navbar, Nav, Breadcrumb, BreadcrumbItem, Container } from 'reactstrap';
 import { Link } from 'react-router';
 import pulseLogo from './images/pulse-logo-100.png'; // Tell Webpack this JS file uses this image
 import pulseLogoText from './images/pulse-logo-text-only.png'
@@ -10,7 +10,8 @@ export default class TopNav extends React.Component {
 
   render() {
     return(
-      <Navbar className="navbar fixed-top container hidden-xs-down">
+      <Navbar className="navbar fixed-top hidden-xs-down top-nav">
+        <Container>
         <Nav className="mr-auto">
           <Breadcrumb tag="nav" className="navbar-brand">
             <BreadcrumbItem tag={Link} to={"/"} className="navbar-toggler-left breadcrumb-item">
@@ -22,9 +23,18 @@ export default class TopNav extends React.Component {
               {this.props.message !== 'undefined' ? this.props.message : ''}
             </BreadcrumbItem>
           </Breadcrumb>
-    		<Button color="primary" className="navbar-toggler-right hidden-sm-up btn-sm">get app</Button>
-        <Button color="primary" className="navbar-toggler-right hidden-xs-down">get app</Button>
+
+        <Button color="primary" className="navbar-toggler-right nav-preview-button">
+          <Link to={`/web`}>
+            preview
+          </Link>
+        </Button>
+
+        <Button color="primary" className="navbar-toggler-right">
+          <a href="https://itunes.apple.com/us/app/pulse-channels-content-for-professionals/id1200702658?ls=1&mt=8" className="navbar-toggler-right">get app</a>
+        </Button>
         </Nav>
+        </Container>
       </Navbar>
     )
   }

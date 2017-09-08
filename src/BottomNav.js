@@ -9,7 +9,7 @@ export default class BottomNav extends React.Component {
   render() {
     return(
     <Container>
-      <Navbar className="header bottom-nav" color="faded" light>
+      <Navbar className="header bottom-nav" light>
         <Nav className="ml-auto">
           <NavItem>
               <NavLink tag={Link} to={`/about`}>About</NavLink>

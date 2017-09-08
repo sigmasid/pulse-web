@@ -1,0 +1,11 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "1200702658.co.checkpulse.pulse",
+                "paths": [ "/c/*", "/u/*", "/i/*", "invites/*", "invite/*"]
+            }
+        ]
+    }
+}

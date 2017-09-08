@@ -26,7 +26,7 @@ var ItemDetailComponent = createReactClass({
       nextItemIndex: 0,
       createdItems: {},
       isLoading: false,
-      thumbURL: 'https://placeholdit.imgix.net/~text?txtsize=20&txt=loading...&w=500&h=500&bg=ffffff&txtclr=666666'
+      thumbURL: 'https://placeholdit.imgix.net/~text?txtsize=20&txt=loading...&w=750&h=575&bg=ffffff&txtclr=666666'
     };
   },
 
@@ -197,11 +197,11 @@ var ItemDetailComponent = createReactClass({
           user: this.props.user,
           item: this.props.item,
           hasCover: hasCover
-        })
+        }.bind(this))
       }
 
       if (this.props.item.type !== 'question' && this.props.item.contentType !== 'postcard') {
-        var storageRef = firebase.storage().ref('channels').child(this.props.channelID).child(this.props.itemID).child('thumb');
+        var storageRef = firebase.storage().ref('channels').child(this.props.channelID).child(this.props.itemID).child('content');
         storageRef.getDownloadURL().then(function(url) {
           if (typeof url !== 'undefined') {
             this.setState({
@@ -215,36 +215,36 @@ var ItemDetailComponent = createReactClass({
         var item = snap.val();
 
         if (item.type !== 'question' && item.contentType !== 'postcard') {
-            var storageRef = firebase.storage().ref('channels').child(item.cID).child(this.props.itemID).child('thumb');
-            storageRef.getDownloadURL().then(function(url) {
-              if (typeof url !== 'undefined') {
-                this.setState({
-                  item: snap.val(),
-                  itemID: snap.key,
-                  thumbURL: url
-                });
-              }
+          //item has an image - so get the image
+          var storageRef = firebase.storage().ref('channels').child(item.cID).child(this.props.itemID).child('content');
+          storageRef.getDownloadURL().then(function(url) {
+            if (typeof url !== 'undefined') {
+              this.setState({
+                item: snap.val(),
+                itemID: snap.key,
+                thumbURL: url
+              });
+            }
           }.bind(this));
         } else {
           this.setState({
-              itemID: snap.key,
-              item: snap.val()
-            });
-        }
+            itemID: snap.key,
+            item: snap.val()
+          });
+        } 
 
         if (typeof this.props.user === 'undefined') {
           firebase.database().ref('/userPublicSummary/' + item.uID).once('value').then(function(userSnap) {
           this.setState({
-              user: userSnap.val()
-          })
+            user: userSnap.val()
+          });
           }.bind(this));
         } else {
           this.setState({
             user: this.props.user
-          })
+          });
         }
       }.bind(this));
-
     }
   },
 
@@ -310,13 +310,6 @@ var ItemDetailComponent = createReactClass({
       }
     } 
 
-    itemDetail = (this.state.showDetail) ?
-                <ItemContentComponent 
-                  user={this.state.user} 
-                  contentURL={this.state.item.url} 
-                  item={this.state.item} 
-                  thumbURL={this.state.thumbURL} /> : null;
-
     switch (item.type) {
       case 'post': 
         cssTag = 'card-block-post';
@@ -358,18 +351,31 @@ var ItemDetailComponent = createReactClass({
     var closeButton = <Col xs={2} sm={3} md={4}  className="float-right"><Button className="close" aria-label="Close" onClick={this.closeDetail.bind(this, null)}><span aria-hidden="true">&times;</span></Button></Col>
     var itemTypeDescription = <Col xs={2} sm={3} md={4} className="card-tag-title"><small className="text-muted float-right">{itemType}</small></Col>
     var rightHeader = this.state.showDetail ? closeButton : itemTypeDescription
-    var nextItemButton = this.state.showNext ? <span className="next-detail-item"><Link to={this.props.myroute} onClick={ this.handleNextItem.bind(this, null) }><img src={nextButton} alt="next" /></Link></span> : null
-    var previousItemButton = this.state.showPrevious ? <span className="previous-detail-item"><Link to={this.props.myroute} onClick={ this.handlePreviousItem.bind(this, null) }><img src={previousButton} alt="next" /></Link></span> : null
+    var nextItemButton = <span className="next-detail-item vertical-center"><Link to={this.state.showNext ? this.props.myroute : null} onClick={this.state.showNext ? this.handleNextItem.bind(this, null) : null }><img src={nextButton} alt="next" className={this.state.showNext ? "" : "opacity-0"} /></Link></span>
+    var previousItemButton = <span className="previous-detail-item vertical-center"><Link to={this.state.showPrevious ? this.props.myroute : null } onClick={ this.state.showPrevious ? this.handlePreviousItem.bind(this, null) : null }><img src={previousButton} alt="next" className={this.state.showPrevious ? "" : "opacity-0"}/></Link></span>
     
+    itemDetail = (this.state.showDetail) ?
+            <div className="Item-card-detail">
+              { previousItemButton }
+              <ItemContentComponent 
+                user={this.state.user} 
+                contentURL={this.state.item.url} 
+                item={this.state.item} 
+                thumbURL={this.state.thumbURL} />
+              { nextItemButton }
+            </div> : null;
+
     //don't show the title if it's a postcard
     var itemTitleBlock = item.contentType === 'postcard' ? null : 
         <CardBlock className={cssTag}>
           <CardTitle>
             <Link to={this.props.myroute} onClick={ this.handleClick }>
-              { item.title }
+              { item.title + ( item.description !== undefined ? " - " + item.description : '' ) }
             </Link>
           </CardTitle>
         </CardBlock>
+
+
 
     return(
       <Card className="Item-card">
@@ -379,8 +385,6 @@ var ItemDetailComponent = createReactClass({
         </CardHeader>
         { this.state.isLoading ? loading : null }
         { this.state.showDetail ? itemDetail : itemImage }
-        { previousItemButton }
-        { nextItemButton }
         { itemTitleBlock }
         <CardFooter>
             <small className="text-muted">{ date.toDateString() }</small>

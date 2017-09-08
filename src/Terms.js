@@ -2,7 +2,17 @@ import React from 'react'
 import { ListGroup, ListGroupItem, ListGroupItemHeading, ListGroupItemText, Jumbotron, Container } from 'reactstrap';
 
 export default class Terms extends React.Component {
-  render() {
+	static contextTypes = {
+    	setSelected: React.PropTypes.func.isRequired
+  	}
+
+	componentWillMount() {
+		var selectedNav = {};
+		selectedNav["title"] = "Terms";
+	    this.context.setSelected(selectedNav, true);
+	}
+
+  	render() {
     return (
     	<Container className="terms">
 		<Jumbotron className="Question-header text-center" color="white">
@@ -74,7 +84,7 @@ export default class Terms extends React.Component {
 	        <ListGroupItem>
 	          <ListGroupItemHeading><strong>7. Respecting Copyright</strong></ListGroupItemHeading>
 	          <ListGroupItemText>Think Apart honors the requirements set forth in the Digital Millennium Copyright Act. We therefore take reasonable steps to expeditiously remove from our Services any infringing material that we become aware of. And if Think Apart becomes aware that one of its users has repeatedly infringed copyrights, we will take reasonable steps within our power to terminate the user’s account.</ListGroupItemText>
-			  <ListGroupItemText>We make it easy for you to report suspected copyright infringement. If you believe that anything on the Services infringes a copyright that you own or control, please email us at hi@checkpulse.co.</ListGroupItemText>
+			  <ListGroupItemText>We make it easy for you to report suspected copyright infringement. If you believe that anything on the Services infringes a copyright that you own or control, please email us at hi@getpulse.tv.</ListGroupItemText>
 	        </ListGroupItem>
 	        <ListGroupItem>
 	          <ListGroupItemHeading><strong>8. Safety</strong></ListGroupItemHeading>
@@ -104,7 +114,7 @@ export default class Terms extends React.Component {
 					<ListGroupItem>You will not buy, sell, rent, or lease access to your Pulse account, username, or a friend link without our written permission.</ListGroupItem>
 					<ListGroupItem>You will not share your password.</ListGroupItem>
 					<ListGroupItem>You will not log in or attempt to access the Services through unauthorized third-party applications or clients.</ListGroupItem>
-					<ListGroupItem>If you think that someone has gained access to your account, please immediately reach out to hi@checkpulse.co.</ListGroupItem>
+					<ListGroupItem>If you think that someone has gained access to your account, please immediately reach out to hi@getpulse.tv.</ListGroupItem>
 	          </ListGroup>
 	        </ListGroupItem>	
 	        <ListGroupItem>
@@ -186,7 +196,7 @@ export default class Terms extends React.Component {
 	        <ListGroupItem>
 	          <ListGroupItemHeading><strong>> Contact Us</strong></ListGroupItemHeading>
 	          <ListGroupItemText>
-				Think Apart welcomes comments, questions, concerns, or suggestions. Please send us feedback by emailing hi@checkpulse.co.
+				Think Apart welcomes comments, questions, concerns, or suggestions. Please send us feedback by emailing hi@getpulse.tv.
 	          </ListGroupItemText>
 	        </ListGroupItem>	        	        	                	                     	        	                	        	               	        
       </ListGroup>

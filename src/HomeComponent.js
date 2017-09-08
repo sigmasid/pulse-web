@@ -34,15 +34,25 @@ var Slide = createReactClass({
 var HomeComponent = createReactClass({
   mixins: [Carousel.ControllerMixin],
 
+  contextTypes: {
+    setSelected: React.PropTypes.func.isRequired
+  },
+
+  componentWillMount: function() {
+      var selectedNav = {};
+      selectedNav["title"] = "";
+      this.context.setSelected(selectedNav, true);
+  },
+
   render: function() {
 
-  var exploreTitle = "Pulse is content that matters";
-  var channelDetailTitle = "Pulse is voices that matter";
-  var contentDetailTitle = "Pulse is creating what matters";
+    var exploreTitle = "Pulse is content that matters";
+    var channelDetailTitle = "Pulse is voices that matter";
+    var contentDetailTitle = "Pulse is creating what matters";
 
-  var exploreDescription = "Pulse is channels for finance, investing, entrepreneurship, real estate, arts, movies, sports & more";
-  var channelDetailDescription = "Pulse is founders presenting ideas, VCs talking investing trends, execs talking IPOs, authors discussing their work, scientists debating scientists";
-  var contentDetailDescription = "Pulse mobile publishing & discovery tools for collaborating, creating & showcasing professional content that is as craveworthy as artisnal lattes";
+    var exploreDescription = "Pulse is channels for finance, investing, entrepreneurship, real estate, arts, movies, sports & more";
+    var channelDetailDescription = "Pulse is founders presenting ideas, VCs talking investing trends, execs talking IPOs, authors discussing their work, scientists debating scientists";
+    var contentDetailDescription = "Pulse mobile publishing & discovery tools for collaborating, creating & showcasing professional content that is as craveworthy as artisnal lattes";
 
   var Decorators = [{
     component: createReactClass({
@@ -76,21 +86,23 @@ var HomeComponent = createReactClass({
 
   return(
     <Container fluid className="Container-home-fluid">
-      <Alert className="Row text-center" color="info">
-        <Container>
+      <Alert className="text-center hidden-sm-up" color="info">
+        <Container className="pb-2 pt-2">
           <Row>
-            <Col xs={11} sm={12} className="text-center">
+            <Col xs={10} sm={12} className="text-right pr-0 pl-2">
               <Link to={`/web`}>
-                <h5 className="font-weight-bold text-white">
-                  ideas, content and voices that matter
+                <h5 className="font-weight-bold">
+                  preview
                   <span className="next-button hidden-xs-down ml-4">
                     <img src={nextButton} alt="next" />
                   </span>
                 </h5>
               </Link>
             </Col>
-            <Col xs={1} className="text-left next-button hidden-sm-up"><img src={nextButton} alt="next" /></Col>
-            </Row>
+            <Col xs={2} className="text-center next-button hidden-sm-up pl-0 pr-2">
+              <img src={nextButton} alt="next" />
+            </Col>
+          </Row>
         </Container>
       </Alert>
       <Container className="Container-home">

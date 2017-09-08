@@ -30,7 +30,6 @@ var SearchItem = createReactClass({
   },
 
   render: function() {
-    console.log("passed props are "+util.inspect(this.props.channel));
     return(
       <Card className="Channel-card">
         <Link to={`/c/${this.props.channel._id}`} onClick={this.context.setSelected.bind(null,this.props.channel, true)}>

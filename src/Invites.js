@@ -1,6 +1,7 @@
 import React from 'react';
 import * as firebase from "firebase";
 import { Jumbotron, Card, CardTitle, CardText, Container, Alert, Label, Col, Form, FormGroup, Input, Button } from 'reactstrap';
+
 var createReactClass = require('create-react-class');
 
 var AccountCreated = createReactClass({
@@ -11,7 +12,7 @@ var AccountCreated = createReactClass({
 					<Alert color="danger text-center">Oh no! there was an error. Please see the details below</Alert>
 				    <Card block>
 	      				<CardTitle className="text-center">{this.props.error}</CardTitle>
-			        	<CardText className="text-center">You can try submitting your request again or contact us for assistance at hi@checkpulse.co</CardText>
+			        	<CardText className="text-center">You can try submitting your request again or contact us for assistance at hi@getpulse.tv</CardText>
 	      				<Button color="primary" onClick={this.props.tryAgain}>Try again</Button>
 	    			</Card>
 				</Container>
@@ -23,7 +24,7 @@ var AccountCreated = createReactClass({
 				    <Card block>
 	      				<CardTitle className="text-center">Time to Get the App</CardTitle>
 			        	<CardText className="text-center">Our app allows you to answer questions, message users and be part of the Pulse experience.</CardText>
-	      				<Button color="primary">Download App</Button>
+	      				<a href="https://itunes.apple.com/us/app/pulse-channels-content-for-professionals/id1200702658?ls=1&mt=8" className="Get-app-btn btn btn-primary text-white">download app</a>
 	    			</Card>
 				</Container>
 			);
@@ -45,7 +46,8 @@ var ExistingUser = createReactClass({
 			</Alert>
 		    <Card block>
 	        	<CardText className="text-center col-10 col-md-8 offset-md-2 offset-1">Answer questions, share your perspectives, do interviews & tell your stories - a better way to collaborate, create & share with the Pulse App.</CardText>
-				<Button color="primary">Download App</Button>
+  				<a href="https://itunes.apple.com/us/app/pulse-channels-content-for-professionals/id1200702658?ls=1&mt=8" className="Get-app-btn btn btn-primary text-white">download app</a>
+				
 			</Card>
 		</Container>
 
@@ -135,7 +137,7 @@ var InviteComponent = createReactClass({
   		var content = '';
 
   		if (!this.state.approved) {
-  			content = <Container className="Verification-form"><Alert color="warning text-center">Please contact us at hi@checkpulse.co for assistance!</Alert></Container>
+  			content = <Container className="Verification-form"><Alert color="warning text-center">Please contact us at hi@getpulse.tv for assistance!</Alert></Container>
   		} else if (this.state.toUserID === '') {
   			content = <VerificationForm name={this.state.toUserName} email={this.state.toUserEmail} claimAccount={this.claimAccount} />
   		} else if (this.state.accountCreated === true) {
@@ -156,6 +158,7 @@ var InviteComponent = createReactClass({
         			toUserEmail: typeof snapshot.val().toUserEmail !== 'undefined' ? snapshot.val().toUserEmail  : '',
         			toUserName: typeof snapshot.val().toUserName !== 'undefined' ? snapshot.val().toUserName  : '',
         			toUserID: typeof snapshot.val().toUserID !== 'undefined' ? snapshot.val().toUserID  : '',
+        			fromUserID: typeof snapshot.val().fromUserID !== 'undefined' ? snapshot.val().fromUserID  : '',
         			title: typeof snapshot.val().title !== 'undefined' ? snapshot.val().title  : '',
         			tagTitle: typeof snapshot.val().tagTitle !== 'undefined' ? snapshot.val().tagTitle  : '',
         			approved: snapshot.val().approved !== false,
@@ -197,7 +200,12 @@ var InviteComponent = createReactClass({
 		  	if (user) {
 		  		firebase.database().ref('/invites/' + this.props.params.inviteID).update({
 		  			"toUserName":name,
-          			"toUserID":user.uid
+          			"toUserID":user.uid,
+          			"accountCreated":true
+		  		});
+
+		  		firebase.database().ref('/userPublicSummary/' + user.uid).update({
+		  			"name":name
 		  		});
 
 				firebase.auth().signOut().then(function() {
@@ -222,9 +230,12 @@ var InviteComponent = createReactClass({
 		title = "Sorry! This invitation is invalid";
 	} else if (this.state.approved === true) {
 		title = this.state.toUserName !== '' ? "Welcome " + this.state.toUserName + "!" : "Hi There!";
-		if (this.state.type === 'contributorInvite') {
+		if (this.state.type === 'contributorInvite' && this.state.fromUserID !== this.state.toUserID) {
 			subtitle1 = "You have been recommended as an expert for Channel "+this.state.title;
 			subtitle2 = "Pulse is home to top experts, critics & professionals - showcasing content, ideas & perspectives that matters. Want to join?";
+		} else if (this.state.type === 'contributorInvite' && this.state.fromUserID === this.state.toUserID) {
+			subtitle1 = "Thanks for your interest in being a contributor for "+this.state.title;
+			subtitle2 = "Your request is pending - please check back again!";
 		} else if (this.state.type === 'interviewInvite') {
 			subtitle1 = "You received an interview invitation from "+this.state.fromUserName+" for the series "+this.state.tagTitle;
 			subtitle2 = "Interviews are a great way to showcase your expertise and grow your brand - we hope you will join us!";

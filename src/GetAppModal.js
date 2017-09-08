@@ -1,5 +1,5 @@
 import React from 'react'
-import { Modal, Button, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
+import { Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 var createReactClass = require('create-react-class');
 
 var GetAppModal = createReactClass({
@@ -25,11 +25,11 @@ var GetAppModal = createReactClass({
             </ModalHeader>
             <ModalBody>
               <small className="text-muted">
-              App allows you to discover & join new channels, become a contributor, and be part of the experience! 
+              Discover & subscribe to channels, enjoy exclusive content or join the experience as a contributor! 
               </small>
             </ModalBody>
             <ModalFooter>
-              <Button className="btn-block btn-sm font-weight-bold" color="primary">get app</Button>
+              <a href="https://itunes.apple.com/us/app/pulse-channels-content-for-professionals/id1200702658?ls=1&mt=8" className="Get-app-btn btn btn-primary text-white block">get app</a>
             </ModalFooter>
         </Modal>
     );

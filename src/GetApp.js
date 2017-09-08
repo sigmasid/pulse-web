@@ -36,7 +36,7 @@ var GetApp = createReactClass({
         				</h6>
         			</Col>
         			<Col xs="4" sm="2" className="offset-sm-2 text-right">
-        				<Button color="primary" className="Get-app-btn">get app</Button>
+                        <a href="https://itunes.apple.com/us/app/pulse-channels-content-for-professionals/id1200702658?ls=1&mt=8" className="Get-app-btn btn btn-primary">Get App</a>
     				</Col>
                     <Col sm="1" className="offset-sm-1 offset-md-0 hidden-xs-down">
                         <Button className="close" aria-label="Close" onClick={this.Close.bind(this, null)}>
@@ -65,7 +65,7 @@ var GetApp = createReactClass({
                         </h6>
                     </Col>
                     <Col xs="4" sm="2" className="offset-sm-2 text-right">
-                        <Button color="primary" className="Get-app-btn">get app</Button>
+                        <a href="https://itunes.apple.com/us/app/pulse-channels-content-for-professionals/id1200702658?ls=1&mt=8" className="Get-app-btn btn btn-primary text-white">get app</a>
                     </Col>
                     <Col sm="1" className="offset-sm-1 offset-md-0 hidden-xs-down">
                         <Button className="close" aria-label="Close" onClick={this.Close.bind(this, null)}>
